@@ -10,13 +10,13 @@ Node::Node(int id) {
   this->label = "";
 }
 
-Node::Node(int id, string label) {
+Node::Node(int id, std::string label) {
   this->id = id;
   this->label = label;
 }
 
 Node::~Node() {}
 
-void Node::setNodeId(int id) { this->id = id; }
+void Node::setId(int id) { this->id = id; }
 
 int Node::getId() { return this->id; }

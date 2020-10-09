@@ -4,10 +4,10 @@ class Node {
  public:
   Node();
   Node(int id);
-  Node(int id, string label);
+  Node(int id, std::string label);
   ~Node();
 
-  void setNodeId(int id);
+  void setId(int id);
   int getId();
 
  private:
