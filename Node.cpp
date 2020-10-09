@@ -1,4 +1,4 @@
-#include "Node.hpp"
+#include "node.hpp"
 
 Node::Node() {
   this->id = -1;

@@ -1,8 +1,6 @@
-class Node {
- private:
-  int id;
-  string label;
+#include <string>
 
+class Node {
  public:
   Node();
   Node(int id);
@@ -11,4 +9,8 @@ class Node {
 
   void setNodeId(int id);
   int getId();
+
+ private:
+  int id;
+  std::string label;
 };
