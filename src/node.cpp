@@ -1,6 +1,6 @@
 #include "node.hpp"
 
-Node::Node() {
+Node::Node(void) {
   this->id = -1;
   this->label = "";
 }
@@ -19,4 +19,8 @@ Node::~Node() {}
 
 void Node::setId(int id) { this->id = id; }
 
-int Node::getId() { return this->id; }
+int Node::getId(void) { return this->id; }
+
+void Node::setLabel(std::string label) { this->label = label; }
+
+std::string Node::getLabel(void) { return this->label; }
