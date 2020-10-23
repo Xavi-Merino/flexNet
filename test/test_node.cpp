@@ -26,7 +26,6 @@ TEST_CASE("Setting ID (Node)") {
   CHECK(n1.getId() == 45);
 }
 
-/*
 TEST_CASE("Setting label (Node)") {
   Node n1 = Node();
 
@@ -34,4 +33,3 @@ TEST_CASE("Setting label (Node)") {
 
   CHECK(n1.getLabel().compare("testing node") == 0);
 }
-*/
