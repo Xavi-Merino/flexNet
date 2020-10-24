@@ -1,3 +1,6 @@
+#ifndef __NODE_H__
+#define __NODE_H__
+
 #include <string>
 
 class Node {
@@ -17,3 +20,5 @@ class Node {
   int id;
   std::string label;
 };
+
+#endif

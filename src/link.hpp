@@ -1,3 +1,6 @@
+#ifndef __LINK_H__
+#define __LINK_H__
+
 class Link {
  public:
   Link(void);
@@ -10,3 +13,5 @@ class Link {
  private:
   int id;
 };
+
+#endif
