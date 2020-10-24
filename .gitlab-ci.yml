@@ -16,9 +16,27 @@ before_script:
   - make install
   - cd ../..
   - rm -r temp
+  - apt-get -y install doxygen
 
 building:
   script:
     - mkdir build && cd build
     - cmake ..
     - make
+    - cd ..
+
+test:
+  script:
+  - doxygen Doxyfile
+  except:
+  - master
+  
+pages:
+  script:
+  - doxygen Doxyfile
+  - mv documentation/html/ public/
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
