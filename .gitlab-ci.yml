@@ -26,6 +26,7 @@ building:
 
 test:
   script:
+  - apt-get -y install graphviz
   - apt-get -y install doxygen
   - doxygen Doxyfile
   except:
@@ -33,6 +34,7 @@ test:
   
 pages:
   script:
+  - apt-get -y install graphviz
   - apt-get -y install doxygen
   - doxygen Doxyfile
   - mv documentation/html/ public/
