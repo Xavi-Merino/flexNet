@@ -11,3 +11,7 @@ Create a build directory in the project root tree and run cmake there:
  $ cmake ..
  $ make
 ```
+
+## Documentation
+
+The documentation can be found in the next [link](http://daniloborquez.gitlab.io/flex-net-sim).
