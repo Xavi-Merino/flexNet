@@ -53,9 +53,9 @@ class Link {
    */
   void setLength(float length);
   /**
-   * @brief Set the size of the Slots object/vector
+   * @brief Set the number of slots in this Link
    *
-   * @param slots The new size of the Slots vector of this Link object
+   * @param slots The new number of slots of this Link
    */
   void setSlots(int slots);
   /**
@@ -71,9 +71,9 @@ class Link {
    */
   float getLength(void);
   /**
-   * @brief Get the size of the Slots object/vector
+   * @brief Get the number of slots of this Link
    *
-   * @return int The Id of this Link object
+   * @return int The number of slots of this Link
    */
   int getSlots(void);
 
