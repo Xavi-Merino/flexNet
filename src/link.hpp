@@ -1,10 +1,10 @@
 #ifndef __LINK_H__
 #define __LINK_H__
 
+#include <vector>
+
 #define DEFAULT_SLOTS 320
 #define DEFAULT_LENGTH 100.0
-
-#include <vector>
 
 /**
  * @brief Class with the link information.
@@ -20,6 +20,12 @@ class Link {
    *
    */
   Link(void);
+  /**
+   * @brief Construct a new Link object
+   *
+   * @param id The id of this new Link object
+   */
+  Link(int id);
   /**
    * @brief Construct a new Link object
    *
@@ -53,29 +59,43 @@ class Link {
    */
   void setLength(float length);
   /**
-   * @brief Set the number of slots in this Link
+   * @brief Set the size of the Slots object
    *
-   * @param slots The new number of slots of this Link
+   * @param slots The new size of the Slots vector of this Link object
    */
   void setSlots(int slots);
+  /**
+   * @brief Set the value of a specific Slot
+   *
+   * @param pos The position of the Slot inside the Slots vector
+   * @param value The value desired to assign to the specified Slot
+   */
+  void setSlot(int pos, bool value);
   /**
    * @brief Get the Id object
    *
    * @return int The Id of this Link object
    */
-  int getId(void);
+  int getId(void) const;
   /**
    * @brief Get the Length object
    *
    * @return float The Length of this Link object
    */
-  float getLength(void);
+  float getLength(void) const;
   /**
-   * @brief Get the number of slots of this Link
+   * @brief Get the size of the Slots object
    *
-   * @return int The number of slots of this Link
+   * @return int The Id of this Link object
    */
-  int getSlots(void);
+  int getSlots(void) const;
+  /**
+   * @brief Get the value of a specific Slot
+   *
+   * @param pos The position of the Slot in the Slots vector
+   * @return bool The value of the specified Slot
+   */
+  bool getSlot(int pos) const;
 
  private:
   int id;

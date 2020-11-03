@@ -6,24 +6,60 @@ Link::Link(void) {
   this->slots.resize(DEFAULT_SLOTS);
 }
 
+Link::Link(int id) {
+  this->id = id;
+  this->length = DEFAULT_LENGTH;
+  this->slots.resize(DEFAULT_SLOTS);
+}
+
 Link::Link(int id, float length) {
   this->id = id;
+
+  if (length <= 0)
+    throw std::runtime_error("Cannot create a link with non-positive length.");
   this->length = length;
+
   this->slots.resize(DEFAULT_SLOTS);
 }
 
 Link::Link(int id, float length, int slots) {
   this->id = id;
+
+  if (length <= 0)
+    throw std::runtime_error("Cannot create a link with non-positive length.");
   this->length = length;
+
+  if (slots < 1)
+    throw std::runtime_error("Cannot create a link with " +
+                             std::to_string(slots) + " slots.");
   this->slots.resize(slots);
 }
 
 Link::~Link() {}
 
 void Link::setId(int id) { this->id = id; }
-void Link::setLength(float length) { this->length = length; }
-void Link::setSlots(int slots) { this->slots.resize(slots); }
 
-int Link::getId(void) { return this->id; }
-float Link::getLength(void) { return this->length; }
-int Link::getSlots(void) { return this->slots.size(); }
+void Link::setLength(float length) {
+  if (length <= 0)
+    throw std::runtime_error("Cannot set a link with non-positive length.");
+  this->length = length;
+}
+
+void Link::setSlots(int slots) {
+  if (slots < 1)
+    throw std::runtime_error("Cannot set a link with " + std::to_string(slots) +
+                             " slots.");
+  for (int i = 0; i < this->getSlots(); i++) {
+    if (this->slots[i] == true)
+      throw std::runtime_error(
+          "Cannot change slots number if at least one slot is active.");
+  }
+  this->slots.resize(slots);
+}
+
+void Link::setSlot(int pos, bool value) { this->slots[pos] = value; }
+
+int Link::getId(void) const { return this->id; }
+float Link::getLength(void) const { return this->length; }
+int Link::getSlots(void) const { return this->slots.size(); }
+bool Link::getSlot(int pos) const { return this->slots[pos]; }
