@@ -60,6 +60,9 @@ void Link::setSlots(int slots) {
 void Link::setSlot(int pos, bool value) { this->slots[pos] = value; }
 
 int Link::getId(void) const { return this->id; }
+
 float Link::getLength(void) const { return this->length; }
+
 int Link::getSlots(void) const { return this->slots.size(); }
+
 bool Link::getSlot(int pos) const { return this->slots[pos]; }
