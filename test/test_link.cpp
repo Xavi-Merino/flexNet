@@ -51,7 +51,7 @@ TEST_CASE("Getting slots (Link)") {
   CHECK(l1.getSlots() == 200);
 }
 
-TEST_CASE("Setting length (Link)") {
+TEST_CASE("Setting slots (Link)") {
   Link l1 = Link(30, 70.0, 200);
 
   l1.setSlots(100);

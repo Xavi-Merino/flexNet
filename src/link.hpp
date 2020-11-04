@@ -1,10 +1,11 @@
 #ifndef __LINK_H__
 #define __LINK_H__
 
-#include <vector>
-
 #define DEFAULT_SLOTS 320
 #define DEFAULT_LENGTH 100.0
+
+#include <stdexcept>
+#include <vector>
 
 /**
  * @brief Class with the link information.
