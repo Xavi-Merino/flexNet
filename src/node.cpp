@@ -19,8 +19,8 @@ Node::~Node() {}
 
 void Node::setId(int id) { this->id = id; }
 
-int Node::getId(void) { return this->id; }
+int Node::getId(void) const { return this->id; }
 
 void Node::setLabel(std::string label) { this->label = label; }
 
-std::string Node::getLabel(void) { return this->label; }
+std::string Node::getLabel(void) const { return this->label; }

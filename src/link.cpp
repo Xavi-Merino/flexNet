@@ -57,7 +57,12 @@ void Link::setSlots(int slots) {
   this->slots.resize(slots);
 }
 
-void Link::setSlot(int pos, bool value) { this->slots[pos] = value; }
+void Link::setSlot(int pos, bool value) {
+  if (pos < 0 || pos >= this->getSlots())
+    throw std::runtime_error("Cannot set slot in position out of bounds.");
+
+  this->slots[pos] = value;
+}
 
 int Link::getId(void) const { return this->id; }
 
@@ -65,4 +70,9 @@ float Link::getLength(void) const { return this->length; }
 
 int Link::getSlots(void) const { return this->slots.size(); }
 
-bool Link::getSlot(int pos) const { return this->slots[pos]; }
+bool Link::getSlot(int pos) const {
+  if (pos < 0 || pos >= this->getSlots())
+    throw std::runtime_error("Cannot get slot in position out of bounds.");
+
+  return this->slots[pos];
+}
