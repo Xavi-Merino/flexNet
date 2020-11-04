@@ -83,7 +83,7 @@ TEST_CASE("Setting slot (Link)") {
 TEST_CASE("getting slot (Link)") {
   Link l1 = Link(30, 70.0, 200);
 
-  CHECK(l1.getSlot(50) == true);
+  CHECK(l1.getSlot(50) == false);
   CHECK_THROWS(l1.getSlot(-1) == false);
   CHECK_THROWS(l1.getSlot(3000) == false);
 }
