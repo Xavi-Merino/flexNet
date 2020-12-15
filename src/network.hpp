@@ -1,6 +1,11 @@
 #include "link.hpp"
 #include "node.hpp"
-
+/**
+ * @brief Class with the network information.
+ *
+ * This class makes the connection between nodes and links in the physical network.
+ *
+ */
 class Network {
  public:
   Network(void);
