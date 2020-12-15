@@ -12,6 +12,14 @@ Create a build directory in the project root tree and run cmake there:
  $ make
 ```
 
+Create a build directory in the project root tree and run cmake there (Windows):
+```
+ $ mkdir build
+ $ cd build
+ $ cmake .. -G "MinGW Makefiles"
+ $ mingw32 - make
+```
+
 ## Documentation
 
 The documentation can be found in the next [link](http://daniloborquez.gitlab.io/flex-net-sim).
