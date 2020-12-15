@@ -8,6 +8,10 @@
  */
 class Network {
  public:
+ /**
+   * @brief Construct a new Network object
+   *
+   */
   Network(void);
   ~Network();
 
