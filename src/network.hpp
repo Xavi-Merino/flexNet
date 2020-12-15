@@ -9,14 +9,33 @@
 class Network {
  public:
  /**
-   * @brief Construct a new Network object
+   * @brief Constructs a new Network object
    *
    */
   Network(void);
+  /**
+   * @brief Destroys the Network object
+   *
+   */
   ~Network();
-
+   /**
+   * @brief Adds the Node to the Network object
+   *
+   * @param node  the new Node of this Node object
+   */
   void addNode(Node node);
+  /**
+   * @brief Adds the Link to the Network object
+   *
+   * @param link the new Link of this Node object
+   */
   void addLink(Link link);
+  /**
+   * @brief Connects the Link and the Node into the Network object
+   *
+   * @param link the new Link of this Node object
+   * @param node the new Node of this Node object
+   */
 
   void connect(Link link, Node node);
 
