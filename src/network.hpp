@@ -3,12 +3,13 @@
 /**
  * @brief Class with the network information.
  *
- * This class makes the connection between nodes and links in the physical network.
+ * This class makes the connection between nodes and links in the physical
+ * network.
  *
  */
 class Network {
  public:
- /**
+  /**
    * @brief Constructs a new Network object
    *
    */
@@ -18,7 +19,7 @@ class Network {
    *
    */
   ~Network();
-   /**
+  /**
    * @brief Adds the Node to the Network object
    *
    * @param node  the new Node of this Node object
@@ -37,14 +38,16 @@ class Network {
    * @param node the new Node of this Node object
    */
 
-  void connect(Link link, Node node);
+  Node getNode(int pos);
+  Link* getLink(int pos);
+  void connect(int src, Link* ptr, int dst);
 
  private:
   std::vector<Node> nodes;
   std::vector<Link> links;
 
-  std::vector<Link> links_in;
-  std::vector<Link> links_out;
+  std::vector<Link*> links_in;
+  std::vector<Link*> links_out;
   std::vector<int> nodes_in;
   std::vector<int> nodes_out;
 };
