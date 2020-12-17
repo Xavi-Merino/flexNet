@@ -1,5 +1,6 @@
 #include "link.hpp"
 #include "node.hpp"
+#include "json.hpp"
 /**
  * @brief Class with the network information.
  *
