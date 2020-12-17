@@ -15,8 +15,8 @@ class Network {
   std::vector<Node> nodes;
   std::vector<Link> links;
 
-  std::vector<int> links_in;
-  std::vector<int> links_out;
+  std::vector<Link> links_in;
+  std::vector<Link> links_out;
   std::vector<int> nodes_in;
   std::vector<int> nodes_out;
 };
