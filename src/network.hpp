@@ -21,15 +21,15 @@ class Network {
    * @brief Destroys the Network object
    *
    */
-  Network(std::string filename);
+  ~Network();
   /**
-   * @brief Construct Network object from JSON file
+   * @brief Constructs Network object from JSON file
    *
    * @param string
    */
-  ~Network();
+  Network(std::string filename);
   /**
-   * @brief Adds the Node to the Network object //TODO is this correct? because is the destructor 
+   * @brief Adds the Node to the Network object
    *
    * @param node  the new Node of this Node object
    */
@@ -41,20 +41,31 @@ class Network {
    */
   void addLink(Link link);
   /**
-   * @brief Connects the Link and the Node into the Network object
+   * @brief Gets the Node at a index position "pos" inside Nodes vector.
    *
-   * @param link the new Link of this Node object
-   * @param node the new Node of this Node object
+   * @param pos the position of the Node inside Nodes vector
+   * @return Node the node at the required position
    */
-
   Node getNode(int pos);
+  /**
+   * @brief Gets the Link pointer at a index position "pos" inside Links vector.
+   *
+   * @param pos the position of the Link inside Links vector
+   * @return Link the link at the required position
+   */
   Link* getLink(int pos);
+  /**
+   * @brief Connects two nodes through a determined link pointer. 
+   *
+   * @param src the source node of the connection
+   * @param ptr the link pointer of the connection
+   * @param dst the destination node of the connection
+   */
   void connect(int src, Link* ptr, int dst);
 
  private:
   std::vector<Node> nodes;
   std::vector<Link> links;
-
   std::vector<Link*> links_in;
   std::vector<Link*> links_out;
   std::vector<int> nodes_in;
