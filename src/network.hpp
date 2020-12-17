@@ -29,7 +29,7 @@ class Network {
    */
   ~Network();
   /**
-   * @brief Adds the Node to the Network object
+   * @brief Adds the Node to the Network object //TODO is this correct? because is the destructor 
    *
    * @param node  the new Node of this Node object
    */
