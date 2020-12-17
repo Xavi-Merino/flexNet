@@ -21,6 +21,12 @@ class Network {
    * @brief Destroys the Network object
    *
    */
+  Network(std::string filename);
+  /**
+   * @brief Construct Network object from JSON file
+   *
+   * @param string
+   */
   ~Network();
   /**
    * @brief Adds the Node to the Network object

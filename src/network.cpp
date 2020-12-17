@@ -4,6 +4,8 @@
 
 Network::Network(void) {}
 
+Network::Network(std::string filename) {}
+
 Network::~Network() {}
 
 Node Network::getNode(int pos) {
