@@ -1,6 +1,8 @@
 #include "link.hpp"
 #include "node.hpp"
+// to use json remember to call nlohmann::json for example
 #include "json.hpp"
+
 /**
  * @brief Class with the network information.
  *
