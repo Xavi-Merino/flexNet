@@ -25,7 +25,26 @@ class Network {
   /**
    * @brief Constructs Network object from JSON file
    *
-   * @param string
+   * @param filename name of the JSON file
+   * \code{.json} Using the JSON API of Niels Lohmann, the constructor builds a n-size node bus with unidirectional link lines between them
+            class json.hpp {
+        "name": "4-node bus",
+        "alias": "example",
+        "nodes": [
+            {
+                "id": 0
+            },
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            },
+            {
+                "id": 3
+            },
+    };
+      \endcode
    */
   Network(std::string filename);
   /**
