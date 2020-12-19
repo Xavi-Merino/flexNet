@@ -63,3 +63,40 @@ void Network::connect(int src, Link* ptr, int dst)
 // Connects two Nodes through one Link (order is important: src != dst):
 //
 //       (Source Node) ---Link---> (Destination Node)
+
+bool Network::isConnected(int id1, int id2) {
+  // Check if two Nodes are directly connected.
+  std::vector<int> numbers;  // Int vector to add all links' Ids
+
+  for (int i = 0; i < this->nodes.size(); i++) {  // Traverse all nodes
+    if (this->nodes[i].getId() ==
+        id1) {  // If finds matching Id with node Id 1...
+      for (int j = nodes_out[i - 1]; j < nodes_out[i]; j++)
+        numbers.push_back(
+            links_out[j]->getId());  //...Add all it's outcoming links Ids
+
+      for (int j = nodes_in[i - 1]; j < nodes_in[i]; j++)
+        numbers.push_back(
+            links_in[j]->getId());  //...Add all it's incoming links Ids
+    }
+
+    if (this->nodes[i].getId() ==
+        id2) {  // If finds matching Id with node Id 2...
+      for (int j = nodes_out[i - 1]; j < nodes_out[i]; j++)
+        numbers.push_back(
+            links_out[j]->getId());  //...Add all it's outcoming links Ids
+
+      for (int j = nodes_in[i - 1]; j < nodes_in[i]; j++)
+        numbers.push_back(
+            links_in[j]->getId());  //...Add all it's incoming links Ids
+    }
+  }
+
+  std::sort(numbers.begin(), numbers.end());  // Sort links Ids
+  for (int i = 0; i < numbers.size() - 1; i++) {
+    if (numbers[i] == numbers[i + 1]) {  // If there are two equal Ids...
+      return true;                       //...both nodes are connected.
+    }
+  }
+  return false;  // Otherwise false.
+}

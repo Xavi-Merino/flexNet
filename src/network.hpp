@@ -23,10 +23,12 @@ class Network {
    */
   ~Network();
   /**
-   * @brief Constructs Network object from JSON file. Using the JSON API of Niels Lohmann, the constructor builds a n-size node bus with unidirectional link lines between them
+   * @brief Constructs Network object from JSON file. Using the JSON API of
+   Niels Lohmann, the constructor builds a n-size node bus with unidirectional
+   link lines between them
    *
    * @param filename name of the JSON file
-   * \code{.json} 
+   * \code{.json}
          {
         "name": "4-node bus",
         "alias": "example",
@@ -74,13 +76,15 @@ class Network {
    */
   Link* getLink(int pos);
   /**
-   * @brief Connects two nodes through a determined link pointer. 
+   * @brief Connects two nodes through a determined link pointer.
    *
    * @param src the source node of the connection
    * @param ptr the link pointer of the connection
    * @param dst the destination node of the connection
    */
   void connect(int src, Link* ptr, int dst);
+
+  bool isConnected(int id1, int id2);
 
  private:
   std::vector<Node> nodes;
