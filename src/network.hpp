@@ -23,9 +23,13 @@ class Network {
    */
   ~Network();
   /**
-   * @brief Constructs Network object from JSON file. Using the JSON API of
-   Niels Lohmann, the constructor builds a n-size node bus with unidirectional
-   link lines between them
+   * @brief Constructs Network object from JSON file. From a JSON file, the constructor builds a network based on 
+   * one array of nodes and one array of links. The node array must contain a list of nodes ID's. The links array
+   * will contain the link id, the source node (end1), the destination node (end2), the length of the link and the 
+   * number of slots.
+   * 
+   * In the example above, the node 0 goes to the nodes 1 and 2. The node 1 goes to the node 2. They are connected by
+   * unidirectional links with 100 slots and their own lengths.
    *
    * @param filename name of the JSON file
    * \code{.json}
@@ -45,7 +49,31 @@ class Network {
             {
                 "id": 3
             },
-          };
+        ], 
+         "links": [
+             {
+            "id": 0,
+            "end1": 0,
+            "end2": 1,
+            "lenght": 1130,
+            "slots": 100
+            },
+            {
+            "id": 1,
+            "end1": 0,
+            "end2": 2,
+            "lenght": 1710,
+            "slots": 100
+            },
+            {
+            "id": 3,
+            "end1": 1,
+            "end2": 2,
+            "lenght": 700,
+            "slots": 100
+                 },
+            ]
+        };
       \endcode
    */
   Network(std::string filename);
