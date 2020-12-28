@@ -111,7 +111,7 @@ class Network {
    * @param dst the destination node of the connection
    */
   void connect(int src, Link* ptr, int dst);
-    /**
+    /** 
    * @brief Checks if two nodes are directly connected.
    *
    * @param id1 the source node of the connection
