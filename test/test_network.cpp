@@ -31,7 +31,7 @@ TEST_CASE("Connect source and destination nodes"){
   net1.addNode(Node(0));
   net1.addNode(Node(2));
   net1.addLink(Link(1));
-  n1_pos = net1.getNode(0).getId();
+  n1_pos = net1.getNode(0).getId(); 
   n2_pos = net1.getNode(2).getId();
   *l1_pos = net1.getLink(1)->getId();
   net1.connect(n1_pos, l1_pos,n2_pos);
