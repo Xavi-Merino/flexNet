@@ -24,7 +24,7 @@ Network::Network(std::string filename) {
       int id;
       id = NSFnet["nodes"][i]["id"];
       Node node = Node(id);
-      addNode(node);
+      this->addNode(node);
     }
 
     for (int i = 0; i < cantLinks; i++) {
@@ -33,7 +33,7 @@ Network::Network(std::string filename) {
       float lenght;
       lenght = NSFnet["links"][i]["lenght"];
       Link link = Link(id, lenght);
-      addLink(link);
+      this->addLink(link);
     }
 
 }
