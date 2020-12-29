@@ -1,13 +1,14 @@
 // Let Catch provide main():
 #define CATCH_CONFIG_MAIN
 
+#include <vector>
+
 #include "../src/network.hpp"
 #include "catch.hpp"
-#include <vector>
 
 TEST_CASE("Constructor (Network)") {
   CHECK_NOTHROW(Network());
-  CHECK_NOTHROW(Network("../networks/NFSNet.json"));
+  CHECK_NOTHROW(Network("../networks/NSFNet.json"));
 }
 
 TEST_CASE("Getting Node position (Network)") {
@@ -23,22 +24,21 @@ TEST_CASE("Getting Link position (Network)") {
   CHECK(n1.getLink(0)->getId() == 20);
   CHECK_THROWS(n1.getLink(1));
 };
-TEST_CASE("Connect source and destination nodes"){
+TEST_CASE("Connect source and destination nodes") {
   int n1_pos;
   int n2_pos;
-  Link* l1_pos;
+  Link *l1_pos;
   Network net1 = Network();
   net1.addNode(Node(0));
-  net1.addNode(Node(2));
-  net1.addLink(Link(1));
-  n1_pos = net1.getNode(0).getId(); 
-  n2_pos = net1.getNode(2).getId();
-  *l1_pos = net1.getLink(1)->getId();
-  net1.connect(n1_pos, l1_pos,n2_pos);
+  net1.addNode(Node(1));
+  net1.addLink(Link(0));
+  n1_pos = net1.getNode(0).getId();
+  n2_pos = net1.getNode(1).getId();
+  l1_pos = net1.getLink(0);
+  net1.connect(n1_pos, l1_pos, n2_pos);
 };
 /*
 TEST_CASE("Verify if two nodes are connected")
 
 
 */
-
