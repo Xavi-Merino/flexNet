@@ -13,7 +13,8 @@
 class Network {
  public:
   /**
-   * @brief Constructs a new Network object
+   * @brief Constructs a new Network object. When calling Network() creates an
+   * empty network ready to be filled with nodes and links.
    *
    */
   Network(void);
@@ -23,12 +24,16 @@ class Network {
    */
   ~Network();
   /**
-   * @brief Constructs Network object from JSON file. From a JSON file, the constructor builds a network based on 
-   * one array of nodes and one array of links. The node array must contain a list of nodes ID's. The links array
-   * will contain the link id, the source node (end1), the destination node (end2), the length of the link and the 
+   * @brief Constructs Network object from JSON file. From a JSON file, the
+   constructor builds a network based on
+   * one array of nodes and one array of links. The node array must contain a
+   list of nodes ID's. The links array
+   * will contain the link id, the source node (end1), the destination node
+   (end2), the length of the link and the
    * number of slots.
-   * 
-   * In the example above, the node 0 goes to the nodes 1 and 2. The node 1 goes to the node 2. They are connected by
+   *
+   * In the example above, the node 0 goes to the nodes 1 and 2. The node 1 goes
+   to the node 2. They are connected by
    * unidirectional links with 100 slots and their own lengths.
    *
    * @param filename name of the JSON file
@@ -49,7 +54,7 @@ class Network {
             {
                 "id": 3
             },
-        ], 
+        ],
          "links": [
              {
             "id": 0,
@@ -111,7 +116,7 @@ class Network {
    * @param dst the destination node of the connection
    */
   void connect(int src, Link* ptr, int dst);
-    /** 
+  /**
    * @brief Checks if two nodes are directly connected.
    *
    * @param id1 the source node of the connection
