@@ -3,6 +3,11 @@
 // to use json remember to call nlohmann::json for example
 #include "json.hpp"
 
+class LinkWeight {
+  int node;
+  Link* link;
+};
+
 /**
  * @brief Class with the network information.
  *
@@ -93,4 +98,7 @@ class Network {
   std::vector<Link*> links_out;
   std::vector<int> nodes_in;
   std::vector<int> nodes_out;
+
+  std::vector<LinkWeight> list_in;
+  std::vector<LinkWeight> list_out;
 };
