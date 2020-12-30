@@ -1,41 +1,41 @@
 #include "network.hpp"
-#include <fstream>
+
 #include <algorithm>
+#include <fstream>
 
 Network::Network(void) {}
 
 Network::Network(std::string filename) {
-    // open JSON file
-    std::ifstream file(filename);
-    nlohmann::json NSFnet;
-    file >> NSFnet;
+  // open JSON file
+  std::ifstream file(filename);
+  nlohmann::json NSFnet;
+  file >> NSFnet;
 
-    // allocate space based on the number of nodes
-    int cantNodos = NSFnet["nodes"].size();
-    this->nodes.resize(cantNodos);
+  // allocate space based on the number of nodes
+  int cantNodos = NSFnet["nodes"].size();
+  this->nodes.resize(cantNodos);
 
-    // allocate space based on the number of links
-    int cantLinks = NSFnet["links"].size();
-    this->links.resize(cantLinks);
-    this->nodes_in.resize(cantLinks);
-    this->nodes_out.resize(cantLinks);
- 
-    for (int i = 0; i < cantNodos; i++) {
-      int id;
-      id = NSFnet["nodes"][i]["id"];
-      Node node = Node(id);
-      this->addNode(node);
-    }
+  // allocate space based on the number of links
+  int cantLinks = NSFnet["links"].size();
+  this->links.resize(cantLinks);
+  this->nodes_in.resize(cantLinks);
+  this->nodes_out.resize(cantLinks);
 
-    for (int i = 0; i < cantLinks; i++) {
-      int id;
-      id = NSFnet["links"][i]["id"];
-      float lenght;
-      lenght = NSFnet["links"][i]["lenght"];
-      Link link = Link(id, lenght);
-      this->addLink(link);
-    }
+  for (int i = 0; i < cantNodos; i++) {
+    int id;
+    id = NSFnet["nodes"][i]["id"];
+    Node node = Node(id);
+    this->addNode(node);
+  }
 
+  for (int i = 0; i < cantLinks; i++) {
+    int id;
+    id = NSFnet["links"][i]["id"];
+    float lenght;
+    lenght = NSFnet["links"][i]["lenght"];
+    Link link = Link(id, lenght);
+    this->addLink(link);
+  }
 }
 
 Network::~Network() {}
