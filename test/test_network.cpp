@@ -37,8 +37,12 @@ TEST_CASE("Connect source and destination nodes") {
   l1_pos = net1.getLink(0);
   net1.connect(n1_pos, l1_pos, n2_pos);
 };
-/*
-TEST_CASE("Verify if two nodes are connected")
 
-
-*/
+TEST_CASE("Verify if two nodes are connected") {
+  int node1_id;
+  int node2_id;
+  Network n1 = Network("../networks/5nodeBus.json");
+  node1_id = n1.getNode(0).getId();
+  node2_id = n1.getNode(2).getId();
+  CHECK(n1.isConnected(node1_id, node2_id) == true);
+}
