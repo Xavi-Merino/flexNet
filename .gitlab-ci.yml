@@ -1,9 +1,17 @@
 image: "ubuntu:bionic"
 
+stages:
+  - build_library
+  - build_tests
+  - test
+  - documentation
+  - publish
+
 before_script:
   - apt-get update
 
 building:
+  stage: build_library
   script:
     - apt-get -y install build-essential
     - version=3.11
@@ -21,10 +29,39 @@ building:
     - rm -r temp
     - mkdir build && cd build
     - cmake ..
-    - make
+    - make fnsim
     - cd ..
 
-test:
+building_node_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_node
+  - cd ..
+
+building_link_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_link
+  - cd ..
+
+building_network_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_network
+  - cd ..
+
+testing:
+  stage: test
+  script:
+  - cd build
+  - make test
+  - cd ..
+
+make_documentation:
+  stage: documentation
   script:
   - apt-get -y install graphviz
   - apt-get -y install doxygen
@@ -33,10 +70,8 @@ test:
   - master
   
 pages:
+  stage: publish
   script:
-  - apt-get -y install graphviz
-  - apt-get -y install doxygen
-  - doxygen Doxyfile
   - mv documentation/html/ public/
   artifacts:
     paths:

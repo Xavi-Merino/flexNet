@@ -1,3 +1,6 @@
+#ifndef __NETWORK_H__
+#define __NETWORK_H__
+
 #include "link.hpp"
 #include "node.hpp"
 // to use json remember to call nlohmann::json for example
@@ -132,3 +135,5 @@ class Network {
   std::vector<int> nodes_in;
   std::vector<int> nodes_out;
 };
+
+#endif
