@@ -17,7 +17,9 @@
 class Link {
  public:
   /**
-   * @brief Construct a new Link object
+   * @brief Construct a new Link object. When calling with no parameters the
+   * default link id is -1, the default link length is 100.0 and the default
+   * slots are 320.
    *
    */
   Link(void);

@@ -16,7 +16,8 @@
 class Network {
  public:
   /**
-   * @brief Constructs a new Network object
+   * @brief Constructs a new Network object. When calling Network() creates an
+   * empty network ready to be filled with nodes and links.
    *
    */
   Network(void);
