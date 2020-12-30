@@ -4,7 +4,6 @@ stages:
   - build_library
   - build_tests
   - test
-  - documentation
   - publish
 
 before_script:
@@ -33,7 +32,7 @@ building:
     - cd ..
   artifacts:
     paths:
-      - build/
+      - build/*
 
 building_node_test:
   stage: build_tests
@@ -43,7 +42,7 @@ building_node_test:
   - cd ..
   artifacts:
     paths:
-      - build/
+      - build/*
   dependencies:
     - building
 
@@ -55,7 +54,7 @@ building_link_test:
   - cd ..
   artifacts:
     paths:
-      - build/
+      - build/*
   dependencies:
     - building
 
@@ -67,7 +66,7 @@ building_network_test:
   - cd ..
   artifacts:
     paths:
-      - build/
+      - build/*
   dependencies:
     - building
 
@@ -97,19 +96,13 @@ testing_network:
   - cd ..
   dependencies:
     - building_network_test
-
-make_documentation:
-  stage: documentation
-  script:
-  - apt-get -y install graphviz
-  - apt-get -y install doxygen
-  - doxygen Doxyfile
-  except:
-  - master
   
 pages:
   stage: publish
   script:
+  - apt-get -y install graphviz
+  - apt-get -y install doxygen
+  - doxygen Doxyfile
   - mv documentation/html/ public/
   artifacts:
     paths:
