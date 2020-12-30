@@ -31,6 +31,9 @@ building:
     - cmake ..
     - make fnsim
     - cd ..
+  artifacts:
+    paths:
+      - build/
 
 building_node_test:
   stage: build_tests
@@ -38,6 +41,11 @@ building_node_test:
   - cd build
   - make test_node
   - cd ..
+  artifacts:
+    paths:
+      - build/
+  dependencies:
+    - building
 
 building_link_test:
   stage: build_tests
@@ -45,6 +53,11 @@ building_link_test:
   - cd build
   - make test_link
   - cd ..
+  artifacts:
+    paths:
+      - build/
+  dependencies:
+    - building
 
 building_network_test:
   stage: build_tests
@@ -52,13 +65,38 @@ building_network_test:
   - cd build
   - make test_network
   - cd ..
+  artifacts:
+    paths:
+      - build/
+  dependencies:
+    - building
 
-testing:
+testing_node:
   stage: test
   script:
   - cd build
-  - make test
+  - ./test_node
   - cd ..
+  dependencies:
+    - building_node_test
+
+testing_link:
+  stage: test
+  script:
+  - cd build
+  - ./test_link
+  - cd ..
+  dependencies:
+    - building_link_test
+
+testing_network:
+  stage: test
+  script:
+  - cd build
+  - ./test_network
+  - cd ..
+  dependencies:
+    - building_network_test
 
 make_documentation:
   stage: documentation
