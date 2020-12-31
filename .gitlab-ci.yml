@@ -128,6 +128,9 @@ pages:
   - doxygen Doxyfile
   - mv documentation/html/ public/
   - cd build
+  - ./test_node
+  - ./test_link
+  - ./test_network
   - gcovr -r .  --filter '\.\./src/.*\.cpp' --html --html-details -o ../public/coverage-details.html
   - cd ..
   artifacts:
