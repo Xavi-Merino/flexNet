@@ -103,7 +103,7 @@ testing_network:
   - cd build
   - ./test_network
   - ./test_network -r junit > report_network.xml
-  - g++ -o test_network -fprofile-arcs -ftest-coverage ../src/network.cpp ../src/node.cpp ../src/link.cpp
+  - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
   - ./test_network
   - gcovr --filter src/network.cpp --filter '\.\./src/network.cpp'
   - gcovr --filter src/network.cpp --filter '\.\./src/network.cpp' --xml-pretty > cov_network.xml 
