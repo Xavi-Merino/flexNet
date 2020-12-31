@@ -61,8 +61,8 @@ testing_node:
   - ./test_node -r junit > report_node.xml
   - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
   - ./test_node
-  - gcovr --filter src/node.cpp --filter '\.\./src/node.cpp'
-  - gcovr --filter src/node.cpp --filter '\.\./src/node.cpp' --xml-pretty > cov_node.xml 
+  - gcovr  --filter '\.\./src/node.cpp'
+  - gcovr  --filter '\.\./src/node.cpp' --xml-pretty > cov_node.xml 
   - cd ..
   dependencies:
     - building_node_test
@@ -71,6 +71,7 @@ testing_node:
     paths:
       - build/report_node.xml
       - build/cov_node.xml
+      - build/test_node*
     reports:
       junit: build/report_node.xml
       cobertura: build/cov_node.xml
@@ -83,8 +84,8 @@ testing_link:
   - ./test_link -r junit > report_link.xml
   - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
   - ./test_link
-  - gcovr --filter src/link.cpp --filter '\.\./src/link.cpp'
-  - gcovr --filter src/link.cpp --filter '\.\./src/link.cpp' --xml-pretty > cov_link.xml 
+  - gcovr  --filter '\.\./src/link.cpp'
+  - gcovr  --filter '\.\./src/link.cpp' --xml-pretty > cov_link.xml 
   - cd ..
   dependencies:
     - building_link_test
@@ -93,6 +94,7 @@ testing_link:
     paths:
       - build/report_link.xml
       - build/cov_link.xml
+      - build/test_link*
     reports:
       junit: build/report_link.xml
       cobertura: build/cov_link.xml
@@ -105,8 +107,8 @@ testing_network:
   - ./test_network -r junit > report_network.xml
   - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
   - ./test_network
-  - gcovr --filter src/network.cpp --filter '\.\./src/network.cpp'
-  - gcovr --filter src/network.cpp --filter '\.\./src/network.cpp' --xml-pretty > cov_network.xml 
+  - gcovr --filter '\.\./src/network.cpp'
+  - gcovr --filter '\.\./src/network.cpp' --xml-pretty > cov_network.xml 
   - cd ..
   dependencies:
     - building_network_test
@@ -115,6 +117,7 @@ testing_network:
     paths:
       - build/report_network.xml
       - build/cov_network.xml
+      - build/test_network*
     reports:
       junit: build/report_network.xml
       cobertura: build/cov_network.xml
@@ -124,6 +127,9 @@ pages:
   script:
   - doxygen Doxyfile
   - mv documentation/html/ public/
+  - cd build
+  - gcovr -r .  --filter '\.\./src/.*\.cpp' --html --html-details -o ../public/coverage-details.html
+  - cd ..
   artifacts:
     paths:
     - public
