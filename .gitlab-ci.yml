@@ -54,7 +54,7 @@ building_network_test:
     - building
 
 testing_node:
-  needs: building_node_test
+  needs: ["building_node_test"]
   stage: test
   script:
   - cd build
@@ -78,7 +78,7 @@ testing_node:
       cobertura: build/cov_node.xml
 
 testing_link:
-  needs: building_link_test
+  needs: ["building_link_test"]
   stage: test
   script:
   - cd build
@@ -102,7 +102,7 @@ testing_link:
       cobertura: build/cov_link.xml
 
 testing_network:
-  needs: building_network_test
+  needs: ["building_network_test"]
   stage: test
   script:
   - cd build
