@@ -131,14 +131,19 @@ pages:
   - doxygen Doxyfile
   - mv documentation/html/ public/
   - cd build
+  - lcov --capture --initial  --directory . --output-file base.info
   - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
   - ./test_node
+  - lcov  --capture  --directory . --output-file test_node.info
   - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
   - ./test_link
+  - lcov  --capture  --directory . --output-file test_link.info
   - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
   - ./test_network
-  - gcovr -r .  --filter '\.\./src/.*\.cpp'
-  - gcovr -r .  --filter '\.\./src/.*\.cpp' --html --html-details -o ../public/coverage-details.html
+  - lcov  --capture  --directory . --output-file test_network.info
+  - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --output-file total.info
+  - mkdir ../public/coverage-details
+  - genhtml --prefix .  --ignore-errors source total.info --legend --title "commit SHA1" --output-directory=../public/coverage-details
   - cd ..
   artifacts:
     paths:
