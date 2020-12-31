@@ -54,6 +54,7 @@ building_network_test:
     - building
 
 testing_node:
+  needs: building_node_test
   stage: test
   script:
   - cd build
@@ -77,6 +78,7 @@ testing_node:
       cobertura: build/cov_node.xml
 
 testing_link:
+  needs: building_link_test
   stage: test
   script:
   - cd build
@@ -100,6 +102,7 @@ testing_link:
       cobertura: build/cov_link.xml
 
 testing_network:
+  needs: building_network_test
   stage: test
   script:
   - cd build
@@ -128,8 +131,11 @@ pages:
   - doxygen Doxyfile
   - mv documentation/html/ public/
   - cd build
+  - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
   - ./test_node
+  - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
   - ./test_link
+  - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
   - ./test_network
   - gcovr -r .  --filter '\.\./src/.*\.cpp' --html --html-details -o ../public/coverage-details.html
   - cd ..
