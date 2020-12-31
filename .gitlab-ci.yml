@@ -137,6 +137,7 @@ pages:
   - ./test_link
   - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
   - ./test_network
+  - gcovr -r .  --filter '\.\./src/.*\.cpp'
   - gcovr -r .  --filter '\.\./src/.*\.cpp' --html --html-details -o ../public/coverage-details.html
   - cd ..
   artifacts:
