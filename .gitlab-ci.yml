@@ -1,36 +1,21 @@
-image: "ubuntu:bionic"
+image: "daniloborquez/ubuntu:dborquez-fnsim"
 
 stages:
   - build_library
   - build_tests
   - test
-  - documentation
   - publish
-
-before_script:
-  - apt-get update
 
 building:
   stage: build_library
   script:
-    - apt-get -y install build-essential
-    - version=3.11
-    - build=4
-    - mkdir temp
-    - cd temp
-    - apt-get -y install wget
-    - wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz
-    - tar -xzvf cmake-$version.$build.tar.gz
-    - cd cmake-$version.$build/
-    - ./bootstrap
-    - make -j$(nproc)
-    - make install
-    - cd ../..
-    - rm -r temp
     - mkdir build && cd build
     - cmake ..
     - make fnsim
     - cd ..
+  artifacts:
+    paths:
+      - build/*
 
 building_node_test:
   stage: build_tests
@@ -38,6 +23,11 @@ building_node_test:
   - cd build
   - make test_node
   - cd ..
+  artifacts:
+    paths:
+      - build/*
+  dependencies:
+    - building
 
 building_link_test:
   stage: build_tests
@@ -45,6 +35,11 @@ building_link_test:
   - cd build
   - make test_link
   - cd ..
+  artifacts:
+    paths:
+      - build/*
+  dependencies:
+    - building
 
 building_network_test:
   stage: build_tests
@@ -52,27 +47,89 @@ building_network_test:
   - cd build
   - make test_network
   - cd ..
+  artifacts:
+    paths:
+      - build/*
+  dependencies:
+    - building
 
-testing:
+testing_node:
   stage: test
   script:
   - cd build
-  - make test
+  - ./test_node
+  - ./test_node -r junit > report_node.xml
+  - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
+  - ./test_node
+  - gcovr  --filter '\.\./src/node.cpp'
+  - gcovr  --filter '\.\./src/node.cpp' --xml-pretty > cov_node.xml 
   - cd ..
+  dependencies:
+    - building_node_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_node.xml
+      - build/cov_node.xml
+      - build/test_node*
+    reports:
+      junit: build/report_node.xml
+      cobertura: build/cov_node.xml
 
-make_documentation:
-  stage: documentation
+testing_link:
+  stage: test
   script:
-  - apt-get -y install graphviz
-  - apt-get -y install doxygen
-  - doxygen Doxyfile
-  except:
-  - master
+  - cd build
+  - ./test_link
+  - ./test_link -r junit > report_link.xml
+  - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
+  - ./test_link
+  - gcovr  --filter '\.\./src/link.cpp'
+  - gcovr  --filter '\.\./src/link.cpp' --xml-pretty > cov_link.xml 
+  - cd ..
+  dependencies:
+    - building_link_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_link.xml
+      - build/cov_link.xml
+      - build/test_link*
+    reports:
+      junit: build/report_link.xml
+      cobertura: build/cov_link.xml
+
+testing_network:
+  stage: test
+  script:
+  - cd build
+  - ./test_network
+  - ./test_network -r junit > report_network.xml
+  - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
+  - ./test_network
+  - gcovr --filter '\.\./src/network.cpp'
+  - gcovr --filter '\.\./src/network.cpp' --xml-pretty > cov_network.xml 
+  - cd ..
+  dependencies:
+    - building_network_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_network.xml
+      - build/cov_network.xml
+      - build/test_network*
+    reports:
+      junit: build/report_network.xml
+      cobertura: build/cov_network.xml
   
 pages:
   stage: publish
   script:
+  - doxygen Doxyfile
   - mv documentation/html/ public/
+  - cd build
+  - gcovr -r .  --filter '\.\./src/.*\.cpp' --html --html-details -o ../public/coverage-details.html
+  - cd ..
   artifacts:
     paths:
     - public
