@@ -63,6 +63,9 @@ testing_node:
   dependencies:
     - building_node_test
   artifacts:
+    when: always
+    paths:
+      - report_node.xml
     reports:
       junit: report_node.xml
 
@@ -76,6 +79,9 @@ testing_link:
   dependencies:
     - building_link_test
   artifacts:
+    when: always
+    paths:
+      - report_link.xml
     reports:
       junit: report_link.xml
 
@@ -89,6 +95,9 @@ testing_network:
   dependencies:
     - building_network_test
   artifacts:
+    when: always
+    paths:
+      - report_network.xml
     reports:
       junit: report_network.xml
   
