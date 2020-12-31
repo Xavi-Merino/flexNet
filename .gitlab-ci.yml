@@ -58,27 +58,39 @@ testing_node:
   script:
   - cd build
   - ./test_node
+  - ./test_node -r junit > report_node.xml
   - cd ..
   dependencies:
     - building_node_test
+  artifacts:
+    reports:
+      junit: report_node.xml
 
 testing_link:
   stage: test
   script:
   - cd build
   - ./test_link
+  - ./test_link -r junit > report_link.xml
   - cd ..
   dependencies:
     - building_link_test
+  artifacts:
+    reports:
+      junit: report_link.xml
 
 testing_network:
   stage: test
   script:
   - cd build
   - ./test_network
+  - ./test_network -r junit > report_network.xml
   - cd ..
   dependencies:
     - building_network_test
+  artifacts:
+    reports:
+      junit: report_network.xml
   
 pages:
   stage: publish
