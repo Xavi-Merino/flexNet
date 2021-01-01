@@ -90,6 +90,8 @@ class Network {
    *
    * @param node  the new Node of this Node object
    */
+  Network(const Network &net);
+
   void addNode(Node node);
   /**
    * @brief Adds the Link to the Network object
@@ -118,14 +120,16 @@ class Network {
    * @param ptr the link pointer of the connection
    * @param dst the destination node of the connection
    */
-  void connect(int src, Link* ptr, int dst);
+  void connect(int src, int link, int dst);
   /**
    * @brief Checks if two nodes are directly connected.
    *
    * @param id1 the source node of the connection
    * @param id2 the link pointer of the connection
    */
-  bool isConnected(int id1, int id2);
+  bool isConnected(int src, int dst);
+  void useSlot(int linkPos, int slotPos);
+  void useSlot(int linkPos, int slotPos1, int slotPos2);
 
  private:
   std::vector<Node> nodes;

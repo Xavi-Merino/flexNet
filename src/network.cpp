@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <fstream>
+#include <unordered_map>
 
 Network::Network(void) {}
 
@@ -38,8 +39,18 @@ Network::Network(std::string filename) {
   }
 }
 
+Network::Network(const Network &net) {
+  this->nodes = net.nodes;
+  this->links = net.links;
+  this->links_in = net.links_in;
+  this->links_out = net.links_out;
+  this->nodes_in = net.nodes_in;
+  this->nodes_out = net.nodes_out;
+}
+
 Network::~Network() {}
 
+// May be useless
 Node Network::getNode(int pos) {
   if (pos < 0 || pos >= this->nodes.size())
     throw std::runtime_error("Cannot get Node from a position out of bounds.");
@@ -48,7 +59,8 @@ Node Network::getNode(int pos) {
 }
 // Returns the Node at a "pos" index inside Nodes vector.
 
-Link* Network::getLink(int pos) {
+// May be useless
+Link *Network::getLink(int pos) {
   if (pos < 0 || pos >= this->links.size())
     throw std::runtime_error("Cannot get Link from a position out of bounds.");
 
@@ -66,69 +78,47 @@ void Network::addNode(Node node) {
 void Network::addLink(Link link) { this->links.push_back(link); }
 // Add a Link to Links vector.
 
-void Network::connect(int src, Link* ptr, int dst)
-// Using Nodes Ids and Link from Nodes/Links vectors
+void Network::connect(int src, int link,
+                      int dst)  // Using Ids and Link from Nodes/Links vectors
 {
-  for (int i = 0; i < this->nodes.size(); i++)
-  // Traverse nodes array searching for matching Id (for both src and dst)
-  {
-    if (this->nodes[i].getId() == src) {
-      this->links_out.insert(this->links_out.begin() + this->nodes_out.at(i),
-                             ptr);
-      std::for_each(this->nodes_out.begin() + i, this->nodes_out.end(),
-                    [](int& n) { n += 1; });
-    }
-    // If finds matching Id for src:
-    //-inserts Link address into Links_Outvector
-    //-increases numbers inside Nodes_Out (offset positions for Links_Out)
+  this->links_out.insert(this->links_out.begin() + this->nodes_out.at(src),
+                         &this->links.at(link));
+  std::for_each(this->nodes_out.begin() + src, this->nodes_out.end(),
+                [](int &n) { n += 1; });
 
-    if (this->nodes[i].getId() == dst) {
-      this->links_in.insert(this->links_in.begin() + this->nodes_in.at(i), ptr);
-      std::for_each(this->nodes_in.begin() + i, this->nodes_in.end(),
-                    [](int& n) { n += 1; });
-    }
-    // If finds matching Id for dst:
-    //-inserts Link address into Links_In vector
-    //-increases numbers inside Nodes_In (offset positions for Links_In)
-  }
+  this->links_in.insert(this->links_in.begin() + this->nodes_in.at(dst),
+                        &this->links.at(link));
+  std::for_each(this->nodes_in.begin() + dst, this->nodes_in.end(),
+                [](int &n) { n += 1; });
 }
 // Connects two Nodes through one Link (order is important: src != dst):
 //
 //       (Source Node) ---Link---> (Destination Node)
 
-bool Network::isConnected(int id1, int id2) {
-  // Check if two Nodes are directly connected.
-  std::vector<int> numbers;  // Int vector to add all links' Ids
+bool Network::isConnected(int src, int dst) {
+  std::unordered_map<int, int> hash;
 
-  for (int i = 0; i < this->nodes.size(); i++) {  // Traverse all nodes
-    if (this->nodes[i].getId() ==
-        id1) {  // If finds matching Id with node Id 1...
-      for (int j = nodes_out[i - 1]; j < nodes_out[i]; j++)
-        numbers.push_back(
-            links_out[j]->getId());  //...Add all it's outcoming links Ids
+  for (int j = nodes_out[src - 1]; j < nodes_out[src]; j++) {
+    hash[links_out[j]->getId()]++;
 
-      for (int j = nodes_in[i - 1]; j < nodes_in[i]; j++)
-        numbers.push_back(
-            links_in[j]->getId());  //...Add all it's incoming links Ids
-    }
-
-    if (this->nodes[i].getId() ==
-        id2) {  // If finds matching Id with node Id 2...
-      for (int j = nodes_out[i - 1]; j < nodes_out[i]; j++)
-        numbers.push_back(
-            links_out[j]->getId());  //...Add all it's outcoming links Ids
-
-      for (int j = nodes_in[i - 1]; j < nodes_in[i]; j++)
-        numbers.push_back(
-            links_in[j]->getId());  //...Add all it's incoming links Ids
-    }
+    if (hash[links_out[j]->getId()] == 2) return true;
   }
 
-  std::sort(numbers.begin(), numbers.end());  // Sort links Ids
-  for (int i = 0; i < numbers.size() - 1; i++) {
-    if (numbers[i] == numbers[i + 1]) {  // If there are two equal Ids...
-      return true;                       //...both nodes are connected.
-    }
+  for (int j = nodes_in[dst - 1]; j < nodes_in[dst]; j++) {
+    hash[links_in[j]->getId()]++;
+
+    if (hash[links_in[j]->getId()] == 2) return true;
   }
-  return false;  // Otherwise false.
+
+  return false;
+}
+
+void Network::useSlot(int linkPos, int slotPos) {
+  this->links[linkPos].setSlot(slotPos, true);
+}
+
+void Network::useSlot(int linkPos, int slotPos1, int slotPos2) {
+  // TO DO: Check if slotPos1 < slotPos2
+  for (int i = slotPos1; i < slotPos2; i++)
+    this->links[linkPos].setSlot(i, true);
 }

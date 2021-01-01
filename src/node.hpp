@@ -1,8 +1,10 @@
 #ifndef __NODE_H__
 #define __NODE_H__
 
+#include <stdexcept>
 #include <string>
 
+extern int node_counter;
 /**
  * @brief Class with the node information.
  *
@@ -12,12 +14,7 @@
 class Node {
  public:
   /**
-<<<<<<< HEAD
-   * @brief Construct a new Node object. When calling with no parameters the
-   * default node id is -1 and the node label is an empty string ("")
-=======
    * @brief Construct a new Node object
->>>>>>> dfcd0ea50f92f78702e82823347fbc269db0c7b2
    *
    */
   Node(void);
