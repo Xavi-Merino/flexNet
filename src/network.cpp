@@ -118,7 +118,7 @@ void Network::useSlot(int linkPos, int slotPos) {
 }
 
 void Network::useSlot(int linkPos, int slotPos1, int slotPos2) {
-  // TO DO: Check if slotPos1 < slotPos2
+  // TODO: Check if slotPos1 < slotPos2
   for (int i = slotPos1; i < slotPos2; i++)
     this->links[linkPos].setSlot(i, true);
 }
