@@ -131,21 +131,19 @@ testing_network:
 pages:
   stage: deploy
   script:
+  - false || exit_code=$?
   - doxygen Doxyfile
   - mv documentation/html/ public/
   - cd build
   - lcov --capture --initial  --directory . --output-file base.info
   - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
   - ./test_node
-  - if [[ $? != 0 ]]; then echo "Test failed"; fi;
   - lcov  --capture  --directory . --output-file test_node.info
   - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
   - ./test_link
-  - if [[ $? != 0 ]]; then echo "Test failed"; fi;
   - lcov  --capture  --directory . --output-file test_link.info
   - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
   - ./test_network
-  - if [[ $? != 0 ]]; then echo "Test failed"; fi;
   - lcov  --capture  --directory . --output-file test_network.info
   - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --output-file total.info
   - lcov --remove total.info '*/c++/*' '*test*' '*.hpp' -o final.info
