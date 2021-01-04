@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.10)
 project(flexible-networks-simulator)
 
 set(CMAKE_CXX_STANDARD 11)
-enable_testing()
 FILE(GLOB fns "src/*.cpp")
 add_library(fnsim STATIC ${fns})
 
@@ -13,8 +12,7 @@ add_library(Catch INTERFACE)
 target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
 
 # Make test executable
-add_custom_target(ALL_TESTS ALL COMMAND ctest --output-on-failure)
-include(CTest)
+add_custom_target(ALL_TESTS ALL)
 include(Catch)
 file( GLOB TEST_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp )
 foreach( testsourcefile ${TEST_SOURCES} )
