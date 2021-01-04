@@ -137,13 +137,13 @@ pages:
   - cd build
   - lcov --capture --initial  --directory . --output-file base.info
   - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
-  - ./test_node
+  - ./test_node || exit_code=$?
   - lcov  --capture  --directory . --output-file test_node.info
   - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
-  - ./test_link
+  - ./test_link || exit_code=$?
   - lcov  --capture  --directory . --output-file test_link.info
   - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
-  - ./test_network
+  - ./test_network || exit_code=$?
   - lcov  --capture  --directory . --output-file test_network.info
   - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --output-file total.info
   - lcov --remove total.info '*/c++/*' '*test*' '*.hpp' -o final.info
