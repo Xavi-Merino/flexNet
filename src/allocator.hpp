@@ -10,7 +10,7 @@ class Allocator {
 
   ~Allocator();
 
-  int exec(int src, int dst, Connection con);
+  virtual int exec(int src, int dst, Connection &con);
 
  protected:
   Network *network;
