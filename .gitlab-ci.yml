@@ -54,12 +54,14 @@ building_network_test:
     - building
 
 testing_node:
+  allow_failure: true
   needs: ["building_node_test"]
   stage: test
   script:
   - cd build
   - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
   - ./test_node -r junit > report_node.xml
+  after_script:
   - gcovr  --filter '\.\./src/node.cpp'
   - gcovr  --filter '\.\./src/node.cpp' --xml-pretty > cov_node.xml 
   - cd ..
@@ -76,12 +78,14 @@ testing_node:
       cobertura: build/cov_node.xml
 
 testing_link:
+  allow_failure: true
   needs: ["building_link_test"]
   stage: test
   script:
   - cd build
   - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
   - ./test_link -r junit > report_link.xml
+  after_script:
   - gcovr  --filter '\.\./src/link.cpp'
   - gcovr  --filter '\.\./src/link.cpp' --xml-pretty > cov_link.xml 
   - cd ..
@@ -98,12 +102,14 @@ testing_link:
       cobertura: build/cov_link.xml
 
 testing_network:
+  allow_failure: true
   needs: ["building_network_test"]
   stage: test
   script:
   - cd build
   - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
   - ./test_network -r junit > report_network.xml
+  after_script:
   - gcovr --filter '\.\./src/network.cpp'
   - gcovr --filter '\.\./src/network.cpp' --xml-pretty > cov_network.xml 
   - cd ..
