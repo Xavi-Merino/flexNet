@@ -8,7 +8,7 @@
 
 TEST_CASE("Constructor (Network)") { CHECK_NOTHROW(Network()); }
 
-TEST_CASE("Constructor (Network)") {
+TEST_CASE("Constructor (Network) with JSON file") {
   CHECK_NOTHROW(Network("../networks/NSFNet.json"));
 }
 
@@ -30,12 +30,12 @@ TEST_CASE("Connect source and destination nodes (Network)") {
   int n2_pos;
   int l1_pos;
   Network net1 = Network();
-  net1.addNode(Node(0));
-  net1.addNode(Node(1));
-  net1.addLink(Link(0));
-  n1_pos = net1.getNode(0).getId();
-  n2_pos = net1.getNode(1).getId();
-  l1_pos = net1.getLink(0)->getId();
+  net1.addNode(Node(2));
+  net1.addNode(Node(3));
+  net1.addLink(Link(2));
+  n1_pos = net1.getNode(2).getId();
+  n2_pos = net1.getNode(3).getId();
+  l1_pos = net1.getLink(2)->getId();
   net1.connect(n1_pos, l1_pos, n2_pos);
 };
 
@@ -51,22 +51,22 @@ TEST_CASE("Verify if two nodes are connected (Network)") {
   Link *l3_id;
   Link *l4_id; */
   Network net1 = Network();
-  net1.addNode(Node(0));
-  net1.addNode(Node(1));
+  net1.addNode(Node(4));
+  net1.addNode(Node(5));
   /*net1.addNode(Node(2));
   net1.addNode(Node(3));
   net1.addNode(Node(4));*/
-  net1.addLink(Link(0));
+  net1.addLink(Link(3));
   /*net1.addLink(Link(1));
   net1.addLink(Link(2));
   net1.addLink(Link(3));
   net1.addLink(Link(4)); */
-  n0_id = net1.getNode(0).getId();
-  n1_id = net1.getNode(1).getId();
+  n0_id = net1.getNode(4).getId();
+  n1_id = net1.getNode(5).getId();
   /*n2_id = net1.getNode(2).getId();
   n3_id = net1.getNode(3).getId();
   n4_id = net1.getNode(4).getId();*/
-  l0_id = net1.getLink(0)->getId();
+  l0_id = net1.getLink(3)->getId();
   /*l1_id = net1.getLink(1);
   l2_id = net1.getLink(2);
   l3_id = net1.getLink(3);
