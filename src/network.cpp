@@ -76,13 +76,21 @@ void Network::addNode(Node node) {
     throw std::runtime_error(
         "Cannot add a Node to this network with Id mismatching node counter.");
   }
+  Network::node_counter++;
   this->nodes.push_back(node);
   this->nodes_in.push_back(0);
   this->nodes_out.push_back(0);
 }
 // Add a Node to Nodes vector, increases Nodes_In/Out size.
 
-void Network::addLink(Link link) { this->links.push_back(link); }
+void Network::addLink(Link link) {
+  if (link.getId() != Network::link_counter) {
+    throw std::runtime_error(
+        "Cannot add a Link to this network with Id mismatching link counter.");
+  }
+  Network::link_counter++;
+  this->links.push_back(link);
+}
 // Add a Link to Links vector.
 
 void Network::connect(int src, int link,
