@@ -74,11 +74,11 @@ Node Network::getNode(int pos) {
 // Returns the Node at a "pos" index inside Nodes vector.
 
 // May be useless
-Link *Network::getLink(int pos) {
+Link Network::getLink(int pos) {
   if (pos < 0 || pos >= this->links.size())
     throw std::runtime_error("Cannot get Link from a position out of bounds.");
 
-  return &(this->links.at(pos));
+  return this->links.at(pos);
 }
 // Returns the Link pointer at a "pos" index inside Links vector.
 

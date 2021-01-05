@@ -112,7 +112,7 @@ class Network {
    * @param pos the position of the Link inside Links vector
    * @return Link the link at the required position
    */
-  Link* getLink(int pos);
+  Link getLink(int pos);
   /**
    * @brief Connects two nodes through a determined link pointer.
    *
