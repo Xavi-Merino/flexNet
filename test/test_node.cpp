@@ -25,6 +25,8 @@ TEST_CASE("Setting ID (Node)") {
   Node n2 = Node();
   n2.setId(4);
   CHECK(n2.getId() == 4);
+  Node n3 = Node(10);
+  CHECK_THROWS(n3.setId(5));
 }
 
 TEST_CASE("Setting label (Node)") {
