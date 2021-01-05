@@ -14,6 +14,7 @@ TEST_CASE("Constructor (Network) with JSON file") {
 
 TEST_CASE("Getting Node position (Network)") {
   Network n1 = Network();
+  CHECK_THROWS(n1.addNode(Node(10)));
   n1.addNode(Node(0));
   CHECK(n1.getNode(0).getId() == 0);
   CHECK_THROWS(n1.getNode(-1));
@@ -22,6 +23,7 @@ TEST_CASE("Getting Node position (Network)") {
 
 TEST_CASE("Getting Link position (Network)") {
   Network n1 = Network();
+  CHECK_THROWS(n1.addLink(Link(10)));
   n1.addLink(Link(0));
   CHECK(n1.getLink(0).getId() == 0);
   CHECK_THROWS(n1.getLink(-1));
@@ -51,6 +53,7 @@ TEST_CASE("Connect source and destination nodes (Network)") {
   l1_pos = net1.getLink(0).getId();
   net1.connect(n1_pos, l1_pos, n2_pos);
   CHECK(net1.isConnected(n1_pos, n2_pos) == true);
+  CHECK_THROWS(net1.isConnected(n1_pos, n2_pos) == false);
 };
 
 TEST_CASE("JSON constructor") {
@@ -65,4 +68,17 @@ TEST_CASE("Use slot (Network)") {
   net1.useSlot(0, 100);
   CHECK(l1.getSlot(100) == false);
   CHECK(net1.getLink(0).getSlot(100) == true);
+}
+
+TEST_CASE("Use slot #2 (Network)") {
+  Network net2 = Network();
+  Link l2 = Link(0, 70.0, 200);
+  net2.addLink(l2);
+  CHECK(l2.getSlot(100) == false);
+  net2.useSlot(0, 100, 104);
+  CHECK(l2.getSlot(100) == false);
+  CHECK(net2.getLink(0).getSlot(100) == true);
+  CHECK(net2.getLink(0).getSlot(101) == true);
+  CHECK(net2.getLink(0).getSlot(102) == true);
+  CHECK(net2.getLink(0).getSlot(103) == true);
 }
