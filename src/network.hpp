@@ -128,7 +128,22 @@ class Network {
    * @param id2 the link pointer of the connection
    */
   bool isConnected(int src, int dst);
+  /**
+   * @brief  Activates a single slot to be used in the required link position.
+   *
+   * @param linkPos the position of the link vector
+   * @param slotPos the position of the slot vector
+   */
   void useSlot(int linkPos, int slotPos);
+  /**
+   * @brief  Activates an interval of slots to be used in the required link
+   * position.
+   *
+   * @param linkPos the position of the link vector
+   * @param slotPos1 the position of the slot vector at the beggining of the
+   * interval.
+   * @param slotPos2 the position of the slot vector at the end of the interval.
+   */
   void useSlot(int linkPos, int slotPos1, int slotPos2);
 
  private:
