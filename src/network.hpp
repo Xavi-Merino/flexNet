@@ -124,8 +124,8 @@ class Network {
   /**
    * @brief Checks if two nodes are directly connected.
    *
-   * @param id1 the source node of the connection
-   * @param id2 the link pointer of the connection
+   * @param src the source node of the connection
+   * @param dst the link pointer of the connection
    */
   bool isConnected(int src, int dst);
   /**
