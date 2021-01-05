@@ -5,7 +5,7 @@ int link_counter = 0;
 Link::Link(void) {
   this->id = -1;
   this->length = DEFAULT_LENGTH;
-  this->slots.resize(DEFAULT_SLOTS);
+  this->slots = std::vector<bool>(DEFAULT_SLOTS);
 }
 
 Link::Link(int id) {
@@ -13,7 +13,7 @@ Link::Link(int id) {
   link_counter++;
 
   this->length = DEFAULT_LENGTH;
-  this->slots.resize(DEFAULT_SLOTS);
+  this->slots = std::vector<bool>(DEFAULT_SLOTS);
 }
 
 Link::Link(int id, float length) {
@@ -24,7 +24,7 @@ Link::Link(int id, float length) {
     throw std::runtime_error("Cannot create a link with non-positive length.");
   this->length = length;
 
-  this->slots.resize(DEFAULT_SLOTS);
+  this->slots = std::vector<bool>(DEFAULT_SLOTS);
 }
 
 Link::Link(int id, float length, int slots) {
@@ -38,7 +38,7 @@ Link::Link(int id, float length, int slots) {
   if (slots < 1)
     throw std::runtime_error("Cannot create a link with " +
                              std::to_string(slots) + " slots.");
-  this->slots.resize(slots);
+  this->slots = std::vector<bool>(slots);
 }
 
 Link::~Link() {}
