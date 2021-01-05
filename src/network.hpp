@@ -138,9 +138,8 @@ class Network {
   std::vector<Link*> links_out;
   std::vector<int> nodes_in;
   std::vector<int> nodes_out;
-
-  static int link_counter;
-  static int node_counter;
+  int link_counter;
+  int node_counter;
 };
 
 #endif
