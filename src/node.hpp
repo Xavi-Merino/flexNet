@@ -4,7 +4,6 @@
 #include <stdexcept>
 #include <string>
 
-extern int node_counter;
 /**
  * @brief Class with the node information.
  *
