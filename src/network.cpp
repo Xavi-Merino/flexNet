@@ -4,9 +4,21 @@
 #include <fstream>
 #include <unordered_map>
 
-Network::Network(void) {}
+Network::Network(void) {
+  this->link_counter = 0;
+  this->node_counter = 0;
+
+  this->nodes = std::vector<Node>();
+  this->links = std::vector<Link>();
+  this->links_in = std::vector<Link *>();
+  this->links_out = std::vector<Link *>();
+  this->nodes_in = std::vector<int>();
+  this->nodes_out = std::vector<int>();
+}
 
 Network::Network(std::string filename) {
+  this->link_counter = 0;
+  this->node_counter = 0;
   // open JSON file
   std::ifstream file(filename);
   nlohmann::json NSFnet;
@@ -40,6 +52,8 @@ Network::Network(std::string filename) {
 }
 
 Network::Network(const Network &net) {
+  this->link_counter = 0;
+  this->node_counter = 0;
   this->nodes = net.nodes;
   this->links = net.links;
   this->links_in = net.links_in;
@@ -69,13 +83,25 @@ Link *Network::getLink(int pos) {
 // Returns the Link pointer at a "pos" index inside Links vector.
 
 void Network::addNode(Node node) {
+  if (node.getId() != this->node_counter) {
+    throw std::runtime_error(
+        "Cannot add a Node to this network with Id mismatching node counter.");
+  }
+  this->node_counter++;
   this->nodes.push_back(node);
   this->nodes_in.push_back(0);
   this->nodes_out.push_back(0);
 }
 // Add a Node to Nodes vector, increases Nodes_In/Out size.
 
-void Network::addLink(Link link) { this->links.push_back(link); }
+void Network::addLink(Link link) {
+  if (link.getId() != Network::link_counter) {
+    throw std::runtime_error(
+        "Cannot add a Link to this network with Id mismatching link counter.");
+  }
+  this->link_counter++;
+  this->links.push_back(link);
+}
 // Add a Link to Links vector.
 
 void Network::connect(int src, int link,

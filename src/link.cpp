@@ -9,9 +9,6 @@ Link::Link(void) {
 }
 
 Link::Link(int id) {
-  if (id != link_counter)
-    throw std::runtime_error(
-        "Cannot create a Link with Id mismatching link counter.");
   this->id = id;
   link_counter++;
 
@@ -20,9 +17,6 @@ Link::Link(int id) {
 }
 
 Link::Link(int id, float length) {
-  if (id != link_counter)
-    throw std::runtime_error(
-        "Cannot create a Link with Id mismatching link counter.");
   this->id = id;
   link_counter++;
 
@@ -34,9 +28,6 @@ Link::Link(int id, float length) {
 }
 
 Link::Link(int id, float length, int slots) {
-  if (id != link_counter)
-    throw std::runtime_error(
-        "Cannot create a Link with Id mismatching link counter.");
   this->id = id;
   link_counter++;
 
@@ -57,9 +48,6 @@ void Link::setId(int id) {
     throw std::runtime_error(
         "Cannot set Id to a Link with Id different than -1.");
 
-  if (id != link_counter)
-    throw std::runtime_error(
-        "Cannot set a Link with Id mismatching link counter.");
   this->id = id;
   link_counter++;
 }

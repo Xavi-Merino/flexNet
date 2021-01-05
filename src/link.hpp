@@ -1,8 +1,6 @@
 #ifndef __LINK_H__
 #define __LINK_H__
 
-extern int link_counter;
-
 #define DEFAULT_SLOTS 320
 #define DEFAULT_LENGTH 100.0
 
