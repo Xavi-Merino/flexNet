@@ -7,23 +7,24 @@
 TEST_CASE("Constructor (Node)") {
   CHECK_NOTHROW(Node());
   CHECK_NOTHROW(Node(0));
-  CHECK_NOTHROW(Node(0, "Test node 0"));
+  CHECK_NOTHROW(Node(1, "Test node 1"));
 }
 
 TEST_CASE("Getting ID (Node)") {
   Node n1 = Node();
-  Node n2 = Node(50);
+  Node n2 = Node(2);
 
   CHECK(n1.getId() == -1);
-  CHECK(n2.getId() == 50);
+  CHECK(n2.getId() == 2);
 }
 
 TEST_CASE("Setting ID (Node)") {
   Node n1 = Node();
-
-  n1.setId(45);
-
-  CHECK(n1.getId() == 45);
+  n1.setId(3);
+  CHECK(n1.getId() == 3);
+  Node n2 = Node();
+  n2.setId(4);
+  CHECK(n2.getId() == 4);
 }
 
 TEST_CASE("Setting label (Node)") {

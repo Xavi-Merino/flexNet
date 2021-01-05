@@ -4,7 +4,7 @@ stages:
   - build_library
   - build_tests
   - test
-  - publish
+  - deploy
 
 building:
   stage: build_library
@@ -54,14 +54,15 @@ building_network_test:
     - building
 
 testing_node:
+  allow_failure: true
   needs: ["building_node_test"]
   stage: test
   script:
   - cd build
-  - ./test_node
-  - ./test_node -r junit > report_node.xml
   - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
-  - ./test_node
+  - ./test_node -r junit > report_node.xml
+  after_script:
+  - cd build
   - gcovr  --filter '\.\./src/node.cpp'
   - gcovr  --filter '\.\./src/node.cpp' --xml-pretty > cov_node.xml 
   - cd ..
@@ -78,14 +79,15 @@ testing_node:
       cobertura: build/cov_node.xml
 
 testing_link:
+  allow_failure: true
   needs: ["building_link_test"]
   stage: test
   script:
   - cd build
-  - ./test_link
-  - ./test_link -r junit > report_link.xml
   - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
-  - ./test_link
+  - ./test_link -r junit > report_link.xml
+  after_script:
+  - cd build
   - gcovr  --filter '\.\./src/link.cpp'
   - gcovr  --filter '\.\./src/link.cpp' --xml-pretty > cov_link.xml 
   - cd ..
@@ -102,14 +104,15 @@ testing_link:
       cobertura: build/cov_link.xml
 
 testing_network:
+  allow_failure: true
   needs: ["building_network_test"]
   stage: test
   script:
   - cd build
-  - ./test_network
-  - ./test_network -r junit > report_network.xml
   - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
-  - ./test_network
+  - ./test_network -r junit > report_network.xml
+  after_script:
+  - cd build
   - gcovr --filter '\.\./src/network.cpp'
   - gcovr --filter '\.\./src/network.cpp' --xml-pretty > cov_network.xml 
   - cd ..
@@ -126,20 +129,20 @@ testing_network:
       cobertura: build/cov_network.xml
   
 pages:
-  stage: publish
+  stage: deploy
   script:
   - doxygen Doxyfile
   - mv documentation/html/ public/
   - cd build
   - lcov --capture --initial  --directory . --output-file base.info
   - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
-  - ./test_node
+  - ./test_node || exit_code=$?
   - lcov  --capture  --directory . --output-file test_node.info
   - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
-  - ./test_link
+  - ./test_link || exit_code=$?
   - lcov  --capture  --directory . --output-file test_link.info
   - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
-  - ./test_network
+  - ./test_network || exit_code=$?
   - lcov  --capture  --directory . --output-file test_network.info
   - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --output-file total.info
   - lcov --remove total.info '*/c++/*' '*test*' '*.hpp' -o final.info
