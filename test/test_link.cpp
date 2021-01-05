@@ -46,6 +46,8 @@ TEST_CASE("Setting ID (Link)") {
   Link l2 = Link();
   l2.setId(14);
   CHECK(l2.getId() == 14);
+  Link l3 = Link(10);
+  CHECK_THROWS(l3.setId(15));
 }
 
 TEST_CASE("Getting length (Link)") {
@@ -59,7 +61,7 @@ TEST_CASE("Setting length (Link)") {
   Link l1 = Link(17, 70.0, 200);
 
   l1.setLength(10.0);
-
+  CHECK_THROWS(l1.setLength(-10.0));
   CHECK(l1.getLength() == 10.0);
 }
 
@@ -90,6 +92,7 @@ TEST_CASE("Setting slot (Link)") {
 
   CHECK_THROWS(l1.setSlots(0));
   CHECK_THROWS(l1.setSlots(10));
+  CHECK_THROWS(l1.setSlots(-1));
 }
 
 TEST_CASE("getting slot (Link)") {
