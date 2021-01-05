@@ -4,6 +4,9 @@
 #include <fstream>
 #include <unordered_map>
 
+int Network::link_counter = 0;
+int Network::node_counter = 0;
+
 Network::Network(void) {}
 
 Network::Network(std::string filename) {
@@ -69,6 +72,10 @@ Link *Network::getLink(int pos) {
 // Returns the Link pointer at a "pos" index inside Links vector.
 
 void Network::addNode(Node node) {
+  if (node.getId() != Network::node_counter) {
+    throw std::runtime_error(
+        "Cannot add a Node to this network with Id mismatching node counter.");
+  }
   this->nodes.push_back(node);
   this->nodes_in.push_back(0);
   this->nodes_out.push_back(0);

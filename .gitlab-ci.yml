@@ -131,7 +131,6 @@ testing_network:
 pages:
   stage: deploy
   script:
-  - false || exit_code=$?
   - doxygen Doxyfile
   - mv documentation/html/ public/
   - cd build

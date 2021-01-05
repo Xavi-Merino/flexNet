@@ -90,7 +90,7 @@ class Network {
    *
    * @param node  the new Node of this Node object
    */
-  Network(const Network &net);
+  Network(const Network& net);
 
   void addNode(Node node);
   /**
@@ -138,6 +138,9 @@ class Network {
   std::vector<Link*> links_out;
   std::vector<int> nodes_in;
   std::vector<int> nodes_out;
+
+  static int link_counter;
+  static int node_counter;
 };
 
 #endif
