@@ -81,3 +81,33 @@ TEST_CASE("Use slot #2 (Network)") {
   CHECK(net2.getLink(0).getSlot(102) == true);
   CHECK(net2.getLink(0).getSlot(103) == true);
 }
+
+TEST_CASE("JSON of NSFNet") {
+  Network net = Network("../networks/NSFNet.json");
+  int numberOfNodes = 14;
+  int adjacencyMatrix[numberOfNodes][numberOfNodes] = {
+      {0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+      {1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+      {0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+      {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+      {1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0},
+      {0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
+      {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1},
+      {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1},
+      {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0}};
+
+  for (int i = 0; i < numberOfNodes; i++) {
+    for (int j = 0; j < numberOfNodes; j++) {
+      if (adjacencyMatrix[i][j] == 1) {
+        CHECK(net.isConnected(i, j) != -1);
+      } else {
+        CHECK(net.isConnected(i, j) == -1);
+      }
+    }
+  }
+}
