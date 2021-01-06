@@ -4,7 +4,8 @@
 #include <fstream>
 #include <unordered_map>
 
-Network::Network(void) {
+Network::Network(void)
+{
   this->link_counter = 0;
   this->node_counter = 0;
 
@@ -16,7 +17,8 @@ Network::Network(void) {
   this->nodes_out = std::vector<int>();
 }
 
-Network::Network(std::string filename) {
+Network::Network(std::string filename)
+{
   this->link_counter = 0;
   this->node_counter = 0;
   // open JSON file
@@ -34,14 +36,16 @@ Network::Network(std::string filename) {
   this->nodes_in.resize(cantLinks);
   this->nodes_out.resize(cantLinks);
 
-  for (int i = 0; i < cantNodos; i++) {
+  for (int i = 0; i < cantNodos; i++)
+  {
     int id;
     id = NSFnet["nodes"][i]["id"];
     Node node = Node(id);
     this->addNode(node);
   }
 
-  for (int i = 0; i < cantLinks; i++) {
+  for (int i = 0; i < cantLinks; i++)
+  {
     int id;
     id = NSFnet["links"][i]["id"];
     float lenght;
@@ -51,7 +55,8 @@ Network::Network(std::string filename) {
   }
 }
 
-Network::Network(const Network &net) {
+Network::Network(const Network &net)
+{
   this->link_counter = 0;
   this->node_counter = 0;
   this->nodes = net.nodes;
@@ -65,7 +70,8 @@ Network::Network(const Network &net) {
 Network::~Network() {}
 
 // May be useless
-Node Network::getNode(int pos) {
+Node Network::getNode(int pos)
+{
   if (pos < 0 || pos >= this->nodes.size())
     throw std::runtime_error("Cannot get Node from a position out of bounds.");
 
@@ -74,7 +80,8 @@ Node Network::getNode(int pos) {
 // Returns the Node at a "pos" index inside Nodes vector.
 
 // May be useless
-Link Network::getLink(int pos) {
+Link Network::getLink(int pos)
+{
   if (pos < 0 || pos >= this->links.size())
     throw std::runtime_error("Cannot get Link from a position out of bounds.");
 
@@ -82,8 +89,10 @@ Link Network::getLink(int pos) {
 }
 // Returns the Link pointer at a "pos" index inside Links vector.
 
-void Network::addNode(Node node) {
-  if (node.getId() != this->node_counter) {
+void Network::addNode(Node node)
+{
+  if (node.getId() != this->node_counter)
+  {
     throw std::runtime_error(
         "Cannot add a Node to this network with Id mismatching node counter.");
   }
@@ -94,8 +103,10 @@ void Network::addNode(Node node) {
 }
 // Add a Node to Nodes vector, increases Nodes_In/Out size.
 
-void Network::addLink(Link link) {
-  if (link.getId() != Network::link_counter) {
+void Network::addLink(Link link)
+{
+  if (link.getId() != Network::link_counter)
+  {
     throw std::runtime_error(
         "Cannot add a Link to this network with Id mismatching link counter.");
   }
@@ -105,7 +116,7 @@ void Network::addLink(Link link) {
 // Add a Link to Links vector.
 
 void Network::connect(int src, int link,
-                      int dst)  // Using Ids and Link from Nodes/Links vectors
+                      int dst) // Using Ids and Link from Nodes/Links vectors
 {
   this->links_out.insert(this->links_out.begin() + this->nodes_out.at(src),
                          &this->links.at(link));
@@ -121,30 +132,45 @@ void Network::connect(int src, int link,
 //
 //       (Source Node) ---Link---> (Destination Node)
 
-bool Network::isConnected(int src, int dst) {
+int Network::isConnected(int src, int dst)
+{
   std::unordered_map<int, int> hash;
 
-  for (int j = nodes_out[src - 1]; j < nodes_out[src]; j++) {
+  for (int j = nodes_out[src - 1]; j < nodes_out[src]; j++)
+  {
     hash[links_out[j]->getId()]++;
 
-    if (hash[links_out[j]->getId()] == 2) return true;
+    if (hash[links_out[j]->getId()] == 2)
+      return links_out[j]->getId();
   }
 
-  for (int j = nodes_in[dst - 1]; j < nodes_in[dst]; j++) {
+  for (int j = nodes_in[dst - 1]; j < nodes_in[dst]; j++)
+  {
     hash[links_in[j]->getId()]++;
 
-    if (hash[links_in[j]->getId()] == 2) return true;
+    if (hash[links_in[j]->getId()] == 2)
+      return links_in[j]->getId();
   }
 
-  return false;
+  return -1;
 }
 
-void Network::useSlot(int linkPos, int slotPos) {
+void Network::useSlot(int linkPos, int slotPos)
+{
+  if (linkPos < 0 || linkPos >= this->links.size())
+    throw std::runtime_error("Link position out of bounds.");
+
   this->links[linkPos].setSlot(slotPos, true);
 }
 
-void Network::useSlot(int linkPos, int slotPos1, int slotPos2) {
-  // TODO: Check if slotPos1 < slotPos2
-  for (int i = slotPos1; i < slotPos2; i++)
+void Network::useSlot(int linkPos, int slotFrom, int slotTo)
+{
+  if (linkPos < 0 || linkPos >= this->links.size())
+    throw std::runtime_error("Link position out of bounds.");
+
+  if (slotFrom > slotTo)
+    throw std::runtime_error("Initial slot position must be lower than the final slot position.");
+
+  for (int i = slotFrom; i < slotTo; i++)
     this->links[linkPos].setSlot(i, true);
 }

@@ -13,20 +13,21 @@
  * network.
  *
  */
-class Network {
- public:
-  /**
+class Network
+{
+public:
+    /**
    * @brief Constructs a new Network object. When calling Network() creates an
    * empty network ready to be filled with nodes and links.
    *
    */
-  Network(void);
-  /**
+    Network(void);
+    /**
    * @brief Destroys the Network object
    *
    */
-  ~Network();
-  /**
+    ~Network();
+    /**
    * @brief Constructs Network object from JSON file. From a JSON file, the
    constructor builds a network based on
    * one array of nodes and one array of links. The node array must contain a
@@ -84,77 +85,77 @@ class Network {
         };
       \endcode
    */
-  Network(std::string filename);
-  /**
+    Network(std::string filename);
+    /**
    * @brief Adds the Node to the Network object
    *
    * @param node  the new Node of this Node object
    */
-  Network(const Network& net);
+    Network(const Network &net);
 
-  void addNode(Node node);
-  /**
+    void addNode(Node node);
+    /**
    * @brief Adds the Link to the Network object
    *
    * @param link the new Link of this Node object
    */
-  void addLink(Link link);
-  /**
+    void addLink(Link link);
+    /**
    * @brief Gets the Node at a index position "pos" inside Nodes vector.
    *
    * @param pos the position of the Node inside Nodes vector
    * @return Node the node at the required position
    */
-  Node getNode(int pos);
-  /**
+    Node getNode(int pos);
+    /**
    * @brief Gets the Link pointer at a index position "pos" inside Links vector.
    *
    * @param pos the position of the Link inside Links vector
    * @return Link the link at the required position
    */
-  Link getLink(int pos);
-  /**
+    Link getLink(int pos);
+    /**
    * @brief Connects two nodes through a determined link pointer.
    *
    * @param src the source node of the connection
    * @param ptr the link pointer of the connection
    * @param dst the destination node of the connection
    */
-  void connect(int src, int link, int dst);
-  /**
+    void connect(int src, int link, int dst);
+    /**
    * @brief Checks if two nodes are directly connected.
    *
    * @param src the source node of the connection
    * @param dst the link pointer of the connection
    */
-  bool isConnected(int src, int dst);
-  /**
+    int isConnected(int src, int dst);
+    /**
    * @brief  Activates a single slot to be used in the required link position.
    *
    * @param linkPos the position of the link vector
    * @param slotPos the position of the slot vector
    */
-  void useSlot(int linkPos, int slotPos);
-  /**
+    void useSlot(int linkPos, int slotPos);
+    /**
    * @brief  Activates an interval of slots to be used in the required link
    * position.
    *
    * @param linkPos the position of the link vector
-   * @param slotPos1 the position of the slot vector at the beggining of the
+   * @param slotFrom the position of the slot vector at the beggining of the
    * interval.
-   * @param slotPos2 the position of the slot vector at the end of the interval.
+   * @param slotTo the position of the slot vector at the end of the interval.
    */
-  void useSlot(int linkPos, int slotPos1, int slotPos2);
+    void useSlot(int linkPos, int slotFrom, int slotTo);
 
- private:
-  std::vector<Node> nodes;
-  std::vector<Link> links;
-  std::vector<Link*> links_in;
-  std::vector<Link*> links_out;
-  std::vector<int> nodes_in;
-  std::vector<int> nodes_out;
-  int link_counter;
-  int node_counter;
+private:
+    std::vector<Node> nodes;
+    std::vector<Link> links;
+    std::vector<Link *> links_in;
+    std::vector<Link *> links_out;
+    std::vector<int> nodes_in;
+    std::vector<int> nodes_out;
+    int link_counter;
+    int node_counter;
 };
 
 #endif
