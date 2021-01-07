@@ -146,6 +146,10 @@ class Network {
    */
   void useSlot(int linkPos, int slotFrom, int slotTo);
 
+  //   int distanceClass(int src, int dst);
+
+  //   void distanceClassUntil(int s, int d, int& path_counter);
+
  private:
   std::vector<Node> nodes;
   std::vector<Link> links;
@@ -155,6 +159,7 @@ class Network {
   std::vector<int> nodes_out;
   int link_counter;
   int node_counter;
+  //   int path_counter;
 };
 
 #endif

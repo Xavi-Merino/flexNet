@@ -156,3 +156,25 @@ void Network::useSlot(int linkPos, int slotFrom, int slotTo) {
 
   for (int i = slotFrom; i < slotTo; i++) this->links[linkPos].setSlot(i, true);
 }
+
+/*
+int Network::distanceClass(int src, int dst) {
+  int path_counter = 0;
+  distanceClassUntil(src, dst, path_counter);
+  return path_counter;
+};
+*/
+/*
+void Network::distanceClassUntil(int s, int d, int &path_counter) {
+  // If current node is same as destination,
+  if (s == d) path_counter++;  // then increment count
+
+  // If current node is not destination
+  else {
+    // Recur for all the nodes adjacent to
+    // current node
+    for (int i = node_counter; i != this->nodes.size(); ++i)
+      distanceClassUntil(i, d, path_counter);
+  }
+};
+*/
