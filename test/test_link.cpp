@@ -86,6 +86,8 @@ TEST_CASE("Setting slot (Link)") {
 
   l1.setSlots(100);
   l1.setSlot(50, true);
+  CHECK_THROWS(l1.setSlot(-50, true));
+  CHECK_THROWS(l1.setSlot(50, true));
 
   CHECK(l1.getSlot(50) == true);
   CHECK(l1.getSlot(51) == false);
