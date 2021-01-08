@@ -64,6 +64,7 @@ TEST_CASE("Use slot (Network)") {
   Link l1 = Link(0, 70.0, 200);
   net1.addLink(l1);
   CHECK(l1.getSlot(100) == false);
+  CHECK_THROWS(net1.useSlot(-10, 100));
   net1.useSlot(0, 100);
   CHECK(l1.getSlot(100) == false);
   CHECK(net1.getLink(0).getSlot(100) == true);
@@ -75,6 +76,8 @@ TEST_CASE("Use slot #2 (Network)") {
   net2.addLink(l2);
   CHECK(l2.getSlot(100) == false);
   net2.useSlot(0, 100, 104);
+  CHECK_THROWS(net2.useSlot(-10, 100, 104));
+  CHECK_THROWS(net2.useSlot(0, 104, 100));
   CHECK(l2.getSlot(100) == false);
   CHECK(net2.getLink(0).getSlot(100) == true);
   CHECK(net2.getLink(0).getSlot(101) == true);
