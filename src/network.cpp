@@ -34,6 +34,7 @@ Network::Network(std::string filename) {
   this->nodes_in.resize(cantLinks);
   this->nodes_out.resize(cantLinks);
 
+  // adding nodes to the netwrok
   for (int i = 0; i < cantNodos; i++) {
     int id;
     id = NSFnet["nodes"][i]["id"];
@@ -41,6 +42,7 @@ Network::Network(std::string filename) {
     this->addNode(node);
   }
 
+  // adding links to the network
   for (int i = 0; i < cantLinks; i++) {
     int id;
     id = NSFnet["links"][i]["id"];
