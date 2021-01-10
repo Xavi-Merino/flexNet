@@ -48,7 +48,10 @@ Network::Network(std::string filename) {
     id = NSFnet["links"][i]["id"];
     float lenght;
     lenght = NSFnet["links"][i]["lenght"];
-    Link link = Link(id, lenght);
+    float slots;
+    slots = NSFnet["links"][i]["slots"];
+
+    Link link = Link(id, lenght, slots);
     this->addLink(link);
   }
 }
