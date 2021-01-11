@@ -55,11 +55,11 @@ Network::Network(std::string filename) {
     this->addLink(link);
 
     // connecting nodes
-    int src, id, dst;
-    src = NSFnet["links"][i]["src"];
-    id = NSFnet["links"][i]["id"];
-    dst = NSFnet["links"][i]["dst"];
-    this->connect(src, id, dst);
+    // int src, id, dst;
+    // src = NSFnet["links"][i]["src"];
+    // id = NSFnet["links"][i]["id"];
+    // dst = NSFnet["links"][i]["dst"];
+    // this->connect(src, id, dst);
   }
 }
 
