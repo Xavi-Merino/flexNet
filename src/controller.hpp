@@ -3,13 +3,13 @@
 
 #include "network.hpp"
 
-class controller {
+class Controller {
      public:
-      controller();
+      Controller();
 
-      controller(Network network);
+      Controller(Network network);
 
-      ~controller();
+      ~Controller();
 
       int assignConnection(int src, int dstm, int numberOfSlots);
 
