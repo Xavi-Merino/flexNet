@@ -18,9 +18,9 @@ building:
       - build/*
 
 include:
-  - /.gitlab-ci-node.yml'
-  - /.gitlab-ci-link.yml'
-  - /.gitlab-ci-network.yml'
+  - '/.gitlab-ci-node.yml'
+  - '/.gitlab-ci-link.yml'
+  - '/.gitlab-ci-network.yml'
   
 pages:
   stage: deploy
