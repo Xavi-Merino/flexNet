@@ -52,7 +52,7 @@ TEST_CASE("Connect source and destination nodes (Network)") {
   net1.addLink(Link(0));
   l1_pos = net1.getLink(0).getId();
   net1.connect(n1_pos, l1_pos, n2_pos);
-  CHECK(net1.isConnected(n1_pos, n2_pos) == true);
+  CHECK(net1.isConnected(n1_pos, n2_pos) != -1);
 };
 
 TEST_CASE("JSON constructor") {
