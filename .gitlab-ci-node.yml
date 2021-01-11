@@ -1,0 +1,36 @@
+building_node_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_node
+  - cd ..
+  artifacts:
+    paths:
+      - build/*
+  dependencies:
+    - building
+
+testing_node:
+  allow_failure: true
+  needs: ["building_node_test"]
+  stage: test
+  script:
+  - cd build
+  - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
+  - ./test_node -r junit > report_node.xml
+  after_script:
+  - cd build
+  - gcovr  --filter '\.\./src/node.cpp'
+  - gcovr  --filter '\.\./src/node.cpp' --xml-pretty > cov_node.xml 
+  - cd ..
+  dependencies:
+    - building_node_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_node.xml
+      - build/cov_node.xml
+      - build/test_node*
+    reports:
+      junit: build/report_node.xml
+      cobertura: build/cov_node.xml
