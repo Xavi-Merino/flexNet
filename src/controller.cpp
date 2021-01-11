@@ -7,7 +7,7 @@ Controller::Controller(Network network){};
 
 Controller::~Controller(){};
 
-int assignConnection(int src, int dstm, int numberOfSlots){};
+int assignConnection(int src, int dst, int numberOfSlots){};
 
 void setPaths(std::string filename) {
       // open JSON file
