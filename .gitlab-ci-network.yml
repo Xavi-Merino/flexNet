@@ -1,0 +1,36 @@
+building_network_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_network
+  - cd ..
+  artifacts:
+    paths:
+      - build/*
+  dependencies:
+    - building
+
+testing_network:
+  allow_failure: true
+  needs: ["building_network_test"]
+  stage: test
+  script:
+  - cd build
+  - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
+  - ./test_network -r junit > report_network.xml
+  after_script:
+  - cd build
+  - gcovr --filter '\.\./src/network.cpp'
+  - gcovr --filter '\.\./src/network.cpp' --xml-pretty > cov_network.xml 
+  - cd ..
+  dependencies:
+    - building_network_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_network.xml
+      - build/cov_network.xml
+      - build/test_network*
+    reports:
+      junit: build/report_network.xml
+      cobertura: build/cov_network.xml

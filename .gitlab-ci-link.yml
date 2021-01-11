@@ -1,0 +1,36 @@
+building_link_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_link
+  - cd ..
+  artifacts:
+    paths:
+      - build/*
+  dependencies:
+    - building
+
+testing_link:
+  allow_failure: true
+  needs: ["building_link_test"]
+  stage: test
+  script:
+  - cd build
+  - g++ -o test_link -fprofile-arcs -ftest-coverage ../test/test_link.cpp ../src/link.cpp 
+  - ./test_link -r junit > report_link.xml
+  after_script:
+  - cd build
+  - gcovr  --filter '\.\./src/link.cpp'
+  - gcovr  --filter '\.\./src/link.cpp' --xml-pretty > cov_link.xml 
+  - cd ..
+  dependencies:
+    - building_link_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_link.xml
+      - build/cov_link.xml
+      - build/test_link*
+    reports:
+      junit: build/report_link.xml
+      cobertura: build/cov_link.xml
