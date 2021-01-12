@@ -5,6 +5,7 @@
 #define DEFAULT_LENGTH 100.0
 
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 /**
