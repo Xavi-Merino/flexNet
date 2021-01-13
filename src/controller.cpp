@@ -43,7 +43,7 @@ void Controller::setPaths(std::string filename) {
             // beacuase 3 nodes has 2 links
             this->path[src][dst].resize(linksInPath);
 
-            // recorrer rutas disponibles
+            // go through available routes
             for (int b = 0; b < pathsNumber; b++) {
                   int nodesPathNumber;
                   nodesPathNumber = NSFnet["routes"][i]["paths"][b].size();
@@ -57,7 +57,8 @@ void Controller::setPaths(std::string filename) {
                         int idLink;
                         idLink = this->network.isConnected(actNode, nextNode);
 
-                        // this->path[src][dst][b][c] = &this->network.getLink(idLink);
+                        this->path[src][dst][b].push_back( 
+                              &this->network.getLink(idLink) );
                   }
             }
       }
