@@ -38,7 +38,10 @@ pages:
   - g++ -o test_network -fprofile-arcs -ftest-coverage ../test/test_network.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
   - ./test_network || exit_code=$?
   - lcov  --capture  --directory . --output-file test_network.info
-  - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --output-file total.info
+  - g++ -o test_random_variable -fprofile-arcs -ftest-coverage ../test/test_random_variable.cpp ../src/random_variable.cpp ../src/exp_variable.cpp
+  - ./test_random_variable || exit_code=$?
+  - lcov  --capture  --directory . --output-file test_random_variable.info
+  - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --add-tracefile test_random_variable.info --output-file total.info
   - lcov --remove total.info '*/c++/*' '*test*' '*.hpp' -o final.info
   - mkdir ../public/coverage-details
   - genhtml --prefix .  --ignore-errors source final.info --legend --title "commit SHA1" --output-directory=../public/coverage-details

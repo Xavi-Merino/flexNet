@@ -1,0 +1,36 @@
+building_network_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_random_variable
+  - cd ..
+  artifacts:
+    paths:
+      - build/*
+  dependencies:
+    - building
+
+testing_network:
+  allow_failure: true
+  needs: ["building_random_variable_test"]
+  stage: test
+  script:
+  - cd build
+  - g++ -o test_random_variable -fprofile-arcs -ftest-coverage ../test/test_random_variable.cpp ../src/random_variable.cpp ../src/exp_variable.cpp
+  - ./test_network -r junit > report_random_variable.xml
+  after_script:
+  - cd build
+  - gcovr --filter '\.\./src/exp_variable.cpp'
+  - gcovr --filter '\.\./src/exp_variable.cpp' --xml-pretty > cov_random_variable.xml 
+  - cd ..
+  dependencies:
+    - building_network_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_random_variable.xml
+      - build/cov_random_variable.xml
+      - build/test_random_variable*
+    reports:
+      junit: build/report_random_variable.xml
+      cobertura: build/cov_random_variable.xml
