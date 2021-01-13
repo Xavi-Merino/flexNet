@@ -45,12 +45,12 @@ void Controller::setPaths(std::string filename) {
             this->path[src][dst].resize(linksInPath);
 
             // recorrer rutas disponibles
-            for (int b = 0; b < pathsNumber; i++) {
+            for (int b = 0; b < pathsNumber; b++) {
                   int nodesPathNumber;
                   nodesPathNumber = NSFnet["routes"][i]["paths"][b];
                   int lastNode = nodesPathNumber - 1;
 
-                  for (int c = 0; c < lastNode; i++) {
+                  for (int c = 0; c < lastNode; c++) {
                         int actNode, nextNode;
                         actNode = NSFnet["routes"][i]["paths"][b][c];
                         nextNode = NSFnet["routes"][i]["paths"][b][c + 1];
