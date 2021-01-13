@@ -23,11 +23,10 @@ void Controller::setPaths(std::string filename) {
       this->path.resize(numberOfNodes);
 
       // allocate space for path[src][dst]
-      for (int i = 0; i < numberOfNodes; i++) {
-            this->path[i].resize(numberOfNodes);
+      for (int t = 0; t < numberOfNodes; t++) {
+            this->path[t].resize(numberOfNodes);
       }
 
-      // use isConnected(src, dst) para obtener el id de un link entre dos nodos
       int routesNumber;
       routesNumber = NSFnet["routes"].size();
 
