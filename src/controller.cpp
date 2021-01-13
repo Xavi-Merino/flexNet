@@ -29,7 +29,7 @@ void Controller::setPaths(std::string filename) {
 
       int routesNumber;
       routesNumber = NSFnet["routes"].size();
-
+/*
       for (int i = 0; i < routesNumber; i++) {
             int pathsNumber;
             pathsNumber = NSFnet["routes"][i]["paths"].size();
@@ -61,4 +61,5 @@ void Controller::setPaths(std::string filename) {
                   }
             }
       }
+      */
 };
