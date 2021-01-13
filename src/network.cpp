@@ -165,6 +165,10 @@ void Network::useSlot(int linkPos, int slotFrom, int slotTo) {
   for (int i = slotFrom; i < slotTo; i++) this->links[linkPos].setSlot(i, true);
 }
 
+int Network::getNumberOfLinks() { return this->link_counter; }
+
+int Network::getNumberOfNodes() { return this->node_counter; }
+
 /*
 int Network::distanceClass(int src, int dst) {
   int path_counter = 0;

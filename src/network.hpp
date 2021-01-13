@@ -150,6 +150,10 @@ class Network {
 
   //   void distanceClassUntil(int s, int d, int& path_counter);
 
+  int getNumberOfLinks();
+
+  int getNumberOfNodes();
+
  private:
   std::vector<Node> nodes;
   std::vector<Link> links;
