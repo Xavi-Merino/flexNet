@@ -16,7 +16,50 @@ void Controller::setPaths(std::string filename) {
       nlohmann::json NSFnet;
       file >> NSFnet;
 
-      // need to implement getNode_counter()
-      // this->network.getNode_counter();
-      
+      int numberOfNodes;
+      numberOfNodes = this->network.getNumberOfNodes();
+
+      // allocate space for path[src]
+      this->path.resize(numberOfNodes);
+
+      // allocate space for path[src][dst]
+      for (int i = 0; i < numberOfNodes; i++) {
+            this->path[i].resize(numberOfNodes);
+      }
+
+      // use isConnected(src, dst) para obtener el id de un link entre dos nodos
+      int routesNumber;
+      routesNumber = NSFnet["routes"].size();
+
+      for (int i = 0; i < routesNumber; i++) {
+            int pathsNumber;
+            pathsNumber = NSFnet["routes"][i]["paths"].size();
+            int src, dst;
+            src = NSFnet["routes"][i]["src"];
+            dst = NSFnet["routes"][i]["dst"];
+
+            // allocate path[src][dst][pathsNumber]
+            int linksInPath;
+            linksInPath = pathsNumber - 1;
+            // beacuase 3 nodes has 2 links
+            this->path[src][dst].resize(linksInPath);
+
+            // recorrer rutas disponibles
+            for (int b = 0; b < pathsNumber; i++) {
+                  int nodesPathNumber;
+                  nodesPathNumber = NSFnet["routes"][i]["paths"][b];
+                  int lastNode = nodesPathNumber - 1;
+
+                  for (int c = 0; c < lastNode; i++) {
+                        int actNode, nextNode;
+                        actNode = NSFnet["routes"][i]["paths"][b][c];
+                        nextNode = NSFnet["routes"][i]["paths"][b][c + 1];
+
+                        int idLink;
+                        idLink = this->network.isConnected(actNode, nextNode);
+
+                        this->path[src][dst][b][c] = &this->network.getLink(idLink);
+                  }
+            }
+      }
 };
