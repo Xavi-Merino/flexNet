@@ -24,7 +24,7 @@ testing_random_variable:
   - gcovr --filter '\.\./src/exp_variable.cpp' --xml-pretty > cov_random_variable.xml 
   - cd ..
   dependencies:
-    - building_network_test
+    - building_random_variable_test
   artifacts:
     when: always
     paths:
