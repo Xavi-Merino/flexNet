@@ -24,15 +24,11 @@ Network::Network(std::string filename) {
   nlohmann::json NSFnet;
   file >> NSFnet;
 
-  // allocate space based on the number of nodes
+  // number of nodes
   int cantNodos = NSFnet["nodes"].size();
-  this->nodes.resize(cantNodos);
 
-  // allocate space based on the number of links
+  // number of links
   int cantLinks = NSFnet["links"].size();
-  this->links.resize(cantLinks);
-  this->nodes_in.resize(cantLinks);
-  this->nodes_out.resize(cantLinks);
 
   // adding nodes to the netwrok
   for (int i = 0; i < cantNodos; i++) {

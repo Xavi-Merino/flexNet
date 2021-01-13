@@ -17,7 +17,7 @@ class Controller {
 
      private:
       Network network;
-      std::vector<std::vector <std::vector <std::vector <Link*>>>> path; 
+      std::vector<std::vector<std::vector<std::vector<Link*>>>> path;
 };
 
 #endif
