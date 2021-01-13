@@ -29,7 +29,7 @@ void Controller::setPaths(std::string filename) {
 
       int routesNumber;
       routesNumber = NSFnet["routes"].size();
-/*
+
       for (int i = 0; i < routesNumber; i++) {
             int pathsNumber;
             pathsNumber = NSFnet["routes"][i]["paths"].size();
@@ -49,17 +49,17 @@ void Controller::setPaths(std::string filename) {
                   nodesPathNumber = NSFnet["routes"][i]["paths"][b].size();
                   int lastNode = nodesPathNumber - 1;
 
-                  for (int c = 0; c < lastNode; c++) {
-                        int actNode, nextNode;
-                        actNode = NSFnet["routes"][i]["paths"][b][c];
-                        nextNode = NSFnet["routes"][i]["paths"][b][c + 1];
+                  // for (int c = 0; c < lastNode; c++) {
+                  //       int actNode, nextNode;
+                  //       actNode = NSFnet["routes"][i]["paths"][b][c];
+                  //       nextNode = NSFnet["routes"][i]["paths"][b][c + 1];
 
-                        int idLink;
-                        idLink = this->network.isConnected(actNode, nextNode);
+                  //       int idLink;
+                  //       idLink = this->network.isConnected(actNode, nextNode);
 
-                        this->path[src][dst][b][c] = &this->network.getLink(idLink);
-                  }
+                  //       this->path[src][dst][b][c] = &this->network.getLink(idLink);
+                  // }
             }
       }
-      */
+
 };
