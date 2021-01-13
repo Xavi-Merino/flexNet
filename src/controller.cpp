@@ -55,7 +55,7 @@ void Controller::setPaths(std::string filename) {
                         nextNode = NSFnet["routes"][i]["paths"][b][c + 1];
 
                         int idLink;
-                        // idLink = this->network.isConnected(actNode, nextNode);
+                        idLink = this->network.isConnected(actNode, nextNode);
 
                         // this->path[src][dst][b][c] = &this->network.getLink(idLink);
                   }
