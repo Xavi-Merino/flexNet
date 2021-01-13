@@ -21,6 +21,7 @@ include:
   - '/.gitlab-ci-node.yml'
   - '/.gitlab-ci-link.yml'
   - '/.gitlab-ci-network.yml'
+  - '/.gitlab-ci-randomvariable.yml'
   
 pages:
   stage: deploy

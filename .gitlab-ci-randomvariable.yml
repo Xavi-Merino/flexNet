@@ -1,4 +1,4 @@
-building_network_test:
+building_random_variable_test:
   stage: build_tests
   script:
   - cd build
@@ -10,7 +10,7 @@ building_network_test:
   dependencies:
     - building
 
-testing_network:
+testing_random_variable:
   allow_failure: true
   needs: ["building_random_variable_test"]
   stage: test
