@@ -117,7 +117,7 @@ class Network {
    * @brief Connects two nodes through a determined link pointer.
    *
    * @param src the source node of the connection
-   * @param ptr the link pointer of the connection
+   * @param link the Id/position of the link to connect
    * @param dst the destination node of the connection
    */
   void connect(int src, int link, int dst);
