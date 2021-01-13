@@ -17,7 +17,7 @@ testing_random_variable:
   script:
   - cd build
   - g++ -o test_random_variable -fprofile-arcs -ftest-coverage ../test/test_random_variable.cpp ../src/random_variable.cpp ../src/exp_variable.cpp
-  - ./test_network -r junit > report_random_variable.xml
+  - ./test_random_variable -r junit > report_random_variable.xml
   after_script:
   - cd build
   - gcovr --filter '\.\./src/exp_variable.cpp'
