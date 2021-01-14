@@ -4,20 +4,20 @@
 #include "network.hpp"
 
 class Controller {
-     public:
-      Controller();
+ public:
+  Controller();
 
-      Controller(Network network);
+  Controller(Network network);
 
-      ~Controller();
+  ~Controller();
 
-      int assignConnection(int src, int dst, int numberOfSlots);
+  int assignConnection(int src, int dst, int numberOfSlots);
 
-      void setPaths(std::string filename);
+  void setPaths(std::string filename);
 
-     private:
-      Network network;
-      std::vector<std::vector<std::vector<std::vector<Link*>>>> path;
+ private:
+  Network network;
+  std::vector<std::vector<std::vector<std::vector<Link*>>>> path;
 };
 
 #endif
