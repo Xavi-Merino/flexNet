@@ -1,0 +1,36 @@
+building_controller_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_controller
+  - cd ..
+  artifacts:
+    paths:
+      - build/*
+  dependencies:
+    - building
+
+testing_controller:
+  allow_failure: true
+  needs: ["building_controller_test"]
+  stage: test
+  script:
+  - cd build
+  - g++ -o test_controller -fprofile-arcs -ftest-coverage ../test/test_controller.cpp ../src/controller.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
+  - ./test_controller -r junit > report_controller.xml
+  after_script:
+  - cd build
+  - gcovr  --filter '\.\./src/controller.cpp'
+  - gcovr  --filter '\.\./src/controller.cpp' --xml-pretty > cov_controller.xml 
+  - cd ..
+  dependencies:
+    - building_controller_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_controller.xml
+      - build/cov_controller.xml
+      - build/test_controller*
+    reports:
+      junit: build/report_controller.xml
+      cobertura: build/cov_controller.xml
