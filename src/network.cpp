@@ -22,8 +22,17 @@ Network::Network(void) {
 Network::Network(std::string filename) {
   this->link_counter = 0;
   this->node_counter = 0;
+
+  this->nodes = std::vector<Node>();
+  this->links = std::vector<Link>();
+  this->links_in = std::vector<Link *>();
+  this->links_out = std::vector<Link *>();
+  this->nodes_in = std::vector<int>();
+  this->nodes_out = std::vector<int>();
+
   this->nodes_in.push_back(0);
   this->nodes_out.push_back(0);
+
   // open JSON file
   std::ifstream file(filename);
   nlohmann::json NSFnet;
