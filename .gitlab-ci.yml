@@ -13,9 +13,6 @@ building:
     - cmake ..
     - make fnsim
     - cd ..
-  artifacts:
-    paths:
-      - build/*
 
 include:
   - '/.gitlab-ci-node.yml'

@@ -4,9 +4,6 @@ building_network_test:
   - cd build
   - make test_network
   - cd ..
-  artifacts:
-    paths:
-      - build/*
   dependencies:
     - building
 

@@ -4,9 +4,6 @@ building_random_variable_test:
   - cd build
   - make test_random_variable
   - cd ..
-  artifacts:
-    paths:
-      - build/*
   dependencies:
     - building
 

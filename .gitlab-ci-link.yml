@@ -4,9 +4,6 @@ building_link_test:
   - cd build
   - make test_link
   - cd ..
-  artifacts:
-    paths:
-      - build/*
   dependencies:
     - building
 
