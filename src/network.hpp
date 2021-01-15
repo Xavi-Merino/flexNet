@@ -86,33 +86,33 @@ class Network {
  */
   Network(std::string filename);
   /**
-   * @brief Adds the Node to the Network object
+   * @brief Adds the Node to the Network object. Node must be a pointer.
    *
    * @param node  the new Node of this Node object
    */
   Network(const Network &net);
 
-  void addNode(Node node);
+  void addNode(Node *node);
   /**
-   * @brief Adds the Link to the Network object
+   * @brief Adds the Link to the Network object. Link must be a pointer
    *
    * @param link the new Link of this Node object
    */
-  void addLink(Link link);
+  void addLink(Link *link);
   /**
    * @brief Gets the Node at a index position "pos" inside Nodes vector.
    *
    * @param pos the position of the Node inside Nodes vector
-   * @return Node the node at the required position
+   * @return Node the node pointer at the required position
    */
-  Node getNode(int pos);
+  Node *getNode(int pos);
   /**
    * @brief Gets the Link pointer at a index position "pos" inside Links vector.
    *
    * @param pos the position of the Link inside Links vector
-   * @return Link the link at the required position
+   * @return Link the link pointer at the required position
    */
-  Link getLink(int pos);
+  Link *getLink(int pos);
   /**
    * @brief Connects two nodes through a determined link pointer.
    *
@@ -155,8 +155,8 @@ class Network {
   int getNumberOfNodes();
 
  private:
-  std::vector<Node> nodes;
-  std::vector<Link> links;
+  std::vector<Node *> nodes;
+  std::vector<Link *> links;
   std::vector<Link *> links_in;
   std::vector<Link *> links_out;
   std::vector<int> nodes_in;
