@@ -4,6 +4,9 @@ building_node_test:
   - cd build
   - make test_node
   - cd ..
+  artifacts:
+    paths:
+      - build/*
   dependencies:
     - building
 
