@@ -14,6 +14,9 @@ Network::Network(void) {
   this->links_out = std::vector<Link *>();
   this->nodes_in = std::vector<int>();
   this->nodes_out = std::vector<int>();
+
+  this->nodes_in.push_back(0);
+  this->nodes_out.push_back(0);
 }
 
 Network::Network(std::string filename) {
@@ -117,12 +120,12 @@ void Network::connect(int src, int link,
 {
   this->links_out.insert(this->links_out.begin() + this->nodes_out.at(src),
                          &this->links.at(link));
-  std::for_each(this->nodes_out.begin() + src, this->nodes_out.end(),
+  std::for_each(this->nodes_out.begin() + src + 1, this->nodes_out.end(),
                 [](int &n) { n += 1; });
 
   this->links_in.insert(this->links_in.begin() + this->nodes_in.at(dst),
                         &this->links.at(link));
-  std::for_each(this->nodes_in.begin() + dst, this->nodes_in.end(),
+  std::for_each(this->nodes_in.begin() + dst + 1, this->nodes_in.end(),
                 [](int &n) { n += 1; });
 }
 // Connects two Nodes through one Link (order is important: src != dst):
@@ -135,7 +138,8 @@ int Network::isConnected(int src, int dst) {
   for (int j = nodes_out[src - 1]; j < nodes_out[src]; j++) {
     hash[links_out[j]->getId()]++;
 
-    if (hash[links_out[j]->getId()] == 2) return links_out[j]->getId();
+    if (hash[links_out[j]->getId()] == 2)
+      return links_out[j]->getId();  // may be deleted (?)
   }
 
   for (int j = nodes_in[dst - 1]; j < nodes_in[dst]; j++) {
