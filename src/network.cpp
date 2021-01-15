@@ -14,11 +14,16 @@ Network::Network(void) {
   this->links_out = std::vector<Link *>();
   this->nodes_in = std::vector<int>();
   this->nodes_out = std::vector<int>();
+
+  this->nodes_in.push_back(0);
+  this->nodes_out.push_back(0);
 }
 
 Network::Network(std::string filename) {
   this->link_counter = 0;
   this->node_counter = 0;
+  this->nodes_in.push_back(0);
+  this->nodes_out.push_back(0);
   // open JSON file
   std::ifstream file(filename);
   nlohmann::json NSFnet;
@@ -117,12 +122,12 @@ void Network::connect(int src, int link,
 {
   this->links_out.insert(this->links_out.begin() + this->nodes_out.at(src),
                          &this->links.at(link));
-  std::for_each(this->nodes_out.begin() + src, this->nodes_out.end(),
+  std::for_each(this->nodes_out.begin() + src + 1, this->nodes_out.end(),
                 [](int &n) { n += 1; });
 
   this->links_in.insert(this->links_in.begin() + this->nodes_in.at(dst),
                         &this->links.at(link));
-  std::for_each(this->nodes_in.begin() + dst, this->nodes_in.end(),
+  std::for_each(this->nodes_in.begin() + dst + 1, this->nodes_in.end(),
                 [](int &n) { n += 1; });
 }
 // Connects two Nodes through one Link (order is important: src != dst):
@@ -130,20 +135,13 @@ void Network::connect(int src, int link,
 //       (Source Node) ---Link---> (Destination Node)
 
 int Network::isConnected(int src, int dst) {
-  std::unordered_map<int, int> hash;
-
-  for (int j = nodes_out[src - 1]; j < nodes_out[src]; j++) {
-    hash[links_out[j]->getId()]++;
-
-    if (hash[links_out[j]->getId()] == 2) return links_out[j]->getId();
+  for (int i = this->nodes_out[src]; i < this->nodes_out[src + 1]; i++) {
+    for (int j = nodes_in[dst]; j < nodes_in[dst + 1]; j++) {
+      if (links_out[i]->getId() == links_in[j]->getId()) {
+        return links_out[i]->getId();
+      }
+    }
   }
-
-  for (int j = nodes_in[dst - 1]; j < nodes_in[dst]; j++) {
-    hash[links_in[j]->getId()]++;
-
-    if (hash[links_in[j]->getId()] == 2) return links_in[j]->getId();
-  }
-
   return -1;
 }
 
