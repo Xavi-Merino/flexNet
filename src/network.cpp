@@ -2,14 +2,15 @@
 
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 #include <unordered_map>
 
 Network::Network(void) {
   this->link_counter = 0;
   this->node_counter = 0;
 
-  this->nodes = std::vector<Node>();
-  this->links = std::vector<Link>();
+  this->nodes = std::vector<Node *>();
+  this->links = std::vector<Link *>();
   this->links_in = std::vector<Link *>();
   this->links_out = std::vector<Link *>();
   this->nodes_in = std::vector<int>();
@@ -23,8 +24,8 @@ Network::Network(std::string filename) {
   this->link_counter = 0;
   this->node_counter = 0;
 
-  this->nodes = std::vector<Node>();
-  this->links = std::vector<Link>();
+  this->nodes = std::vector<Node *>();
+  this->links = std::vector<Link *>();
   this->links_in = std::vector<Link *>();
   this->links_out = std::vector<Link *>();
   this->nodes_in = std::vector<int>();
@@ -48,7 +49,7 @@ Network::Network(std::string filename) {
   for (int i = 0; i < cantNodos; i++) {
     int id;
     id = NSFnet["nodes"][i]["id"];
-    Node node = Node(id);
+    Node *node = new Node(id);
     this->addNode(node);
   }
 
@@ -61,7 +62,7 @@ Network::Network(std::string filename) {
     float slots;
     slots = NSFnet["links"][i]["slots"];
 
-    Link link = Link(id, lenght, slots);
+    Link *link = new Link(id, lenght, slots);
     this->addLink(link);
 
     // connecting nodes
@@ -84,11 +85,18 @@ Network::Network(const Network &net) {
   this->nodes_out = net.nodes_out;
 }
 
-Network::~Network() {}
+Network::~Network() {
+  for (int i = 0; i < this->link_counter; i++) {
+    delete this->links[i];
+  }
+  for (int i = 0; i < this->node_counter; i++) {
+    delete this->nodes[i];
+  }
+}
 
 // May be useless
-Node Network::getNode(int pos) {
-  if (pos < 0 || pos >= this->nodes.size())
+Node *Network::getNode(int pos) {
+  if (pos < 0 || pos >= static_cast<int>(this->nodes.size()))
     throw std::runtime_error("Cannot get Node from a position out of bounds.");
 
   return this->nodes.at(pos);
@@ -96,16 +104,16 @@ Node Network::getNode(int pos) {
 // Returns the Node at a "pos" index inside Nodes vector.
 
 // May be useless
-Link Network::getLink(int pos) {
-  if (pos < 0 || pos >= this->links.size())
+Link *Network::getLink(int pos) {
+  if (pos < 0 || pos >= static_cast<int>(this->links.size()))
     throw std::runtime_error("Cannot get Link from a position out of bounds.");
 
   return this->links.at(pos);
 }
 // Returns the Link pointer at a "pos" index inside Links vector.
 
-void Network::addNode(Node node) {
-  if (node.getId() != this->node_counter) {
+void Network::addNode(Node *node) {
+  if (node->getId() != this->node_counter) {
     throw std::runtime_error(
         "Cannot add a Node to this network with Id mismatching node counter.");
   }
@@ -116,8 +124,8 @@ void Network::addNode(Node node) {
 }
 // Add a Node to Nodes vector, increases Nodes_In/Out size.
 
-void Network::addLink(Link link) {
-  if (link.getId() != Network::link_counter) {
+void Network::addLink(Link *link) {
+  if (link->getId() != Network::link_counter) {
     throw std::runtime_error(
         "Cannot add a Link to this network with Id mismatching link counter.");
   }
@@ -141,19 +149,19 @@ void Network::connect(int src, int link,
         " because its ID is not in the network. Number of nodes in network: " +
         std::to_string(this->node_counter));
   }
-  if (src < 0 || src >= this->node_counter) {
+  if (link < 0 || link >= this->link_counter) {
     throw std::runtime_error(
         "Cannot use link " + std::to_string(link) +
         " because its ID is not in the network. Number of links in network: " +
         std::to_string(this->link_counter));
   }
   this->links_out.insert(this->links_out.begin() + this->nodes_out.at(src),
-                         &this->links.at(link));
+                         this->links.at(link));
   std::for_each(this->nodes_out.begin() + src + 1, this->nodes_out.end(),
                 [](int &n) { n += 1; });
 
   this->links_in.insert(this->links_in.begin() + this->nodes_in.at(dst),
-                        &this->links.at(link));
+                        this->links.at(link));
   std::for_each(this->nodes_in.begin() + dst + 1, this->nodes_in.end(),
                 [](int &n) { n += 1; });
 }
@@ -173,21 +181,22 @@ int Network::isConnected(int src, int dst) {
 }
 
 void Network::useSlot(int linkPos, int slotPos) {
-  if (linkPos < 0 || linkPos >= this->links.size())
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
     throw std::runtime_error("Link position out of bounds.");
 
-  this->links[linkPos].setSlot(slotPos, true);
+  this->links[linkPos]->setSlot(slotPos, true);
 }
 
 void Network::useSlot(int linkPos, int slotFrom, int slotTo) {
-  if (linkPos < 0 || linkPos >= this->links.size())
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
     throw std::runtime_error("Link position out of bounds.");
 
   if (slotFrom > slotTo)
     throw std::runtime_error(
         "Initial slot position must be lower than the final slot position.");
 
-  for (int i = slotFrom; i < slotTo; i++) this->links[linkPos].setSlot(i, true);
+  for (int i = slotFrom; i < slotTo; i++)
+    this->links[linkPos]->setSlot(i, true);
 }
 
 int Network::getNumberOfLinks() { return this->link_counter; }
