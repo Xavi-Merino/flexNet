@@ -22,6 +22,8 @@ Network::Network(void) {
 Network::Network(std::string filename) {
   this->link_counter = 0;
   this->node_counter = 0;
+  this->nodes_in.push_back(0);
+  this->nodes_out.push_back(0);
   // open JSON file
   std::ifstream file(filename);
   nlohmann::json NSFnet;
@@ -133,21 +135,13 @@ void Network::connect(int src, int link,
 //       (Source Node) ---Link---> (Destination Node)
 
 int Network::isConnected(int src, int dst) {
-  std::unordered_map<int, int> hash;
-
-  for (int j = nodes_out[src - 1]; j < nodes_out[src]; j++) {
-    hash[links_out[j]->getId()]++;
-
-    if (hash[links_out[j]->getId()] == 2)
-      return links_out[j]->getId();  // may be deleted (?)
+  for (int i = this->nodes_out[src]; i < this->nodes_out[src + 1]; i++) {
+    for (int j = nodes_in[dst]; j < nodes_in[dst + 1]; j++) {
+      if (links_out[i]->getId() == links_in[j]->getId()) {
+        return links_out[i]->getId();
+      }
+    }
   }
-
-  for (int j = nodes_in[dst - 1]; j < nodes_in[dst]; j++) {
-    hash[links_in[j]->getId()]++;
-
-    if (hash[links_in[j]->getId()] == 2) return links_in[j]->getId();
-  }
-
   return -1;
 }
 
