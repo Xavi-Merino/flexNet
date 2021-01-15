@@ -59,7 +59,7 @@ void Controller::setPaths(std::string filename) {
         int idLink;
         idLink = this->network.isConnected(actNode, nextNode);
 
-        // this->path[src][dst][b].push_back(&this->network.getLink(idLink));
+        this->path[src][dst][b].push_back(this->network.getLink(idLink));
       }
     }
   }
