@@ -22,8 +22,17 @@ Network::Network(void) {
 Network::Network(std::string filename) {
   this->link_counter = 0;
   this->node_counter = 0;
+
+  this->nodes = std::vector<Node>();
+  this->links = std::vector<Link>();
+  this->links_in = std::vector<Link *>();
+  this->links_out = std::vector<Link *>();
+  this->nodes_in = std::vector<int>();
+  this->nodes_out = std::vector<int>();
+
   this->nodes_in.push_back(0);
   this->nodes_out.push_back(0);
+
   // open JSON file
   std::ifstream file(filename);
   nlohmann::json NSFnet;
@@ -120,6 +129,24 @@ void Network::addLink(Link link) {
 void Network::connect(int src, int link,
                       int dst)  // Using Ids and Link from Nodes/Links vectors
 {
+  if (src < 0 || src >= this->node_counter) {
+    throw std::runtime_error(
+        "Cannot connect src " + std::to_string(src) +
+        " because its ID is not in the network. Number of nodes in network: " +
+        std::to_string(this->node_counter));
+  }
+  if (dst < 0 || dst >= this->node_counter) {
+    throw std::runtime_error(
+        "Cannot connect dst " + std::to_string(dst) +
+        " because its ID is not in the network. Number of nodes in network: " +
+        std::to_string(this->node_counter));
+  }
+  if (src < 0 || src >= this->node_counter) {
+    throw std::runtime_error(
+        "Cannot use link " + std::to_string(link) +
+        " because its ID is not in the network. Number of links in network: " +
+        std::to_string(this->link_counter));
+  }
   this->links_out.insert(this->links_out.begin() + this->nodes_out.at(src),
                          &this->links.at(link));
   std::for_each(this->nodes_out.begin() + src + 1, this->nodes_out.end(),
