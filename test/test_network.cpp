@@ -52,6 +52,9 @@ TEST_CASE("Connect source and destination nodes (Network)") {
   net1.addLink(new Link(0));
   l1_pos = net1.getLink(0)->getId();
   net1.connect(n1_pos, l1_pos, n2_pos);
+  CHECK_THROWS(net1.connect(-1, l1_pos, n2_pos));
+  CHECK_THROWS(net1.connect(n1_pos, l1_pos, 3));
+  CHECK_THROWS(net1.connect(n1_pos, 2, n2_pos));
   CHECK(net1.isConnected(n1_pos, n2_pos) == 0);
   CHECK(net1.getNumberOfLinks() == 1);
   CHECK(net1.getNumberOfNodes() == 2);
