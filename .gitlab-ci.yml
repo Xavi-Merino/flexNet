@@ -43,7 +43,7 @@ pages:
   - g++ -o test_random_variable -fprofile-arcs -ftest-coverage ../test/test_random_variable.cpp ../src/random_variable.cpp ../src/exp_variable.cpp
   - ./test_random_variable || exit_code=$?
   - lcov  --capture  --directory . --output-file test_random_variable.info
-  - g++ -o test_controller -fprofile-arcs -ftest-coverage ../test/test_controller.cpp ../src/controller.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp
+  - g++ -o test_controller -fprofile-arcs -ftest-coverage ../test/test_controller.cpp ../src/controller.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp ../src/connection.cpp
   - ./test_controller || exit_code=$?
   - lcov  --capture  --directory . --output-file test_controller.info
   - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --add-tracefile test_random_variable.info --add-tracefile test_controller.info --output-file total.info
