@@ -4,13 +4,15 @@
 #include "connection.hpp"
 #include "network.hpp"
 
+typedef enum allocStatus { ALLOCATED, NOT_ALLOCATED } allocationStatus;
+
 class Allocator {
  public:
   Allocator(Network *network);
 
   ~Allocator();
 
-  virtual int exec(int src, int dst, Connection &con);
+  virtual allocationStatus exec(int src, int dst, int bitRate, Connection &con);
 
  protected:
   Network *network;

@@ -4,11 +4,12 @@ DummyAllocator::DummyAllocator(Network *network) : Allocator(network) {}
 
 DummyAllocator::~DummyAllocator() {}
 
-int DummyAllocator::exec(int src, int dst, Connection &con) {
+allocationStatus DummyAllocator::exec(int src, int dst, int bitRate,
+                                      Connection &con) {
   if (this->network->isConnected(src, dst)) {
     con.addLink(0, 0, 2);
-    return 0;
+    return ALLOCATED;
   } else {
-    return 1;
+    return NOT_ALLOCATED;
   }
 }
