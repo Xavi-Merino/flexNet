@@ -8,6 +8,8 @@ Connection::Connection(long long id) {
 
 Connection::~Connection() {}
 
+Connection::~Connection() {}
+
 void Connection::addLink(int idLink, std::vector<int> slots) {
   this->links.push_back(idLink);
   this->slots.push_back(slots);
