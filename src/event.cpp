@@ -1,11 +1,20 @@
 #include "event.hpp"
+Event::Event(void) {
+  this->type = ARRIVE;
+  this->time = -1;
+  this->idConnection = -1;
+}
 
-Event::Event(int eventType, double time, int idConnection) {}
+Event::Event(eventType type, double time, int idConnection) {
+  this->type = type;
+  this->time = time;
+  this->idConnection = idConnection;
+}
 
 Event::~Event() {}
 
-int Event::getEventType() { return 0; }
+eventType Event::getType() { return this->type; }
 
-double Event::getTime() { return 0; }
+double Event::getTime() { return this->time; }
 
-long long Event::getIdConnection() { return 0; }
+long long Event::getIdConnection() { return this->idConnection; }

@@ -4,20 +4,22 @@
 // #include "simulator.hpp"
 #include "controller.hpp"
 
+typedef enum eventType { ARRIVE, DEPARTURE } eventType;
 class Event {
  public:
-  Event(int eventType, double time, int idConnection);
+  Event(void);
+  Event(eventType type, double time, int idConnection);
 
   ~Event();
 
-  int getEventType();
+  eventType getType();
 
   double getTime();
 
   long long getIdConnection();
 
  private:
-  int eventType;
+  eventType type;
   double time;
   long long idConnection;
 };
