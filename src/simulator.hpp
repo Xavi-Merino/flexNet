@@ -18,7 +18,8 @@ class Simulator {
   void setLambda(double lambda);
   void setMu(double mu);
   void setSeedArrive(unsigned int seed);
-  void setSeedDeparture(double seed);
+  void setSeedDeparture(unsigned int seed);
+  void setSeedBitRate(unsigned int seed);
   void setGoalConnections(long long goal);
   void setBitRates(std::vector<double> bitRates);
   void defaultValues();
@@ -30,6 +31,7 @@ class Simulator {
   ExpVariable departVariable;
   UniformVariable srcVariable;
   UniformVariable dstVariable;
+  UniformVariable bitRateVariable;
   Controller controller;
   Event currentEvent;
   std::vector<double> bitRates;
@@ -40,11 +42,12 @@ class Simulator {
   unsigned int seedDeparture;
   unsigned int seedSrc;
   unsigned int seedDst;
+  unsigned int seedBitRate;
   long long numberOfConnections;
   long long goalConnections;
   double nextEventTime;
   int rtnAllocation;
-  int src, dst;
+  int src, dst, bitRate;
   std::vector<double> bitRatesDefault;
 
   int eventRoutine(void);

@@ -18,15 +18,17 @@ Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
       std::vector<double>({10.0, 40.0, 100.0, 400.0, 1000.0});
 }
 
-void Simulator::run(void) {}
-
 void Simulator::setLambda(double lambda) { this->lambda = lambda; }
 
 void Simulator::setMu(double mu) { this->mu = mu; }
 
 void Simulator::setSeedArrive(unsigned int seed) { this->seedArrive = seed; }
 
-void Simulator::setSeedDeparture(double seed) { this->seedDeparture = seed; }
+void Simulator::setSeedDeparture(unsigned int seed) {
+  this->seedDeparture = seed;
+}
+
+void Simulator::setSeedBitRate(unsigned int seed) { this->seedBitRate = seed; }
 
 void Simulator::setGoalConnections(long long goal) {
   this->goalConnections = goal;
@@ -43,13 +45,14 @@ void Simulator::defaultValues() {
   this->seedDeparture = 12345;
   this->seedSrc = 12345;
   this->seedDst = 12345;
+  this->seedBitRate = 12345;
   this->numberOfConnections = 0;
   this->goalConnections = 10000;
 }
 
 int Simulator::eventRoutine(void) {
   this->currentEvent = this->events.front();
-  this->rtnAllocation = -1;
+  this->rtnAllocation = 0;
   if (this->currentEvent.getType() == ARRIVE) {
     nextEventTime = this->clock + this->arriveVariable.getNextValue();
     for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
@@ -59,12 +62,14 @@ int Simulator::eventRoutine(void) {
                                                 this->numberOfConnections++));
       }
     }
-    src = this->srcVariable.getNextIntValue();
-    dst = this->dstVariable.getNextIntValue();
-    while (src == dst) {
-      dst = this->dstVariable.getNextIntValue();
+    this->src = this->srcVariable.getNextIntValue();
+    this->dst = this->dstVariable.getNextIntValue();
+    while (this->src == this->dst) {
+      this->dst = this->dstVariable.getNextIntValue();
     }
-    this->rtnAllocation = this->controller.assignConnection(src, dst, 10);
+    this->bitRate = bitRateVariable.getNextIntValue();
+    this->rtnAllocation = this->controller.assignConnection(
+        this->src, this->dst, this->bitRate, this->numberOfConnections);
   } else if (this->currentEvent.getType() == DEPARTURE) {
   }
   this->events.pop_front();
@@ -79,7 +84,20 @@ void Simulator::init(void) {
       this->seedSrc, this->controller.getNetwork().getNumberOfNodes() - 1);
   this->dstVariable = UniformVariable(
       this->seedDst, this->controller.getNetwork().getNumberOfNodes() - 1);
+  this->bitRateVariable =
+      UniformVariable(this->seedBitRate, this->bitRatesDefault.size() - 1);
   this->events.push_back(Event(ARRIVE, this->arriveVariable.getNextValue(),
                                this->numberOfConnections++));
   this->bitRates = this->bitRatesDefault;
+}
+
+void Simulator::run(void) {
+  int timesToShow = 20;
+  int arrivesByCycle = this->goalConnections / timesToShow;
+
+  for (int i = 1; i <= timesToShow; i++) {
+    while (this->numberOfConnections <= i * arrivesByCycle) {
+      eventRoutine();
+    }
+  }
 }
