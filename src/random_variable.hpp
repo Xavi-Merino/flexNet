@@ -5,6 +5,7 @@
 
 class RandomVariable {
  public:
+  RandomVariable();
   RandomVariable(unsigned int seed, double parameter1);
   virtual double getNextValue(void) = 0;
 

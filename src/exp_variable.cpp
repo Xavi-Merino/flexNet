@@ -1,5 +1,7 @@
 #include "exp_variable.hpp"
 
+ExpVariable::ExpVariable(void) : RandomVariable() {}
+
 ExpVariable::ExpVariable(unsigned int seed, double parameter1)
     : RandomVariable(seed, parameter1) {
   if (parameter1 <= 0) {

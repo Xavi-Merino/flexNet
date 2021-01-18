@@ -7,6 +7,7 @@
 
 class ExpVariable : public RandomVariable {
  public:
+  ExpVariable(void);
   ExpVariable(unsigned int seed, double parameter1);
   double getNextValue(void);
 };
