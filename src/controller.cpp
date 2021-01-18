@@ -2,24 +2,39 @@
 
 #include <fstream>
 
-Controller::Controller() { this->bitRates = std::vector<double>(); };
+Controller::Controller() { this->connections = std::vector<Connection>(); };
 
 Controller::Controller(Network network) {
   this->network = network;
-  this->bitRates = std::vector<double>();
+  this->connections = std::vector<Connection>();
 };
 
 Controller::~Controller(){};
 
-int Controller::assignConnection(int src, int dst, int numberOfSlots,
-                                 long long idConnection) {
+allocationStatus Controller::assignConnection(int src, int dst, int bitRate,
+                                              long long idConnection) {
   Connection con = Connection(idConnection);
-  return this->allocator->exec(src, dst, con);
+  this->rtnAllocation = this->allocator->exec(src, dst, bitRate, con);
+  if (this->rtnAllocation == ALLOCATED) {
+    this->connections.push_back(con);
+  }
+  return this->rtnAllocation;
 }
 
-int Controller::unassignConnection(long long idConnection){
-
-};
+int Controller::unassignConnection(long long idConnection) {
+  for (unsigned int i = 0; i < this->connections.size(); i++) {
+    if (this->connections[i].id == idConnection) {
+      for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
+        for (unsigned int k = 0; k < this->connections[i].slots[j].size();
+             j++) {
+          this->network.unuseSlot(connections[i].links[j],
+                                  this->connections[i].slots[j][k]);
+        }
+      }
+    }
+  }
+  return 0;
+}
 
 void Controller::setPaths(std::string filename) {
   // open JSON file

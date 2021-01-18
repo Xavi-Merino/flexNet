@@ -13,8 +13,8 @@ class Controller {
 
   ~Controller();
 
-  int assignConnection(int src, int dst, int numberOfSlots,
-                       long long idConnection);
+  allocationStatus assignConnection(int src, int dst, int bitRate,
+                                    long long idConnection);
   int unassignConnection(long long idConnection);
 
   void setPaths(std::string filename);
@@ -29,7 +29,8 @@ class Controller {
   Network network;
   Allocator *allocator;
   std::vector<std::vector<std::vector<std::vector<Link *>>>> path;
-  std::vector<double> bitRates;
+  std::vector<Connection> connections;
+  allocationStatus rtnAllocation;
 };
 
 #endif
