@@ -75,24 +75,29 @@ Network::Network(std::string filename) {
 }
 
 Network::Network(const Network &net) {
-  this->link_counter = 0;
-  this->node_counter = 0;
-  this->nodes = net.nodes;
-  this->links = net.links;
-  this->links_in = net.links_in;
-  this->links_out = net.links_out;
+  this->link_counter = net.link_counter;
+  this->node_counter = net.node_counter;
+  this->nodes = std::vector<Node *>(net.nodes.size());
+  for (unsigned int i = 0; i < this->nodes.size(); i++) {
+    this->nodes[i] = net.nodes[i];
+  }
+  this->links = std::vector<Link *>(net.links.size());
+  for (unsigned int i = 0; i < this->links.size(); i++) {
+    this->links[i] = net.links[i];
+  }
+  this->links_in = std::vector<Link *>(net.links_in.size());
+  for (unsigned int i = 0; i < this->links_in.size(); i++) {
+    this->links_in[i] = net.links_in[i];
+  }
+  this->links_out = std::vector<Link *>(net.links_out.size());
+  for (unsigned int i = 0; i < this->links_out.size(); i++) {
+    this->links_out[i] = net.links_out[i];
+  }
   this->nodes_in = net.nodes_in;
   this->nodes_out = net.nodes_out;
 }
 
-Network::~Network() {
-  for (int i = 0; i < this->link_counter; i++) {
-    delete this->links[i];
-  }
-  for (int i = 0; i < this->node_counter; i++) {
-    delete this->nodes[i];
-  }
-}
+Network::~Network() {}
 
 // May be useless
 Node *Network::getNode(int pos) {

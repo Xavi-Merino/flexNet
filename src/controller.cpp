@@ -9,7 +9,14 @@ Controller::Controller(Network network) {
   this->connections = std::vector<Connection>();
 };
 
-Controller::~Controller(){};
+Controller::~Controller() {
+  for (int i = 0; i < this->network.getNumberOfLinks(); i++) {
+    delete this->network.getLink(i);
+  }
+  for (int i = 0; i < this->network.getNumberOfNodes(); i++) {
+    delete this->network.getNode(i);
+  }
+};
 
 allocationStatus Controller::assignConnection(int src, int dst, int bitRate,
                                               long long idConnection) {
