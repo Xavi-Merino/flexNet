@@ -146,6 +146,10 @@ class Network {
    */
   void useSlot(int linkPos, int slotFrom, int slotTo);
 
+  void unuseSlot(int linkPos, int slotPos);
+
+  void unuseSlot(int linkPos, int slotFrom, int slotTo);
+
   //   int distanceClass(int src, int dst);
 
   //   void distanceClassUntil(int s, int d, int& path_counter);

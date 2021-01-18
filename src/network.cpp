@@ -199,6 +199,25 @@ void Network::useSlot(int linkPos, int slotFrom, int slotTo) {
     this->links[linkPos]->setSlot(i, true);
 }
 
+void Network::unuseSlot(int linkPos, int slotPos) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  this->links[linkPos]->setSlot(slotPos, false);
+}
+
+void Network::unuseSlot(int linkPos, int slotFrom, int slotTo) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  if (slotFrom > slotTo)
+    throw std::runtime_error(
+        "Initial slot position must be lower than the final slot position.");
+
+  for (int i = slotFrom; i < slotTo; i++)
+    this->links[linkPos]->setSlot(i, false);
+}
+
 int Network::getNumberOfLinks() { return this->link_counter; }
 
 int Network::getNumberOfNodes() { return this->node_counter; }
