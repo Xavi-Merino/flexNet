@@ -1,6 +1,8 @@
 #ifndef __SIMULATOR_H__
 #define __SIMULATOR_H__
 
+#include <list>
+
 #include "controller.hpp"
 #include "event.hpp"
 #include "exp_variable.hpp"
@@ -17,6 +19,6 @@ class Simulator {
   ExpVariable lambda;
   ExpVariable mu;
   Controller controller;
-}
+};
 
 #endif
