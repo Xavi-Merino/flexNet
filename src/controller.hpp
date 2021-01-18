@@ -17,9 +17,12 @@ class Controller {
 
   void setNetwork(Network network);
 
+  Network getNetwork(void);
+
  private:
   Network network;
-  std::vector<std::vector<std::vector<std::vector<Link*>>>> path;
+  std::vector<std::vector<std::vector<std::vector<Link *>>>> path;
+  std::vector<double> bitRates;
 };
 
 #endif

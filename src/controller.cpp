@@ -2,9 +2,12 @@
 
 #include <fstream>
 
-Controller::Controller(){};
+Controller::Controller() { this->bitRates = std::vector<double>(); };
 
-Controller::Controller(Network network){};
+Controller::Controller(Network network) {
+  this->network = network;
+  this->bitRates = std::vector<double>();
+};
 
 Controller::~Controller(){};
 
@@ -65,4 +68,6 @@ void Controller::setPaths(std::string filename) {
   }
 }
 
-void Controller::setNetwork(Network network) { this->network = network; };
+void Controller::setNetwork(Network network) { this->network = network; }
+
+Network Controller::getNetwork(void) { return this->network; }
