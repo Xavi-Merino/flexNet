@@ -30,11 +30,11 @@ TEST_CASE("Mean (Exponential)") {
 TEST_CASE("Variance (Exponential)") {
   double lambda = 2.0;
   ExpVariable e = ExpVariable(1, lambda);
-  double mean = 0, mean_prev = 0;
+  double mean = 0;
   int number_of_samples = 1000000;
   auto samples = std::vector<double>(number_of_samples);
   double sample;
-  double sn1, sn;
+  double sn;
   for (int i = 0; i < number_of_samples; i++) {
     sample = e.getNextValue();
     mean += sample;
