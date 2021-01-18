@@ -46,9 +46,11 @@ class Simulator {
   long long numberOfConnections;
   long long goalConnections;
   double nextEventTime;
-  int rtnAllocation;
+  allocationStatus rtnAllocation;
   int src, dst, bitRate;
   std::vector<double> bitRatesDefault;
+  double allocatedConnections;
+  double blockingProbability;
 
   int eventRoutine(void);
 };

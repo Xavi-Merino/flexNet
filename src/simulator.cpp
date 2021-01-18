@@ -1,11 +1,14 @@
 #include "simulator.hpp"
 
+#include <iostream>
+
 Simulator::Simulator(void) {
   this->defaultValues();
   this->controller = Controller();
   this->events = std::list<Event>();
   this->bitRatesDefault =
       std::vector<double>({10.0, 40.0, 100.0, 400.0, 1000.0});
+  this->allocatedConnections = 0;
 }
 
 Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
@@ -16,6 +19,7 @@ Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
   this->events = std::list<Event>();
   this->bitRatesDefault =
       std::vector<double>({10.0, 40.0, 100.0, 400.0, 1000.0});
+  this->allocatedConnections = 0;
 }
 
 void Simulator::setLambda(double lambda) { this->lambda = lambda; }
@@ -52,7 +56,7 @@ void Simulator::defaultValues() {
 
 int Simulator::eventRoutine(void) {
   this->currentEvent = this->events.front();
-  this->rtnAllocation = 0;
+  this->rtnAllocation = N_A;
   if (this->currentEvent.getType() == ARRIVE) {
     nextEventTime = this->clock + this->arriveVariable.getNextValue();
     for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
@@ -70,7 +74,19 @@ int Simulator::eventRoutine(void) {
     this->bitRate = bitRateVariable.getNextIntValue();
     this->rtnAllocation = this->controller.assignConnection(
         this->src, this->dst, this->bitRate, this->numberOfConnections);
+    if (this->rtnAllocation == ALLOCATED) {
+      nextEventTime = this->clock + this->departVariable.getNextValue();
+      for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
+           pos != this->events.rend(); pos++) {
+        if (pos->getTime() < nextEventTime) {
+          this->events.insert(++pos.base(), Event(DEPARTURE, nextEventTime,
+                                                  this->numberOfConnections));
+        }
+      }
+      this->allocatedConnections++;
+    }
   } else if (this->currentEvent.getType() == DEPARTURE) {
+    this->controller.unassignConnection(this->currentEvent.getIdConnection());
   }
   this->events.pop_front();
   return this->rtnAllocation;
@@ -99,5 +115,8 @@ void Simulator::run(void) {
     while (this->numberOfConnections <= i * arrivesByCycle) {
       eventRoutine();
     }
+    std::cout << (100 / timesToShow) * i << "% \t Blocking probability: "
+              << 1 - this->allocatedConnections / this->numberOfConnections
+              << "\n";
   }
 }
