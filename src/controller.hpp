@@ -15,6 +15,8 @@ class Controller {
 
   void setPaths(std::string filename);
 
+  void setNetwork(Network network);
+
  private:
   Network network;
   std::vector<std::vector<std::vector<std::vector<Link*>>>> path;

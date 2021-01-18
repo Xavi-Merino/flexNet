@@ -63,4 +63,6 @@ void Controller::setPaths(std::string filename) {
       }
     }
   }
-};
+}
+
+void Controller::setNetwork(Network network) { this->network = network; };
