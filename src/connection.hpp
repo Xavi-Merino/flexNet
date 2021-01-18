@@ -16,5 +16,7 @@ class Connection {
   long long id;
   std::vector<int> links;
   std::vector<std::vector<int> > slots;
+
+  friend class Controller;
 };
 #endif
