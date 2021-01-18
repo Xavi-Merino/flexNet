@@ -16,8 +16,8 @@ class Simulator {
  private:
   double clock;
   std::list<Event> events;
-  ExpVariable lambda;
-  ExpVariable mu;
+  ExpVariable arriveVariable;
+  ExpVariable departVariable;
   Controller controller;
 };
 
