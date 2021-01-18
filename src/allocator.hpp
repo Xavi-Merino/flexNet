@@ -4,7 +4,7 @@
 #include "connection.hpp"
 #include "network.hpp"
 
-typedef enum allocStatus { ALLOCATED, NOT_ALLOCATED } allocationStatus;
+typedef enum allocStatus { ALLOCATED, NOT_ALLOCATED, N_A } allocationStatus;
 
 class Allocator {
  public:
