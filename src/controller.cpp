@@ -11,8 +11,14 @@ Controller::Controller(Network network) {
 
 Controller::~Controller(){};
 
-int Controller::assignConnection(int src, int dst, int numberOfSlots) {
-  return 0;
+int Controller::assignConnection(int src, int dst, int numberOfSlots,
+                                 long long idConnection) {
+  Connection con = Connection(idConnection);
+  return this->allocator->exec(src, dst, con);
+}
+
+int Controller::unassignConnection(long long idConnection){
+
 };
 
 void Controller::setPaths(std::string filename) {
@@ -71,3 +77,7 @@ void Controller::setPaths(std::string filename) {
 void Controller::setNetwork(Network network) { this->network = network; }
 
 Network Controller::getNetwork(void) { return this->network; }
+
+void Controller::setAllocator(Allocator *allocator) {
+  this->allocator = allocator;
+}

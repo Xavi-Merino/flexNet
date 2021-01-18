@@ -1,6 +1,8 @@
 #ifndef __CONTROLLER_H__
 #define __CONTROLLER_H__
 
+#include "allocator.hpp"
+#include "connection.hpp"
 #include "network.hpp"
 
 class Controller {
@@ -11,7 +13,9 @@ class Controller {
 
   ~Controller();
 
-  int assignConnection(int src, int dst, int numberOfSlots);
+  int assignConnection(int src, int dst, int numberOfSlots,
+                       long long idConnection);
+  int unassignConnection(long long idConnection);
 
   void setPaths(std::string filename);
 
@@ -19,8 +23,11 @@ class Controller {
 
   Network getNetwork(void);
 
+  void setAllocator(Allocator *allocator);
+
  private:
   Network network;
+  Allocator *allocator;
   std::vector<std::vector<std::vector<std::vector<Link *>>>> path;
   std::vector<double> bitRates;
 };
