@@ -86,12 +86,16 @@ class Network {
  */
   Network(std::string filename);
   /**
+   * @brief Constructs a new Network object from the given Network.
+   *
+   * @param net the network object. Its values won't be modified.
+   */
+  Network(const Network &net);
+  /**
    * @brief Adds the Node to the Network object. Node must be a pointer.
    *
    * @param node  the new Node of this Node object
    */
-  Network(const Network &net);
-
   void addNode(Node *node);
   /**
    * @brief Adds the Link to the Network object. Link must be a pointer
@@ -139,23 +143,47 @@ class Network {
    * @brief  Activates an interval of slots to be used in the required link
    * position.
    *
-   * @param linkPos the position of the link vector
+   * @param linkPos the position of the link vector.
    * @param slotFrom the position of the slot vector at the beggining of the
+   * required interval.
+   * @param slotTo the position of the slot vector at the end of the required
    * interval.
-   * @param slotTo the position of the slot vector at the end of the interval.
    */
   void useSlot(int linkPos, int slotFrom, int slotTo);
-
+  /**
+   * @brief Deactivates a single slot that is no longer being used located at
+   * the required link position.
+   *
+   * @param linkPos the position of the link vector.
+   * @param slotPos the position of the slot vector.
+   */
   void unuseSlot(int linkPos, int slotPos);
-
+  /**
+   * @brief Deactivates an interval of slots that are no longer being used
+   * located at the required link position.
+   *
+   * @param linkPos the position of the link vector.
+   * @param slotFrom the position of the slot vector at the beggining of the
+   * required interval.
+   * @param slotTo the position of the slot vector at the end of the required
+   * interval.
+   */
   void unuseSlot(int linkPos, int slotFrom, int slotTo);
 
   //   int distanceClass(int src, int dst);
 
   //   void distanceClassUntil(int s, int d, int& path_counter);
-
+  /**
+   * @brief Get the amount of links that the Network object has.
+   *
+   * @return int the number of links in the Network.
+   */
   int getNumberOfLinks();
-
+  /**
+   * @brief Get the amount of nodes that the Network object has.
+   *
+   * @return int the number of nodes in the Network.
+   */
   int getNumberOfNodes();
 
  private:
