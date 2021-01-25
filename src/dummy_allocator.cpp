@@ -6,9 +6,14 @@ DummyAllocator::~DummyAllocator() {}
 
 allocationStatus DummyAllocator::exec(int src, int dst, int bitRate,
                                       Connection &con) {
-  if (this->network->isConnected(src, dst)) {
-    con.addLink(0, 0, 2);
-    return ALLOCATED;
+  int link = this->network->isConnected(src, dst);
+  if (link != -1) {
+    if (!this->network->isSlotUsed(link, 0, 2)) {
+      con.addLink(link, 0, 2);
+      return ALLOCATED;
+    } else {
+      return NOT_ALLOCATED;
+    }
   } else {
     return NOT_ALLOCATED;
   }

@@ -24,6 +24,11 @@ allocationStatus Controller::assignConnection(int src, int dst, int bitRate,
   this->rtnAllocation = this->allocator->exec(src, dst, bitRate, con);
   if (this->rtnAllocation == ALLOCATED) {
     this->connections.push_back(con);
+    for (unsigned int j = 0; j < con.links.size(); j++) {
+      for (unsigned int k = 0; k < con.slots[j].size(); k++) {
+        this->network->useSlot(con.links[j], con.slots[j][k]);
+      }
+    }
   }
   return this->rtnAllocation;
 }
@@ -33,8 +38,8 @@ int Controller::unassignConnection(long long idConnection) {
     if (this->connections[i].id == idConnection) {
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
         for (unsigned int k = 0; k < this->connections[i].slots[j].size();
-             j++) {
-          this->network->unuseSlot(connections[i].links[j],
+             k++) {
+          this->network->unuseSlot(this->connections[i].links[j],
                                    this->connections[i].slots[j][k]);
         }
       }
