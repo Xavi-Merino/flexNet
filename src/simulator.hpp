@@ -22,6 +22,7 @@ class Simulator {
   void setSeedBitRate(unsigned int seed);
   void setGoalConnections(long long goal);
   void setBitRates(std::vector<double> bitRates);
+  void setAllocator(Allocator *newAllocator);
   void defaultValues();
 
  private:
@@ -32,7 +33,7 @@ class Simulator {
   UniformVariable srcVariable;
   UniformVariable dstVariable;
   UniformVariable bitRateVariable;
-  Controller controller;
+  Controller *controller;
   Event currentEvent;
   std::vector<double> bitRates;
 

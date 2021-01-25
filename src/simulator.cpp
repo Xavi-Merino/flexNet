@@ -4,7 +4,7 @@
 
 Simulator::Simulator(void) {
   this->defaultValues();
-  this->controller = Controller();
+  this->controller = new Controller();
   this->events = std::list<Event>();
   this->bitRatesDefault =
       std::vector<double>({10.0, 40.0, 100.0, 400.0, 1000.0});
@@ -13,9 +13,9 @@ Simulator::Simulator(void) {
 
 Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
   this->defaultValues();
-  this->controller = Controller();
-  this->controller.setNetwork(Network(networkFilename));
-  this->controller.setPaths(pathFilename);
+  this->controller = new Controller();
+  this->controller->setNetwork(new Network(networkFilename));
+  this->controller->setPaths(pathFilename);
   this->events = std::list<Event>();
   this->bitRatesDefault =
       std::vector<double>({10.0, 40.0, 100.0, 400.0, 1000.0});
@@ -42,6 +42,11 @@ void Simulator::setBitRates(std::vector<double> bitRates) {
   this->bitRatesDefault = std::vector<double>(bitRates);
 }
 
+void Simulator::setAllocator(Allocator *newAllocator) {
+  newAllocator->setNetwork(this->controller->getNetwork());
+  this->controller->setAllocator(newAllocator);
+}
+
 void Simulator::defaultValues() {
   this->lambda = 3;
   this->mu = 10;
@@ -57,6 +62,7 @@ void Simulator::defaultValues() {
 int Simulator::eventRoutine(void) {
   this->currentEvent = this->events.front();
   this->rtnAllocation = N_A;
+  this->clock += this->currentEvent.getTime();
   if (this->currentEvent.getType() == ARRIVE) {
     nextEventTime = this->clock + this->arriveVariable.getNextValue();
     for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
@@ -72,7 +78,7 @@ int Simulator::eventRoutine(void) {
       this->dst = this->dstVariable.getNextIntValue();
     }
     this->bitRate = bitRateVariable.getNextIntValue();
-    this->rtnAllocation = this->controller.assignConnection(
+    this->rtnAllocation = this->controller->assignConnection(
         this->src, this->dst, this->bitRate, this->numberOfConnections);
     if (this->rtnAllocation == ALLOCATED) {
       nextEventTime = this->clock + this->departVariable.getNextValue();
@@ -86,7 +92,7 @@ int Simulator::eventRoutine(void) {
       this->allocatedConnections++;
     }
   } else if (this->currentEvent.getType() == DEPARTURE) {
-    this->controller.unassignConnection(this->currentEvent.getIdConnection());
+    this->controller->unassignConnection(this->currentEvent.getIdConnection());
   }
   this->events.pop_front();
   return this->rtnAllocation;
@@ -97,9 +103,9 @@ void Simulator::init(void) {
   this->arriveVariable = ExpVariable(this->seedArrive, this->lambda);
   this->departVariable = ExpVariable(this->seedDeparture, this->mu);
   this->srcVariable = UniformVariable(
-      this->seedSrc, this->controller.getNetwork().getNumberOfNodes() - 1);
+      this->seedSrc, this->controller->getNetwork()->getNumberOfNodes() - 1);
   this->dstVariable = UniformVariable(
-      this->seedDst, this->controller.getNetwork().getNumberOfNodes() - 1);
+      this->seedDst, this->controller->getNetwork()->getNumberOfNodes() - 1);
   this->bitRateVariable =
       UniformVariable(this->seedBitRate, this->bitRatesDefault.size() - 1);
   this->events.push_back(Event(ARRIVE, this->arriveVariable.getNextValue(),
