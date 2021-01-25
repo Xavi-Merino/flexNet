@@ -67,10 +67,11 @@ int Simulator::eventRoutine(void) {
     nextEventTime = this->clock + this->arriveVariable.getNextValue();
     for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
          pos != this->events.rend(); pos++) {
-      if (pos->getTime() < nextEventTime) {
-        this->events.insert(++pos.base(), Event(ARRIVE, nextEventTime,
-                                                this->numberOfConnections++));
+      if ((--pos)->getTime() < nextEventTime) {
+        this->events.insert((++pos).base(), Event(ARRIVE, nextEventTime,
+                                                  this->numberOfConnections++));
       }
+      break;
     }
     this->src = this->srcVariable.getNextIntValue();
     this->dst = this->dstVariable.getNextIntValue();
@@ -79,15 +80,18 @@ int Simulator::eventRoutine(void) {
     }
     this->bitRate = bitRateVariable.getNextIntValue();
     this->rtnAllocation = this->controller->assignConnection(
-        this->src, this->dst, this->bitRate, this->numberOfConnections);
+        this->src, this->dst, this->bitRate,
+        this->currentEvent.getIdConnection());
     if (this->rtnAllocation == ALLOCATED) {
       nextEventTime = this->clock + this->departVariable.getNextValue();
       for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
            pos != this->events.rend(); pos++) {
-        if (pos->getTime() < nextEventTime) {
-          this->events.insert(++pos.base(), Event(DEPARTURE, nextEventTime,
-                                                  this->numberOfConnections));
+        if ((--pos)->getTime() < nextEventTime) {
+          this->events.insert((++pos).base(),
+                              Event(DEPARTURE, nextEventTime,
+                                    this->currentEvent.getIdConnection()));
         }
+        break;
       }
       this->allocatedConnections++;
     }
