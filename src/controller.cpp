@@ -4,17 +4,17 @@
 
 Controller::Controller() { this->connections = std::vector<Connection>(); };
 
-Controller::Controller(Network network) {
+Controller::Controller(Network *network) {
   this->network = network;
   this->connections = std::vector<Connection>();
 };
 
 Controller::~Controller() {
-  for (int i = 0; i < this->network.getNumberOfLinks(); i++) {
-    delete this->network.getLink(i);
+  for (int i = 0; i < this->network->getNumberOfLinks(); i++) {
+    delete this->network->getLink(i);
   }
-  for (int i = 0; i < this->network.getNumberOfNodes(); i++) {
-    delete this->network.getNode(i);
+  for (int i = 0; i < this->network->getNumberOfNodes(); i++) {
+    delete this->network->getNode(i);
   }
 };
 
@@ -34,8 +34,8 @@ int Controller::unassignConnection(long long idConnection) {
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
         for (unsigned int k = 0; k < this->connections[i].slots[j].size();
              j++) {
-          this->network.unuseSlot(connections[i].links[j],
-                                  this->connections[i].slots[j][k]);
+          this->network->unuseSlot(connections[i].links[j],
+                                   this->connections[i].slots[j][k]);
         }
       }
     }
@@ -50,7 +50,7 @@ void Controller::setPaths(std::string filename) {
   file >> NSFnet;
 
   int numberOfNodes;
-  numberOfNodes = this->network.getNumberOfNodes();
+  numberOfNodes = this->network->getNumberOfNodes();
 
   // allocate space for path[src]
   this->path.resize(numberOfNodes);
@@ -74,7 +74,7 @@ void Controller::setPaths(std::string filename) {
     int linksInPath;
     linksInPath = pathsNumber - 1;
     // beacuase 3 nodes has 2 links
-    this->path[src][dst].resize(linksInPath);
+    this->path[src][dst].resize(pathsNumber);
 
     // go through available routes
     for (int b = 0; b < pathsNumber; b++) {
@@ -88,17 +88,17 @@ void Controller::setPaths(std::string filename) {
         nextNode = NSFnet["routes"][i]["paths"][b][c + 1];
 
         int idLink;
-        idLink = this->network.isConnected(actNode, nextNode);
+        idLink = this->network->isConnected(actNode, nextNode);
 
-        this->path[src][dst][b].push_back(this->network.getLink(idLink));
+        this->path[src][dst][b].push_back(this->network->getLink(idLink));
       }
     }
   }
 }
 
-void Controller::setNetwork(Network network) { this->network = network; }
+void Controller::setNetwork(Network *network) { this->network = network; }
 
-Network Controller::getNetwork(void) { return this->network; }
+Network *Controller::getNetwork(void) { return this->network; }
 
 void Controller::setAllocator(Allocator *allocator) {
   this->allocator = allocator;

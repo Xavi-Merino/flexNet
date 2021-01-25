@@ -24,7 +24,7 @@ class Controller {
    *
    * @param network the Network object.
    */
-  Controller(Network network);
+  Controller(Network *network);
   /**
    * @brief Destroys the Controller object.
    *
@@ -106,13 +106,13 @@ class Controller {
    *
    * @param network the network given to the controller.
    */
-  void setNetwork(Network network);
+  void setNetwork(Network *network);
   /**
    * @brief Get the Network in the controller.
    *
    * @return Network the network object from the controller.
    */
-  Network getNetwork(void);
+  Network *getNetwork(void);
   /**
    * @brief Set the allocator of the controller. The Allocator object
    * must be given as a pointer.
@@ -122,7 +122,7 @@ class Controller {
   void setAllocator(Allocator *allocator);
 
  private:
-  Network network;
+  Network *network;
   Allocator *allocator;
   std::vector<std::vector<std::vector<std::vector<Link *>>>> path;
   std::vector<Connection> connections;
