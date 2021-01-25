@@ -2,7 +2,10 @@
 
 #include <fstream>
 
-Controller::Controller() { this->connections = std::vector<Connection>(); };
+Controller::Controller() {
+  this->connections = std::vector<Connection>();
+  this->network = nullptr;
+};
 
 Controller::Controller(Network *network) {
   this->network = network;
@@ -10,11 +13,13 @@ Controller::Controller(Network *network) {
 };
 
 Controller::~Controller() {
-  for (int i = 0; i < this->network->getNumberOfLinks(); i++) {
-    delete this->network->getLink(i);
-  }
-  for (int i = 0; i < this->network->getNumberOfNodes(); i++) {
-    delete this->network->getNode(i);
+  if (this->network != nullptr) {
+    for (int i = 0; i < this->network->getNumberOfLinks(); i++) {
+      delete this->network->getLink(i);
+    }
+    for (int i = 0; i < this->network->getNumberOfNodes(); i++) {
+      delete this->network->getNode(i);
+    }
   }
 };
 
