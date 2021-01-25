@@ -5,7 +5,7 @@ Event::Event(void) {
   this->idConnection = -1;
 }
 
-Event::Event(eventType type, double time, int idConnection) {
+Event::Event(eventType type, double time, long long idConnection) {
   this->type = type;
   this->time = time;
   this->idConnection = idConnection;

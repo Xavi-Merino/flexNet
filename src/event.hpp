@@ -8,7 +8,7 @@ typedef enum eventType { ARRIVE, DEPARTURE } eventType;
 class Event {
  public:
   Event(void);
-  Event(eventType type, double time, int idConnection);
+  Event(eventType type, double time, long long idConnection);
 
   ~Event();
 
