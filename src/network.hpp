@@ -186,6 +186,9 @@ class Network {
    */
   int getNumberOfNodes();
 
+  bool isSlotUsed(int link, int slot);
+  bool isSlotUsed(int link, int fromSlot, int toSlot);
+
  private:
   std::vector<Node *> nodes;
   std::vector<Link *> links;

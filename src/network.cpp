@@ -218,6 +218,8 @@ void Network::unuseSlot(int linkPos, int slotFrom, int slotTo) {
   if (slotFrom > slotTo)
     throw std::runtime_error(
         "Initial slot position must be lower than the final slot position.");
+  if (slotFrom == slotTo)
+    throw std::runtime_error("Slot from and slot To cannot be equals.");
 
   for (int i = slotFrom; i < slotTo; i++)
     this->links[linkPos]->setSlot(i, false);
@@ -226,6 +228,39 @@ void Network::unuseSlot(int linkPos, int slotFrom, int slotTo) {
 int Network::getNumberOfLinks() { return this->link_counter; }
 
 int Network::getNumberOfNodes() { return this->node_counter; }
+
+bool Network::isSlotUsed(int link, int slot) {
+  if (link < 0 || link >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  if (slot < 0 || slot >= static_cast<int>(this->links[link]->getSlots()))
+    throw std::runtime_error("slot position out of bounds.");
+  return this->links[link]->getSlot(slot);
+}
+
+bool Network::isSlotUsed(int link, int fromSlot, int toSlot) {
+  if (link < 0 || link >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  if (fromSlot < 0 ||
+      fromSlot >= static_cast<int>(this->links[link]->getSlots()))
+    throw std::runtime_error("slot position out of bounds.");
+  if (toSlot < 0 || toSlot >= static_cast<int>(this->links[link]->getSlots()))
+    throw std::runtime_error("slot position out of bounds.");
+  if (fromSlot > toSlot)
+    throw std::runtime_error(
+        "Initial slot position must be lower than the final slot position.");
+
+  if (fromSlot == toSlot)
+    throw std::runtime_error("Slot from and slot To cannot be equals.");
+
+  for (int i = fromSlot; i < toSlot; i++) {
+    if (this->links[link]->getSlot(i)) {
+      return true;
+    }
+  }
+  return false;
+}
 
 /*
 int Network::distanceClass(int src, int dst) {
