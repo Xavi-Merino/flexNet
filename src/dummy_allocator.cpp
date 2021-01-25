@@ -13,3 +13,4 @@ allocationStatus DummyAllocator::exec(int src, int dst, int bitRate,
     return NOT_ALLOCATED;
   }
 }
+DummyAllocator::DummyAllocator() : Allocator() {}

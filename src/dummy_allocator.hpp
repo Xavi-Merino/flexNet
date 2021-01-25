@@ -5,6 +5,7 @@
 
 class DummyAllocator : public Allocator {
  public:
+  DummyAllocator();
   DummyAllocator(Network *network);
   ~DummyAllocator();
 
