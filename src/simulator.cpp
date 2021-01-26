@@ -6,8 +6,22 @@ Simulator::Simulator(void) {
   this->defaultValues();
   this->controller = new Controller();
   this->events = std::list<Event>();
-  this->bitRatesDefault =
-      std::vector<double>({10.0, 40.0, 100.0, 400.0, 1000.0});
+  this->bitRatesDefault = std::vector<BitRate>();
+  BitRate auxB = BitRate(10.0);
+  auxB.addModulation(std::string("BPSK"), 1, 5520);
+  this->bitRatesDefault.push_back(auxB);
+  auxB = BitRate(40.0);
+  auxB.addModulation(std::string("BPSK"), 4, 5520);
+  this->bitRatesDefault.push_back(auxB);
+  auxB = BitRate(100.0);
+  auxB.addModulation(std::string("BPSK"), 8, 5520);
+  this->bitRatesDefault.push_back(auxB);
+  auxB = BitRate(400.0);
+  auxB.addModulation(std::string("BPSK"), 32, 5520);
+  this->bitRatesDefault.push_back(auxB);
+  auxB = BitRate(1000.0);
+  auxB.addModulation(std::string("BPSK"), 80, 5520);
+  this->bitRatesDefault.push_back(auxB);
   this->allocatedConnections = 0;
 }
 
@@ -17,8 +31,22 @@ Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
   this->controller->setNetwork(new Network(networkFilename));
   this->controller->setPaths(pathFilename);
   this->events = std::list<Event>();
-  this->bitRatesDefault =
-      std::vector<double>({10.0, 40.0, 100.0, 400.0, 1000.0});
+  this->bitRatesDefault = std::vector<BitRate>();
+  BitRate auxB = BitRate(10.0);
+  auxB.addModulation(std::string("BPSK"), 1, 5520);
+  this->bitRatesDefault.push_back(auxB);
+  auxB = BitRate(40.0);
+  auxB.addModulation(std::string("BPSK"), 4, 5520);
+  this->bitRatesDefault.push_back(auxB);
+  auxB = BitRate(100.0);
+  auxB.addModulation(std::string("BPSK"), 8, 5520);
+  this->bitRatesDefault.push_back(auxB);
+  auxB = BitRate(400.0);
+  auxB.addModulation(std::string("BPSK"), 32, 5520);
+  this->bitRatesDefault.push_back(auxB);
+  auxB = BitRate(1000.0);
+  auxB.addModulation(std::string("BPSK"), 80, 5520);
+  this->bitRatesDefault.push_back(auxB);
   this->allocatedConnections = 0;
 }
 
@@ -38,8 +66,8 @@ void Simulator::setGoalConnections(long long goal) {
   this->goalConnections = goal;
 }
 
-void Simulator::setBitRates(std::vector<double> bitRates) {
-  this->bitRatesDefault = std::vector<double>(bitRates);
+void Simulator::setBitRates(std::vector<BitRate> bitRates) {
+  this->bitRatesDefault = std::vector<BitRate>(bitRates);
 }
 
 void Simulator::setAllocator(Allocator *newAllocator) {

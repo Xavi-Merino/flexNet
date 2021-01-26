@@ -21,7 +21,7 @@ class Simulator {
   void setSeedDeparture(unsigned int seed);
   void setSeedBitRate(unsigned int seed);
   void setGoalConnections(long long goal);
-  void setBitRates(std::vector<double> bitRates);
+  void setBitRates(std::vector<BitRate> bitRates);
   void setAllocator(Allocator *newAllocator);
   void defaultValues();
 
@@ -35,7 +35,7 @@ class Simulator {
   UniformVariable bitRateVariable;
   Controller *controller;
   Event currentEvent;
-  std::vector<double> bitRates;
+  std::vector<BitRate> bitRates;
 
   double lambda;
   double mu;
@@ -49,7 +49,7 @@ class Simulator {
   double nextEventTime;
   allocationStatus rtnAllocation;
   int src, dst, bitRate;
-  std::vector<double> bitRatesDefault;
+  std::vector<BitRate> bitRatesDefault;
   double allocatedConnections;
   double blockingProbability;
 
