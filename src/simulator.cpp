@@ -91,16 +91,16 @@ void Simulator::defaultValues() {
 int Simulator::eventRoutine(void) {
   this->currentEvent = this->events.front();
   this->rtnAllocation = N_A;
-  this->clock += this->currentEvent.getTime();
+  this->clock = this->currentEvent.getTime();
   if (this->currentEvent.getType() == ARRIVE) {
     nextEventTime = this->clock + this->arriveVariable.getNextValue();
     for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
          pos != this->events.rend(); pos++) {
-      if ((--pos)->getTime() < nextEventTime) {
-        this->events.insert((++pos).base(), Event(ARRIVE, nextEventTime,
-                                                  this->numberOfConnections++));
+      if ((pos)->getTime() < nextEventTime) {
+        this->events.insert((pos).base(), Event(ARRIVE, nextEventTime,
+                                                this->numberOfConnections++));
+        break;
       }
-      break;
     }
     this->src = this->srcVariable.getNextIntValue();
     this->dst = this->dstVariable.getNextIntValue();
@@ -115,12 +115,12 @@ int Simulator::eventRoutine(void) {
       nextEventTime = this->clock + this->departVariable.getNextValue();
       for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
            pos != this->events.rend(); pos++) {
-        if ((--pos)->getTime() < nextEventTime) {
-          this->events.insert((++pos).base(),
+        if ((pos)->getTime() < nextEventTime) {
+          this->events.insert((pos).base(),
                               Event(DEPARTURE, nextEventTime,
                                     this->currentEvent.getIdConnection()));
+          break;
         }
-        break;
       }
       this->allocatedConnections++;
     }
