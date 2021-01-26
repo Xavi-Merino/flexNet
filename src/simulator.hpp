@@ -1,6 +1,16 @@
 #ifndef __SIMULATOR_H__
 #define __SIMULATOR_H__
 
+#define BEGIN_ALLOC_FUNCTION(name)    \
+  class f_##name : public Allocator { \
+   public:                            \
+    allocationStatus exec(int src, int dst, BitRate bitRate, Connection &con)
+#define END_ALLOC_FUNCTION \
+  }                        \
+  ;
+
+#define USE_ALLOC_FUNCTION(fun, simObject) simObject.setAllocator(new f_##fun);
+
 #include <list>
 
 #include "controller.hpp"
