@@ -4,7 +4,7 @@ DummyAllocator::DummyAllocator(Network *network) : Allocator(network) {}
 
 DummyAllocator::~DummyAllocator() {}
 
-allocationStatus DummyAllocator::exec(int src, int dst, int bitRate,
+allocationStatus DummyAllocator::exec(int src, int dst, BitRate bitRate,
                                       Connection &con) {
   int link = this->network->isConnected(src, dst);
   if (link != -1) {

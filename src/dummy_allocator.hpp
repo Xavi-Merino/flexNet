@@ -9,7 +9,7 @@ class DummyAllocator : public Allocator {
   DummyAllocator(Network *network);
   ~DummyAllocator();
 
-  allocationStatus exec(int src, int dst, int bitRate, Connection &con);
+  allocationStatus exec(int src, int dst, BitRate bitRate, Connection &con);
 };
 
 #endif

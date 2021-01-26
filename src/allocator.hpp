@@ -1,6 +1,7 @@
 #ifndef __ALLOCATOR_H__
 #define __ALLOCATOR_H__
 
+#include "bitrate.hpp"
 #include "connection.hpp"
 #include "network.hpp"
 
@@ -17,7 +18,8 @@ class Allocator {
 
   ~Allocator();
 
-  virtual allocationStatus exec(int src, int dst, int bitRate, Connection &con);
+  virtual allocationStatus exec(int src, int dst, BitRate bitRate,
+                                Connection &con);
 
  protected:
   Network *network;

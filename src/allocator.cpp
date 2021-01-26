@@ -4,7 +4,7 @@ Allocator::Allocator(Network *network) { this->network = network; }
 
 Allocator::~Allocator() {}
 
-allocationStatus Allocator::exec(int src, int dst, int bitRate,
+allocationStatus Allocator::exec(int src, int dst, BitRate bitRate,
                                  Connection &con) {
   throw std::runtime_error(
       "You must implement a method to allocate resources. You can do this "
