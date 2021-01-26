@@ -12,11 +12,15 @@ class Allocator {
   Allocator(Network *network);
 
   void setNetwork(Network *net);
+  void setPaths(
+      std::vector<std::vector<std::vector<std::vector<Link *>>>> *path);
+
   ~Allocator();
 
   virtual allocationStatus exec(int src, int dst, int bitRate, Connection &con);
 
  protected:
   Network *network;
+  std::vector<std::vector<std::vector<std::vector<Link *>>>> *path;
 };
 #endif

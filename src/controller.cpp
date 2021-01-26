@@ -115,3 +115,8 @@ Network *Controller::getNetwork(void) { return this->network; }
 void Controller::setAllocator(Allocator *allocator) {
   this->allocator = allocator;
 }
+
+std::vector<std::vector<std::vector<std::vector<Link *>>>>
+    *Controller::getPaths() {
+  return &(this->path);
+}

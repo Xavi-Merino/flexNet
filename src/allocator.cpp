@@ -13,3 +13,8 @@ allocationStatus Allocator::exec(int src, int dst, int bitRate,
 Allocator::Allocator(void) {}
 
 void Allocator::setNetwork(Network *net) { this->network = net; }
+
+void Allocator::setPaths(
+    std::vector<std::vector<std::vector<std::vector<Link *>>>> *path) {
+  this->path = path;
+}

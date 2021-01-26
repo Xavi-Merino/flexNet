@@ -121,6 +121,8 @@ class Controller {
    */
   void setAllocator(Allocator *allocator);
 
+  std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
+
  private:
   Network *network;
   Allocator *allocator;
