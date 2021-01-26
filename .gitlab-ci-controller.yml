@@ -16,7 +16,7 @@ testing_controller:
   stage: test
   script:
   - cd build
-  - g++ -o test_controller -fprofile-arcs -ftest-coverage ../test/test_controller.cpp ../src/controller.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp ../src/connection.cpp
+  - g++ -o test_controller -fprofile-arcs -ftest-coverage ../test/test_controller.cpp ../src/controller.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp ../src/connection.cpp ../src/bitrate.cpp
   - ./test_controller -r junit > report_controller.xml
   after_script:
   - cd build
