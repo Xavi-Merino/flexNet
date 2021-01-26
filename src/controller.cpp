@@ -48,6 +48,8 @@ int Controller::unassignConnection(long long idConnection) {
                                    this->connections[i].slots[j][k]);
         }
       }
+      this->connections.erase(this->connections.begin() + i);
+      break;
     }
   }
   return 0;
