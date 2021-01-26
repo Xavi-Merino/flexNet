@@ -109,7 +109,7 @@ int Simulator::eventRoutine(void) {
     }
     this->bitRate = bitRateVariable.getNextIntValue();
     this->rtnAllocation = this->controller->assignConnection(
-        this->src, this->dst, this->bitRate,
+        this->src, this->dst, this->bitRates[this->bitRate],
         this->currentEvent.getIdConnection());
     if (this->rtnAllocation == ALLOCATED) {
       nextEventTime = this->clock + this->departVariable.getNextValue();

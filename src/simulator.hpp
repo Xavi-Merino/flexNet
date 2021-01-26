@@ -10,6 +10,15 @@
   ;
 
 #define USE_ALLOC_FUNCTION(fun, simObject) simObject.setAllocator(new f_##fun);
+#define SRC src
+#define DST dst
+#define REQ_SLOTS(pos) bitRate.getNumberOfSlots(pos)
+#define LINK_IN_ROUTE(route, link) (*this->path)[src][dst][route][link]
+#define LINK_IN_ROUTE_ID(route, link) \
+  (*this->path)[src][dst][route][link]->getId()
+#define NUMBER_OF_ROUTES (*this->path)[src][dst].size()
+#define NUMBER_OF_LINKS(route) (*this->path)[src][dst][route].size()
+#define ALLOC_SLOTS(link, from, to) con.addLink(link, from, from + to);
 
 #include <list>
 
