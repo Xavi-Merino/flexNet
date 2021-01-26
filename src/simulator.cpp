@@ -44,6 +44,7 @@ void Simulator::setBitRates(std::vector<double> bitRates) {
 
 void Simulator::setAllocator(Allocator *newAllocator) {
   newAllocator->setNetwork(this->controller->getNetwork());
+  newAllocator->setPaths(this->controller->getPaths());
   this->controller->setAllocator(newAllocator);
 }
 
