@@ -41,7 +41,7 @@ class Controller {
    * @return allocationStatus the result of the allocation process (whether the
    * allocation was succesful or not).
    */
-  allocationStatus assignConnection(int src, int dst, int bitRate,
+  allocationStatus assignConnection(int src, int dst, BitRate bitRate,
                                     long long idConnection);
   /**
    * @brief Unnasigns the requested connection making the resources that were

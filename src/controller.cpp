@@ -23,7 +23,7 @@ Controller::~Controller() {
   }
 };
 
-allocationStatus Controller::assignConnection(int src, int dst, int bitRate,
+allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
                                               long long idConnection) {
   Connection con = Connection(idConnection);
   this->rtnAllocation = this->allocator->exec(src, dst, bitRate, con);
