@@ -19,5 +19,6 @@ void Connection::addLink(int idLink, int fromSlot, int toSlot) {
   int j = 0;
   for (int i = fromSlot; i < toSlot; i++) {
     this->slots.back()[j] = i;
+    j++;
   }
 }
