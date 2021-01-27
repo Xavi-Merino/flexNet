@@ -120,6 +120,7 @@ class Controller {
    * @param allocator a pointer to the allocator object.
    */
   void setAllocator(Allocator *allocator);
+  Allocator *getAllocator(void);
 
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
 

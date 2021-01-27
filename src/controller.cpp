@@ -116,6 +116,8 @@ void Controller::setAllocator(Allocator *allocator) {
   this->allocator = allocator;
 }
 
+Allocator *Controller::getAllocator(void) { return this->allocator; }
+
 std::vector<std::vector<std::vector<std::vector<Link *>>>>
     *Controller::getPaths() {
   return &(this->path);
