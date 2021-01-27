@@ -50,6 +50,8 @@ Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
   this->allocatedConnections = 0;
 }
 
+Simulator::~Simulator() {}
+
 void Simulator::setLambda(double lambda) { this->lambda = lambda; }
 
 void Simulator::setMu(double mu) { this->mu = mu; }
@@ -85,7 +87,62 @@ void Simulator::defaultValues() {
   this->seedDst = 12345;
   this->seedBitRate = 12345;
   this->numberOfConnections = 0;
+  this->numberOfEvents = 0;
   this->goalConnections = 10000;
+  this->columnWidth = 10;
+}
+
+void Simulator::printInitialInfo() {
+  std::cout << std::setfill(' ') << std::setw(20) << std::left << "Nodes:";
+  std::cout << std::setw(30)
+            << this->controller->getNetwork()->getNumberOfNodes() << "\n";
+  std::cout << std::setw(20) << "Links:";
+  std::cout << std::setw(30)
+            << this->controller->getNetwork()->getNumberOfLinks() << "\n";
+  std::cout << std::setw(20) << "Goal Connections:";
+  std::cout << std::setw(30) << this->goalConnections << "\n";
+  std::cout << "\n";
+
+  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  std::cout << std::setw(11) << "+";
+  std::cout << std::setw(11) << "+";
+  std::cout << std::setw(11) << "+";
+  std::cout << std::setw(1) << "+\n";
+
+  std::cout << std::setfill(' ') << std::setw(11) << "| progress";
+  std::cout << std::setw(11) << "| arrives";
+  std::cout << std::setw(11) << "| blocking";
+  std::cout << std::setw(11) << "| time(s)";
+  std::cout << std::setw(1) << "|\n";
+
+  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  std::cout << std::setfill('-') << std::setw(1) << std::left << "+\n";
+
+  this->startingTime = std::chrono::high_resolution_clock::now();
+}
+
+void Simulator::printRow(double percentage) {
+  this->checkTime = std::chrono::high_resolution_clock::now();
+  this->timeDuration =
+      std::chrono::duration_cast<std::chrono::duration<double>>(
+          this->checkTime - this->startingTime);
+  std::cout << std::setprecision(1);
+  std::cout << "|";
+  std::cout << std::setfill(' ') << std::right << std::setw(7) << std::fixed
+            << percentage << "%  |";
+  std::cout << std::setfill(' ') << std::setw(7) << std::scientific
+            << this->numberOfConnections - 1 << "   |";
+  std::cout << std::setfill(' ') << std::setw(9) << std::right
+            << std::scientific
+            << 1 - this->allocatedConnections / this->numberOfConnections
+            << " |";
+  std::cout << std::setprecision(0) << std::setfill(' ') << std::setw(8)
+            << std::right << std::fixed << this->timeDuration.count() << "  |";
+
+  std::cout << std::setw(1) << "\n";
 }
 
 int Simulator::eventRoutine(void) {
@@ -149,13 +206,14 @@ void Simulator::init(void) {
 void Simulator::run(void) {
   int timesToShow = 20;
   int arrivesByCycle = this->goalConnections / timesToShow;
-
+  printInitialInfo();
   for (int i = 1; i <= timesToShow; i++) {
     while (this->numberOfConnections <= i * arrivesByCycle) {
       eventRoutine();
     }
-    std::cout << (100 / timesToShow) * i << "% \t Blocking probability: "
-              << 1 - this->allocatedConnections / this->numberOfConnections
-              << "\n";
+    printRow((100 / timesToShow) * i);
+    // std::cout << (100 / timesToShow) * i << "% \t Blocking probability: "
+    //          << 1 - this->allocatedConnections / this->numberOfConnections
+    //          << "\n";
   }
 }

@@ -20,6 +20,8 @@
 #define NUMBER_OF_LINKS(route) (*this->path)[src][dst][route].size()
 #define ALLOC_SLOTS(link, from, to) con.addLink(link, from, from + to);
 
+#include <chrono>
+#include <iomanip>
 #include <list>
 
 #include "controller.hpp"
@@ -31,6 +33,7 @@ class Simulator {
  public:
   Simulator(void);
   Simulator(std::string networkFilename, std::string pathFilename);
+  ~Simulator();
   void init(void);
   void run(void);
 
@@ -43,6 +46,8 @@ class Simulator {
   void setBitRates(std::vector<BitRate> bitRates);
   void setAllocator(Allocator *newAllocator);
   void defaultValues();
+  void printInitialInfo();
+  void printRow(double percentage);
 
  private:
   double clock;
@@ -64,6 +69,7 @@ class Simulator {
   unsigned int seedDst;
   unsigned int seedBitRate;
   long long numberOfConnections;
+  long long numberOfEvents;
   long long goalConnections;
   double nextEventTime;
   allocationStatus rtnAllocation;
@@ -71,6 +77,10 @@ class Simulator {
   std::vector<BitRate> bitRatesDefault;
   double allocatedConnections;
   double blockingProbability;
+  int columnWidth;
+  std::chrono::high_resolution_clock::time_point startingTime;
+  std::chrono::high_resolution_clock::time_point checkTime;
+  std::chrono::duration<double> timeDuration;
 
   int eventRoutine(void);
 };
