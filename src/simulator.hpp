@@ -1,9 +1,10 @@
 #ifndef __SIMULATOR_H__
 #define __SIMULATOR_H__
 
-#define BEGIN_ALLOC_FUNCTION(name)    \
-  class f_##name : public Allocator { \
-   public:                            \
+#define BEGIN_ALLOC_FUNCTION(name__)                                  \
+  class f_##name__ : public Allocator {                               \
+   public:                                                            \
+    f_##name__() : Allocator() { this->name = std::string(#name__); } \
     allocationStatus exec(int src, int dst, BitRate bitRate, Connection &con)
 #define END_ALLOC_FUNCTION \
   }                        \

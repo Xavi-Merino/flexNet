@@ -101,6 +101,13 @@ void Simulator::printInitialInfo() {
             << this->controller->getNetwork()->getNumberOfLinks() << "\n";
   std::cout << std::setw(20) << "Goal Connections:";
   std::cout << std::setw(30) << this->goalConnections << "\n";
+  std::cout << std::setw(20) << "Lambda:";
+  std::cout << std::setw(30) << this->lambda << "\n";
+  std::cout << std::setw(20) << "Mu:";
+  std::cout << std::setw(30) << this->mu << "\n";
+  std::cout << std::setw(20) << "Algorithm:";
+  std::cout << std::setw(30) << this->controller->getAllocator()->getName()
+            << "\n";
   std::cout << "\n";
 
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
