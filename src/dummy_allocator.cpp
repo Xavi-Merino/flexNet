@@ -1,6 +1,8 @@
 #include "dummy_allocator.hpp"
 
-DummyAllocator::DummyAllocator(Network *network) : Allocator(network) {}
+DummyAllocator::DummyAllocator(Network *network) : Allocator(network) {
+  this->name = std::string("Dummy Allocator");
+}
 
 DummyAllocator::~DummyAllocator() {}
 

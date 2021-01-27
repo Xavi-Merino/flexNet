@@ -1,5 +1,6 @@
 #ifndef __ALLOCATOR_H__
 #define __ALLOCATOR_H__
+#include <string>
 
 #include "bitrate.hpp"
 #include "connection.hpp"
@@ -21,8 +22,11 @@ class Allocator {
   virtual allocationStatus exec(int src, int dst, BitRate bitRate,
                                 Connection &con);
 
+  std::string getName(void);
+
  protected:
   Network *network;
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *path;
+  std::string name;
 };
 #endif
