@@ -5,7 +5,7 @@
 #include "controller.hpp"
 
 /**
- * @brief   Class event
+ * @brief Class event
  *
  * This class contains the event that happens in the network of nodes
  */
@@ -14,17 +14,23 @@ typedef enum eventType { ARRIVE, DEPARTURE } eventType;
 class Event {
  public:
   /**
-   * @brief    Constructor of empyy event
+   * @brief Constructor of empyy event
    */
   Event(void);
   /**
-   * @brief    Constructor of the event with the data types: eventType, double,
+   * @brief Constructor of the event with the data types: eventType, double,
    * long long
+   *
+   * @param type type of event, it can be an ARRIVE or DEPARTURE
+   *
+   * @param time event execution time
+   *
+   * @param idConnection connection identifier
    */
   Event(eventType type, double time, long long idConnection);
 
   /**
-   * @brief    Delete the Event object
+   * @brief Delete the Event object
    */
 
   ~Event();
