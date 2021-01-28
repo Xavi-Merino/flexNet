@@ -35,9 +35,27 @@ class Event {
 
   ~Event();
 
+  /**
+   * @brief Getter of type of the private param event
+   *
+   * @return enum ARRIVE or DEPARTURE
+   */
+
   eventType getType();
 
+  /**
+   * @brief Getter of private param time
+   *
+   * @return Param time, it is type is double
+   */
+
   double getTime();
+
+  /**
+   * @brief Getter of private param idConnection
+   *
+   * @return id of the connection, it is type is long long
+   */
 
   long long getIdConnection();
 
