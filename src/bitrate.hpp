@@ -4,6 +4,13 @@
 #include <string>
 #include <vector>
 
+/**
+ * @brief Class BitRate
+ *
+ * This class contains the variables: bitRate, modulation, slots and reach
+ *
+ */
+
 class BitRate {
  public:
   BitRate(double bitRate);
