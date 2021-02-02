@@ -26,7 +26,7 @@ class Controller {
    */
   Controller(Network *network);
   /**
-   * @brief Destroys the Controller object.
+   * @brief Delete the Controller object.
    *
    */
   ~Controller();
