@@ -24,7 +24,8 @@ class DummyAllocator : public Allocator {
    */
   ~DummyAllocator();
   /**
-   * @brief
+   * @brief The method to allocate resources. It must be implemented on an
+   * inherited class.
    *
    * @param src start node, type integer.
    * @param dst destiny node, type integer.
