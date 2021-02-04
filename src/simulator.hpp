@@ -29,13 +29,34 @@
 #include "event.hpp"
 #include "exp_variable.hpp"
 #include "uniform_variable.hpp"
-
+/**
+ * @brief class Simulator, represents network execution.
+ */
 class Simulator {
  public:
+  /**
+   * @brief construct the object Simulator.
+   */
   Simulator(void);
+  /**
+   * @brief construct the object Simulator.
+   *
+   * @param networkFilename
+   * @param pathFilename
+   */
   Simulator(std::string networkFilename, std::string pathFilename);
+  /**
+   * @brief deletes the object Simulator.
+   */
   ~Simulator();
+  /**
+   * @brief saves the simulator processes to run and leaves them ready to start,
+   * does not start them.
+   */
   void init(void);
+  /**
+   * @brief start the simulator processes.
+   */
   void run(void);
 
   void setLambda(double lambda);
