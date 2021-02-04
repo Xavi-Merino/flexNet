@@ -9,15 +9,16 @@
 /**
  * @brief Class with the network information.
  *
- * This class makes the connection between nodes and links in the physical
- * network.
+ * This class is used to create and access network objects, inside of which are
+ * nodes connected to eachother by links. Once created, the connections will be
+ * simulated on it.
  *
  */
 class Network {
  public:
   /**
-   * @brief Constructs a new Network object. When calling Network() creates an
-   * empty network ready to be filled with nodes and links.
+   * @brief Constructs a new Network object. This new network is empty and ready
+   * to be filled with nodes and links.
    *
    */
   Network(void);
@@ -86,87 +87,93 @@ class Network {
  */
   Network(std::string filename);
   /**
-   * @brief Constructs a new Network object from the given Network.
+   * @brief Constructs a new Network object from the given Network, which is
+   * passed by reference. This new network will share the same values.
    *
    * @param net the network object. Its values won't be modified.
    */
   Network(const Network &net);
   /**
-   * @brief Adds the Node to the Network object. Node must be a pointer.
+   * @brief Adds a new Node to the Network object. Its id must match the amount
+   * of nodes that were on the network.
    *
-   * @param node  the new Node of this Node object
+   * @param node the new Node of the Network object. It must be a pointer.
    */
   void addNode(Node *node);
   /**
-   * @brief Adds the Link to the Network object. Link must be a pointer
+   * @brief Adds a new Link to the Network object. Its id must match the amount
+   * of links that were on the network.
    *
-   * @param link the new Link of this Node object
+   * @param link the new Link of the Network object. It must be a pointer.
    */
   void addLink(Link *link);
   /**
-   * @brief Gets the Node at a index position "pos" inside Nodes vector.
+   * @brief Gets the Node at a index position "pos" inside the Nodes vector.
    *
-   * @param pos the position of the Node inside Nodes vector
-   * @return Node the node pointer at the required position
+   * @param pos the position of the Node inside Nodes vector.
+   * @return Node the pointer to the node located at the required position.
    */
   Node *getNode(int pos);
   /**
    * @brief Gets the Link pointer at a index position "pos" inside Links vector.
    *
    * @param pos the position of the Link inside Links vector
-   * @return Link the link pointer at the required position
+   * @return Link the pointer to the link located at the required position.
    */
   Link *getLink(int pos);
   /**
-   * @brief Connects two nodes through a determined link pointer.
+   * @brief Connects the source node to the destination node through the link
+   * with the specified id. The direction of the connection is from source to
+   * destiny. The nodes and link must previously exist on the network.
    *
-   * @param src the source node of the connection
-   * @param link the Id/position of the link to connect
-   * @param dst the destination node of the connection
+   * @param src the source node of the connection.
+   * @param link the Id/position of the link used to connect the nodes.
+   * @param dst the destination node of the connection.
    */
   void connect(int src, int link, int dst);
   /**
-   * @brief Checks if two nodes are directly connected.
+   * @brief Checks if the source and destination nodes are connected through a
+   * link. If the connection exists, the id of the link is returned; otherwise,
+   * it returns -1.
    *
-   * @param src the source node of the connection
-   * @param dst the link pointer of the connection
+   * @param src the source node of the connection.
+   * @param dst the destination node of the connection
    */
   int isConnected(int src, int dst);
   /**
-   * @brief  Activates a single slot to be used in the required link position.
+   * @brief Activates a single slot to be used in the required link position.
    *
-   * @param linkPos the position of the link vector
-   * @param slotPos the position of the slot vector
+   * @param linkPos the position of the link in the links vector.
+   * @param slotPos the position of the single slot inside the slot vector.
    */
   void useSlot(int linkPos, int slotPos);
   /**
    * @brief  Activates an interval of slots to be used in the required link
    * position.
    *
-   * @param linkPos the position of the link vector.
-   * @param slotFrom the position of the slot vector at the beggining of the
+   * @param linkPos the position of the link in the links vector.
+   * @param slotFrom the position of the slot at the beggining of the
    * required interval.
-   * @param slotTo the position of the slot vector at the end of the required
-   * interval.
+   * @param slotTo the position of the slot at the end of the required
+   * interval. Its value must be greater than slotFrom.
    */
   void useSlot(int linkPos, int slotFrom, int slotTo);
   /**
    * @brief Deactivates a single slot that is no longer being used located at
    * the required link position.
    *
-   * @param linkPos the position of the link vector.
-   * @param slotPos the position of the slot vector.
+   * @param linkPos the position of the link inside the links vector.
+   * @param slotPos the position of the slot inside the slots vector.
    */
   void unuseSlot(int linkPos, int slotPos);
   /**
    * @brief Deactivates an interval of slots that are no longer being used
    * located at the required link position.
    *
-   * @param linkPos the position of the link vector.
-   * @param slotFrom the position of the slot vector at the beggining of the
-   * required interval.
-   * @param slotTo the position of the slot vector at the end of the required
+   * @param linkPos the position of the link inside the links vector.
+   * @param slotFrom the position of the slot at the beggining of the required
    * interval.
+   * @param slotTo the position of the slot at the end of the required interval.
    */
   void unuseSlot(int linkPos, int slotFrom, int slotTo);
 
@@ -185,8 +192,29 @@ class Network {
    * @return int the number of nodes in the Network.
    */
   int getNumberOfNodes();
-
+  /**
+   * @brief This method is used to determine whether the slot in the specified
+   * link is already being used or not.
+   *
+   * @param link the position of the link inside the links vector.
+   * @param slot the position of the slot inside the slots vector.
+   * @return bool the state of the specified slot. If it's active it returns
+   * true, otherwise it returns false.
+   *
+   */
   bool isSlotUsed(int link, int slot);
+  /**
+   * @brief This method is used to determine whether the slot interval in the
+   * specified link is already being used or not.
+   *
+   * @param link the position of the link inside the links vector.
+   * @param slotFrom the position of the slot at the beggining of the required
+   * interval.
+   * @param slotTo the position of the slot at the end of the required interval.
+   * @return bool the state of the specified interval of slots. If it's active
+   * it returns true, otherwise it returns false.
+   *
+   */
   bool isSlotUsed(int link, int fromSlot, int toSlot);
 
  private:
