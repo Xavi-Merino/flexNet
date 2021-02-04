@@ -26,12 +26,13 @@ class DummyAllocator : public Allocator {
   /**
    * @brief
    *
-   * @param src
-   * @param dst
-   * @param bitRate
-   * @param con
+   * @param src start node, type integer.
+   * @param dst destiny node, type integer.
+   * @param bitRate the bit rate of the connection. param typer BitRare.
+   * @param con the Connection object. It's passed by reference.
    *
-   * @return
+   * @return param type allocationStatus what represents if it is ALLOCATED,
+   * NOT_ALLOCATED, N_A (not assigned )
    */
   allocationStatus exec(int src, int dst, BitRate bitRate, Connection &con);
 };
