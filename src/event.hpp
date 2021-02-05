@@ -4,13 +4,12 @@
 // #include "simulator.hpp"
 #include "controller.hpp"
 
+typedef enum eventType { ARRIVE, DEPARTURE } eventType;
 /**
  * @brief Class event
  *
  * This class contains the event that happens in the network of nodes
  */
-
-typedef enum eventType { ARRIVE, DEPARTURE } eventType;
 class Event {
  public:
   /**
