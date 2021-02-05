@@ -41,8 +41,8 @@ class Simulator {
   /**
    * @brief construct the object Simulator.
    *
-   * @param networkFilename
-   * @param pathFilename
+   * @param networkFilename source of network file.
+   * @param pathFilename source of path file.
    */
   Simulator(std::string networkFilename, std::string pathFilename);
   /**
@@ -58,17 +58,79 @@ class Simulator {
    * @brief start the simulator processes.
    */
   void run(void);
-
+  /**
+   * @brief assign the lambda for simulation.
+   *
+   * @param lambda param type double.
+   */
   void setLambda(double lambda);
+  /**
+   * @brief assign the mu for simulation.
+   *
+   * @param mu param type doble.
+   */
   void setMu(double mu);
+  /**
+   * @brief set the seed for the arrives. The aleatory arrives are generated
+   * from these seeds.
+   *
+   * @param seed param type unsigned integer.
+   */
   void setSeedArrive(unsigned int seed);
+  /**
+   * @brief set the seed for the departures. The aleatory departures are
+   * generated from these seeds.
+   *
+   * @param seed param type unsigned integer.
+   */
   void setSeedDeparture(unsigned int seed);
+  /**
+   * @brief set the seed for the bit rates. The aleatory bit rates are generated
+   * from these seeds.
+   *
+   * @param seed param type unsigned integer.
+   */
   void setSeedBitRate(unsigned int seed);
+  /**
+   * @brief set connections goal.
+   *
+   * @param goal param type long long.
+   */
   void setGoalConnections(long long goal);
+  /**
+   * @brief set type of Bit Rates.
+   *
+   * @param bitRates array of bitrate objects.
+   */
   void setBitRates(std::vector<BitRate> bitRates);
+  /**
+   * @brief
+   *
+   * @param newAllocator pointer of object type Allocator.
+   */
   void setAllocator(Allocator *newAllocator);
+  /**
+   * @brief set the default values for the different fields:
+   * lambda = 3
+   * mu = 10
+   * seedArrive = 12345
+   * seedDeparture = 12345
+   * seedSrc = 12345
+   * seedDst = 12345
+   * seedBitRate = 12345
+   * numberOfConnections = 0
+   * numberOfEvents = 0
+   * goalConnections = 10000
+   * columnWidth = 10
+   */
   void defaultValues();
+  /**
+   * @brief shows on screen the values of the current simulator configuration.
+   */
   void printInitialInfo();
+  /**
+   * @brief shows on screen the percentage of completion of the simulation.
+   */
   void printRow(double percentage);
 
  private:
@@ -103,7 +165,12 @@ class Simulator {
   std::chrono::high_resolution_clock::time_point startingTime;
   std::chrono::high_resolution_clock::time_point checkTime;
   std::chrono::duration<double> timeDuration;
-
+  /**
+   * @brief takes the event and executes it.
+   *
+   * @return the status of the allocation. It can be ALLOCATED,
+   * NOT_ALLOCATED, N_A (not assigned )
+   */
   int eventRoutine(void);
 };
 
