@@ -1,4 +1,4 @@
-#include "../src/simulator.hpp"
+#include <fnsim/simulator.hpp>
 
 BEGIN_ALLOC_FUNCTION(FirstFit) {
   int numberOfSlots = REQ_SLOTS(0);
