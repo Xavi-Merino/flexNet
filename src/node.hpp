@@ -7,56 +7,62 @@
 /**
  * @brief Class with the node information.
  *
- * This class represents to each node in the physical network.
+ * This class is used to create and access node objects, which represent the
+ * nodes in the network.
+ *
  */
 
 class Node {
  public:
   /**
-   * @brief Construct a new Node object
+   * @brief Constructs a new Node object. By default, the id attribute is set to
+   * -1 and the label to an empty string.
    *
    */
   Node(void);
   /**
-   * @brief Construct a new Node object
+   * @brief Constructs a new Node object. The id attribute is set to the value
+   * passed as a parameter, and the label is set to an empty string.
    *
-   * @param id The id of the new Node
+   * @param id The id of the new Node.
    */
   Node(int id);
   /**
-   * @brief Construct a new Node object
+   * @brief Constructs a new Node object. The id and label attributes of the
+   * node are set to the values passed as parameters.
    *
-   * @param id The id of the new Node
-   * @param label The label of the new Node
+   * @param id The id of the new Node.
+   * @param label The label of the new Node.
    */
   Node(int id, std::string label);
   /**
-   * @brief Destroy the Node object
+   * @brief Destroys the Node object.
    *
    */
   ~Node();
   /**
-   * @brief Set the Id object
+   * @brief Set the Id of a node. This method only works on nodes that were
+   * created without a specified id.
    *
-   * @param id the new id of this Node object
+   * @param id the new id of the Node object.
    */
   void setId(int id);
   /**
-   * @brief Get the Id object
+   * @brief Get the Id attribute of the node.
    *
-   * @return int the Id of this Node object
+   * @return int the Id of the Node object.
    */
   int getId(void) const;
   /**
-   * @brief Set the Label object
+   * @brief Set the Label of the node.
    *
-   * @param label The new label of this Node object
+   * @param label The new label of the Node object. It must be a string.
    */
   void setLabel(std::string label);
   /**
-   * @brief Get the Label object
+   * @brief Get the Label attribute of the node.
    *
-   * @return std::string The label of this Node object
+   * @return std::string The label of the Node object.
    */
   std::string getLabel(void) const;
 
