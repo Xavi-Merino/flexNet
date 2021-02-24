@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "json.hpp"
+
 /**
  * @brief Class BitRate
  *
@@ -69,6 +71,8 @@ class BitRate {
    */
 
   double getReach(int pos);
+
+  void readBitRateFile(std::string fileName, std::vector<BitRate> vector);
 
  private:
   double bitRate;
