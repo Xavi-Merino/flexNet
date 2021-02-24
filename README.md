@@ -4,20 +4,47 @@
 To compile the library, you will need:
 - [CMake](https://cmake.org)
 
+### Unix systems (Mac and linux)
+
 Create a build directory in the project root tree and run cmake there:
 ```
  $ mkdir build
  $ cd build
  $ cmake ..
- $ make
+ $ cmake --build .
+ $ sudo cmake --install .
 ```
 
-Create a build directory in the project root tree and run cmake there (Windows):
+### Windows systems 
+
+Create a build directory in the project root tree and run cmake there. Open a cmd as adminstrator (type cmd on windows start, right click on it and select **run as admin...**):
+```
+ $ mkdir build
+ $ cd build
+ $ cmake .. 
+ $ cmake --build . --config Release
+ $ cmake --install .
+```
+
+If you do not have Visual Studio installed on your operative system, but you have MinGW, you can change the previous **cmake ..** (line that generates the Makefile) with:
 ```
  $ mkdir build
  $ cd build
  $ cmake .. -G "MinGW Makefiles"
- $ mingw32-make
+ $ cmake --build .
+ $ cmake --install .
+```
+
+## Using  library
+
+After installation, the use of the library is easy. You just have to include the header **<fnsim/simulator.h>** in your code (as in [examples](https://gitlab.com/DaniloBorquez/flex-net-sim/-/tree/master/examples)), and the compile it with the library flag:
+```
+ $ g++ <your cpp files> -lfnsim
+```
+Obviously, Windows is a little more complicated. You must include in this line the c++11 standard and the folder where the library was installed. Typically in **C:/Program Files (x86)/flexible-networks-simulator/**.
+
+```
+ $ g++ -std=c++11 <your cpp files> -I"C:/Program Files (x86)/flexible-networks-simulator/include/" -L"C:/Program Files (x86)/flexible-networks-simulator/lib/" -lfnsim
 ```
 
 ## Documentation
