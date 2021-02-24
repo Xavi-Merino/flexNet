@@ -22,7 +22,8 @@ int BitRate::getNumberOfSlots(int pos) { return this->slots[pos]; }
 
 double BitRate::getReach(int pos) { return this->reach[pos]; }
 
-void BitRate::readBitRateFile(std::string fileName, std::vector<BitRate> vect) {
+void BitRate::readBitRateFile(std::string fileName,
+                              std::vector<BitRate>* vect) {
   std::ifstream file(fileName);
   nlohmann::json bitRate;
   file >> bitRate;
@@ -41,7 +42,7 @@ void BitRate::readBitRateFile(std::string fileName, std::vector<BitRate> vect) {
         BitRate aux = BitRate(bitrate);
         aux.addModulation(modulation, reach, slots);
 
-        vect.push_back(aux);
+        (*vect).push_back(aux);
       }
     }
   }

@@ -72,7 +72,7 @@ class BitRate {
 
   double getReach(int pos);
 
-  void readBitRateFile(std::string fileName, std::vector<BitRate> vector);
+  void readBitRateFile(std::string fileName, std::vector<BitRate> *vector);
 
  private:
   double bitRate;
