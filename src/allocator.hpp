@@ -69,8 +69,22 @@ class Allocator {
   std::string getName(void);
 
  protected:
+  /**
+   * @brief A pointer to the network object that the allocator will generate
+   * connections on.
+   *
+   */
   Network *network;
+  /**
+   * @brief A pointer to a four dimensional vector that contains pointers to
+   * each link on every existing route between the nodes on the network.
+   *
+   */
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *path;
+  /**
+   * @brief The name of the allocation function.
+   *
+   */
   std::string name;
 };
 #endif
