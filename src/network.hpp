@@ -208,9 +208,9 @@ class Network {
    * specified link is already being used or not.
    *
    * @param link the position of the link inside the links vector.
-   * @param slotFrom the position of the slot at the beggining of the required
+   * @param fromSlot the position of the slot at the beggining of the required
    * interval.
-   * @param slotTo the position of the slot at the end of the required interval.
+   * @param toSlot the position of the slot at the end of the required interval.
    * @return bool the state of the specified interval of slots. If it's active
    * it returns true, otherwise it returns false.
    *
