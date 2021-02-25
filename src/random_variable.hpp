@@ -36,8 +36,22 @@ class RandomVariable {
   virtual double getNextValue(void) = 0;
 
  protected:
+  /**
+   * @brief A random number engine that generates a pseudo-random number from a
+   * seed.
+   *
+   */
   std::mt19937 generator;
+  /**
+   * @brief A random number distribution that can generate values according to
+   * an uniform distribution.
+   *
+   */
   std::uniform_real_distribution<double> dist;
+  /**
+   * @brief A parameter used to generate the random numbers.
+   *
+   */
   double parameter1;
 };
 
