@@ -40,34 +40,19 @@ void BitRate::readBitRateFile(std::string fileName,
         int slots = w.value()["slots"];
 
         // exceptions
-        try {
-          if (reach && slots < 0) {
-            throw 0;
-          }
+        if (reach && slots < 0) {
+          throw std::runtime_error(
+              "value entered for slots and reach is less than zero");
+        }
 
-          if (reach < 0) {
-            throw 1;
-          }
+        if (reach < 0) {
+          throw std::runtime_error("value entered for reach is less than zero");
+          ;
+        }
 
-          if (slots < 0) {
-            throw 2;
-          }
-
-        } catch (int e) {
-          if (e == 0) {
-            std::cout << "value entered for slots and reach is less than zero"
-                      << std::endl;
-          }
-
-          if (e == 1) {
-            std::cout << "value entered for reach is less than zero"
-                      << std::endl;
-          }
-
-          if (e == 2) {
-            std::cout << "value entered for slots is less than zero"
-                      << std::endl;
-          }
+        if (slots < 0) {
+          throw std::runtime_error("value entered for slots is less than zero");
+          ;
         }
 
         BitRate aux = BitRate(bitrate);
