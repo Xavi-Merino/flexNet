@@ -25,28 +25,17 @@ Simulator::Simulator(void) {
   this->allocatedConnections = 0;
 }
 
-Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
+Simulator::Simulator(std::string networkFilename, std::string pathFilename,
+                     std::string bitrateFilename) {
   this->defaultValues();
   this->controller = new Controller();
   this->controller->setNetwork(new Network(networkFilename));
   this->controller->setPaths(pathFilename);
   this->events = std::list<Event>();
   this->bitRatesDefault = std::vector<BitRate>();
-  BitRate auxB = BitRate(10.0);
-  auxB.addModulation(std::string("BPSK"), 1, 5520);
-  this->bitRatesDefault.push_back(auxB);
-  auxB = BitRate(40.0);
-  auxB.addModulation(std::string("BPSK"), 4, 5520);
-  this->bitRatesDefault.push_back(auxB);
-  auxB = BitRate(100.0);
-  auxB.addModulation(std::string("BPSK"), 8, 5520);
-  this->bitRatesDefault.push_back(auxB);
-  auxB = BitRate(400.0);
-  auxB.addModulation(std::string("BPSK"), 32, 5520);
-  this->bitRatesDefault.push_back(auxB);
-  auxB = BitRate(1000.0);
-  auxB.addModulation(std::string("BPSK"), 80, 5520);
-  this->bitRatesDefault.push_back(auxB);
+  // this two lines reads the bitrate.json file
+  BitRate aux = BitRate(10);
+  aux.readBitRateFile(bitrateFilename, &bitRatesDefault);
   this->allocatedConnections = 0;
 }
 
