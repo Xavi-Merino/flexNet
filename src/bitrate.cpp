@@ -60,7 +60,7 @@ void BitRate::readBitRateFile(std::string fileName,
           }
 
           if (e == 1) {
-            std::cout << "value entered for slots is reach than zero"
+            std::cout << "value entered for reach is less than zero"
                       << std::endl;
           }
 
