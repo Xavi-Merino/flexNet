@@ -1,58 +1,58 @@
 {
-  "name": "5nodeBus",
-  "alias": "example",
-  "nodes": [
-    {
-      "id": 0
-    },
-    {
-      "id": 1
-    },
-    {
-      "id": 2
-    },
-    {
-      "id": 3
-    },
-    {
-      "id": 4
-    }
-  ],
-  "links": [
-    {
-      "id": 0,
-      "end1": 0,
-      "end2": 2,
-      "lenght": 1130,
-      "slots": 100
-    },
-    {
-      "id": 1,
-      "end1": 2,
-      "end2": 3,
-      "lenght": 1710,
-      "slots": 100
-    },
-    {
-      "id": 2,
-      "end1": 3,
-      "end2": 4,
-      "lenght": 2840,
-      "slots": 100
-    },
-    {
-      "id": 3,
-      "end1": 4,
-      "end2": 1,
-      "lenght": 700,
-      "slots": 100
-    },
-    {
-      "id": 4,
-      "end1": 1,
-      "end2": 0,
-      "lenght": 960,
-      "slots": 100
-    }
-  ]
+    "name": "5nodeBus",
+    "alias": "example",
+    "nodes": [
+        {
+            "id": 0
+        },
+        {
+            "id": 1
+        },
+        {
+            "id": 2
+        },
+        {
+            "id": 3
+        },
+        {
+            "id": 4
+        }
+    ],
+    "links": [
+        {
+            "id": 0,
+            "end1": 0,
+            "end2": 2,
+            "lenght": 1130,
+            "slots": 100
+        },
+        {
+            "id": 1,
+            "end1": 2,
+            "end2": 3,
+            "lenght": 1710,
+            "slots": 100
+        },
+        {
+            "id": 2,
+            "end1": 3,
+            "end2": 4,
+            "lenght": 2840,
+            "slots": 100
+        },
+        {
+            "id": 3,
+            "end1": 4,
+            "end2": 1,
+            "lenght": 700,
+            "slots": 100
+        },
+        {
+            "id": 4,
+            "end1": 1,
+            "end2": 0,
+            "lenght": 960,
+            "slots": 100
+        }
+    ]
 }
