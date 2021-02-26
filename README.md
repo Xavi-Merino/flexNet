@@ -54,3 +54,11 @@ Obviously, Windows is a little more complicated. You must include in this line t
 ## Documentation
 
 The documentation can be found in the next [link](http://daniloborquez.gitlab.io/flex-net-sim).
+
+## Thanks
+
+I really appreciate the help of the following people:
+- [Álvaro Robert](https://gitlab.com/robstrings97)
+- [Felipe Falcón](https://gitlab.com/ffalcon)
+- [Gonzalo España](https://gitlab.com/GonzaloEspana)
+- [Diana Mariño](https://gitlab.com/DianaMarino)
