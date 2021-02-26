@@ -72,7 +72,15 @@ class BitRate {
 
   double getReach(int pos);
 
-  void readBitRateFile(std::string fileName, std::vector<BitRate> *vector);
+  /**
+   * @brief Read a json file and extract the corresponding information, to fill
+   * a vector type bitrate.
+   *
+   * @param vect vector pointer type bitrate, which enters empty and is filled
+   * with the json information.
+   */
+
+  void readBitRateFile(std::string fileName, std::vector<BitRate> *vect);
 
  private:
   double bitRate;

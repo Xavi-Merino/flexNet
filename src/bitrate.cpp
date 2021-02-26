@@ -54,6 +54,7 @@ void BitRate::readBitRateFile(std::string fileName,
           throw std::runtime_error("value entered for slots is less than zero");
           ;
         }
+        // end of exceptions
 
         BitRate aux = BitRate(bitrate);
         aux.addModulation(modulation, reach, slots);
