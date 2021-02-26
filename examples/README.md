@@ -2,6 +2,7 @@
 ## 
 1. First fit algorithm
 2. Exact fit Algorithm 
+2. Exact fit Algorithm with bitrate file.
 
 ## Requirements
 
@@ -14,10 +15,10 @@ Inside the code, you must have the next line including the library:
 #include <fnsim/simulator.hpp>
 ```
 
-You have to link the library:
+Then, inside the folder you have to link the library:
 
 ```
- $ g++ e<example number>_<example name>.cpp -lfnsim
+ $ g++ main.cpp -lfnsim
 ```
 
 Basically, you have to call the fnsim library with the **-l** flag
