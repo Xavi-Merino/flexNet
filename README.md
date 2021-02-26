@@ -1,6 +1,17 @@
 # Flex Net Sim
 
+## Download
+
+Download the latest release from the [release list](https://gitlab.com/DaniloBorquez/flex-net-sim/-/releases). 
+
+If you want to try the actual developed version (a little bit updated, but coulb be unstable), you can clone this repository through the git clone command.
+
+```
+git clone git@gitlab.com:DaniloBorquez/flex-net-sim.git
+```
+
 ## Installation
+
 To compile the library, you will need:
 - [CMake](https://cmake.org)
 
