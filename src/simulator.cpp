@@ -57,10 +57,7 @@ Simulator::Simulator(std::string networkFilename, std::string pathFilename,
   this->controller->setNetwork(new Network(networkFilename));
   this->controller->setPaths(pathFilename);
   this->events = std::list<Event>();
-  this->bitRatesDefault = std::vector<BitRate>();
-  // this two lines reads the bitrate.json file
-  BitRate aux = BitRate(10);
-  aux.readBitRateFile(bitrateFilename, &bitRatesDefault);
+  this->bitRatesDefault = BitRate::readBitRateFile(bitrateFilename);
   this->allocatedConnections = 0;
 }
 

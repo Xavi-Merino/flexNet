@@ -82,7 +82,7 @@ class BitRate {
    * with the json information.
    */
 
-  void readBitRateFile(std::string fileName, std::vector<BitRate> *vect);
+  static std::vector<BitRate> readBitRateFile(std::string fileName);
 
  private:
   double bitRate;
