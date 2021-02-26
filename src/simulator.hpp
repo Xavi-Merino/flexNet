@@ -45,7 +45,14 @@ class Simulator {
    * @param pathFilename source of path file.
    */
   Simulator(std::string networkFilename, std::string pathFilename);
-
+  /**
+   * @brief Constructs a new Simulator object.
+   *
+   * @param networkFilename the source of the file with the network information.
+   * @param pathFilename the source of the file with the network paths
+   * information.
+   * @param bitrateFilename the source of the bitrate file.
+   */
   Simulator(std::string networkFilename, std::string pathFilename,
             std::string bitrateFilename);
   /**
