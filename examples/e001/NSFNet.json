@@ -1,0 +1,344 @@
+{
+    "alias": "NSFNet",
+    "links": [
+        {
+            "dst": 1,
+            "id": 0,
+            "lenght": 1130,
+            "slots": 100,
+            "src": 0
+        },
+        {
+            "dst": 0,
+            "id": 1,
+            "lenght": 1130,
+            "slots": 100,
+            "src": 1
+        },
+        {
+            "dst": 2,
+            "id": 2,
+            "lenght": 1710,
+            "slots": 100,
+            "src": 0
+        },
+        {
+            "dst": 0,
+            "id": 3,
+            "lenght": 1710,
+            "slots": 100,
+            "src": 2
+        },
+        {
+            "dst": 7,
+            "id": 4,
+            "lenght": 2840,
+            "slots": 100,
+            "src": 0
+        },
+        {
+            "dst": 0,
+            "id": 5,
+            "lenght": 2840,
+            "slots": 100,
+            "src": 7
+        },
+        {
+            "dst": 2,
+            "id": 6,
+            "lenght": 700,
+            "slots": 100,
+            "src": 1
+        },
+        {
+            "dst": 1,
+            "id": 7,
+            "lenght": 700,
+            "slots": 100,
+            "src": 2
+        },
+        {
+            "dst": 3,
+            "id": 8,
+            "lenght": 960,
+            "slots": 100,
+            "src": 1
+        },
+        {
+            "dst": 1,
+            "id": 9,
+            "lenght": 960,
+            "slots": 100,
+            "src": 3
+        },
+        {
+            "dst": 5,
+            "id": 10,
+            "lenght": 2100,
+            "slots": 100,
+            "src": 2
+        },
+        {
+            "dst": 2,
+            "id": 11,
+            "lenght": 2100,
+            "slots": 100,
+            "src": 5
+        },
+        {
+            "dst": 4,
+            "id": 12,
+            "lenght": 560,
+            "slots": 100,
+            "src": 3
+        },
+        {
+            "dst": 3,
+            "id": 13,
+            "lenght": 560,
+            "slots": 100,
+            "src": 4
+        },
+        {
+            "dst": 10,
+            "id": 14,
+            "lenght": 2350,
+            "slots": 100,
+            "src": 3
+        },
+        {
+            "dst": 3,
+            "id": 15,
+            "lenght": 2350,
+            "slots": 100,
+            "src": 10
+        },
+        {
+            "dst": 5,
+            "id": 16,
+            "lenght": 1480,
+            "slots": 100,
+            "src": 4
+        },
+        {
+            "dst": 4,
+            "id": 17,
+            "lenght": 1480,
+            "slots": 100,
+            "src": 5
+        },
+        {
+            "dst": 6,
+            "id": 18,
+            "lenght": 740,
+            "slots": 100,
+            "src": 4
+        },
+        {
+            "dst": 4,
+            "id": 19,
+            "lenght": 740,
+            "slots": 100,
+            "src": 6
+        },
+        {
+            "dst": 9,
+            "id": 20,
+            "lenght": 1140,
+            "slots": 100,
+            "src": 5
+        },
+        {
+            "dst": 5,
+            "id": 21,
+            "lenght": 1140,
+            "slots": 100,
+            "src": 9
+        },
+        {
+            "dst": 13,
+            "id": 22,
+            "lenght": 1980,
+            "slots": 100,
+            "src": 5
+        },
+        {
+            "dst": 5,
+            "id": 23,
+            "lenght": 1980,
+            "slots": 100,
+            "src": 13
+        },
+        {
+            "dst": 7,
+            "id": 24,
+            "lenght": 720,
+            "slots": 100,
+            "src": 6
+        },
+        {
+            "dst": 6,
+            "id": 25,
+            "lenght": 720,
+            "slots": 100,
+            "src": 7
+        },
+        {
+            "dst": 8,
+            "id": 26,
+            "lenght": 700,
+            "slots": 100,
+            "src": 7
+        },
+        {
+            "dst": 7,
+            "id": 27,
+            "lenght": 700,
+            "slots": 100,
+            "src": 8
+        },
+        {
+            "dst": 9,
+            "id": 28,
+            "lenght": 840,
+            "slots": 100,
+            "src": 8
+        },
+        {
+            "dst": 8,
+            "id": 29,
+            "lenght": 840,
+            "slots": 100,
+            "src": 9
+        },
+        {
+            "dst": 11,
+            "id": 30,
+            "lenght": 370,
+            "slots": 100,
+            "src": 8
+        },
+        {
+            "dst": 8,
+            "id": 31,
+            "lenght": 370,
+            "slots": 100,
+            "src": 11
+        },
+        {
+            "dst": 12,
+            "id": 32,
+            "lenght": 460,
+            "slots": 100,
+            "src": 8
+        },
+        {
+            "dst": 8,
+            "id": 33,
+            "lenght": 460,
+            "slots": 100,
+            "src": 12
+        },
+        {
+            "dst": 11,
+            "id": 34,
+            "lenght": 600,
+            "slots": 100,
+            "src": 10
+        },
+        {
+            "dst": 10,
+            "id": 35,
+            "lenght": 600,
+            "slots": 100,
+            "src": 11
+        },
+        {
+            "dst": 12,
+            "id": 36,
+            "lenght": 800,
+            "slots": 100,
+            "src": 10
+        },
+        {
+            "dst": 10,
+            "id": 37,
+            "lenght": 800,
+            "slots": 100,
+            "src": 12
+        },
+        {
+            "dst": 13,
+            "id": 38,
+            "lenght": 430,
+            "slots": 100,
+            "src": 11
+        },
+        {
+            "dst": 11,
+            "id": 39,
+            "lenght": 430,
+            "slots": 100,
+            "src": 13
+        },
+        {
+            "dst": 13,
+            "id": 40,
+            "lenght": 250,
+            "slots": 100,
+            "src": 12
+        },
+        {
+            "dst": 12,
+            "id": 41,
+            "lenght": 250,
+            "slots": 100,
+            "src": 13
+        }
+    ],
+    "name": "National Science Foundations Network",
+    "nodes": [
+        {
+            "id": 0
+        },
+        {
+            "id": 1
+        },
+        {
+            "id": 2
+        },
+        {
+            "id": 3
+        },
+        {
+            "id": 4
+        },
+        {
+            "id": 5
+        },
+        {
+            "id": 6
+        },
+        {
+            "id": 7
+        },
+        {
+            "id": 8
+        },
+        {
+            "id": 9
+        },
+        {
+            "id": 10
+        },
+        {
+            "id": 11
+        },
+        {
+            "id": 12
+        },
+        {
+            "id": 13
+        }
+    ]
+}
