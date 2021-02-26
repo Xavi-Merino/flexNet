@@ -45,8 +45,9 @@ BEGIN_ALLOC_FUNCTION(ExactFit) {
 END_ALLOC_FUNCTION
 
 int main(int argc, char* argv[]) {
-  Simulator sim = Simulator(std::string("../networks/NSFNet.json"),
-                            std::string("../networks/NSFNet_routes.json"));
+  Simulator sim =
+      Simulator(std::string("NSFNet.json"), std::string("routes.json"),
+                std::string("bitrates.json"));
   USE_ALLOC_FUNCTION(ExactFit, sim);
   sim.init();
   sim.run();
