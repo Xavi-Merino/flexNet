@@ -76,6 +76,8 @@ class BitRate {
    * @brief Read a json file and extract the corresponding information, to fill
    * a vector type bitrate.
    *
+   * @param fileName location of json file, example: "../bitrate/bitrate.json"
+   *
    * @param vect vector pointer type bitrate, which enters empty and is filled
    * with the json information.
    */
