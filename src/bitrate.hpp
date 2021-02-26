@@ -36,7 +36,7 @@ class BitRate {
    * @brief Set modulation and add this to an array
    *
    * @param modulation string representing the type of modulation chosen
-   * @param slot int, number of slot to set
+   * @param slots int, number of slot to set
    * @param reach double, which represents the max distance to set
    */
 
@@ -77,9 +77,6 @@ class BitRate {
    * a vector type bitrate.
    *
    * @param fileName location of json file, example: "../bitrate/bitrate.json"
-   *
-   * @param vect vector pointer type bitrate, which enters empty and is filled
-   * with the json information.
    */
 
   static std::vector<BitRate> readBitRateFile(std::string fileName);
