@@ -1,12 +1,13 @@
-/*
-This is an allocation algorithm that follows the First Fit allocation policy,
-which always chooses the available slots with the lowest posible index to serve
-the connection request. If the slot or group of slots required to make the
-connection is available, taking into account the spectrum contiguity and
-continuity constraints, it creates the connections and returns 'ALLOCATED' to
-indicate success; otherwise, it returns 'NOT_ALLOCATED' to indicate that the
-process failed
-*/
+/*********************************************************************************
+ * This is an allocation algorithm that follows the First Fit allocation
+ * policy, which always chooses the available slots with the lowest posible
+ * index to serve the connection request. If the required slot or group of slots
+ * is available, taking into account the spectrum contiguity and continuity
+ * constraints, it creates the connections and returns 'ALLOCATED' to indicate
+ * success; otherwise, it returns 'NOT_ALLOCATED' to indicate that the process
+ * failed
+ **********************************************************************************/
+
 #include <fnsim/simulator.hpp>
 
 BEGIN_ALLOC_FUNCTION(FirstFit) {
