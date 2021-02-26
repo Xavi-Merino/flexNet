@@ -4,6 +4,10 @@
 To compile the library, you will need:
 - [CMake](https://cmake.org)
 
+Thanks to the next libraries used:
+- [JSON for modern C++](https://github.com/nlohmann/json)
+- [Catch2](https://github.com/catchorg/Catch2)
+
 ### Unix systems (Mac and linux)
 
 Create a build directory in the project root tree and run cmake there:
