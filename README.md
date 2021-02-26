@@ -1,10 +1,23 @@
 # Flex Net Sim
 
+**Flex Net Sim** is a C++ simulation library where you can design allocation algorithms to the flexible grid optical networks allocation problem. The library simulates the arrival and departure of several connections following a Poisson distribution. The researcher only needs to code the algorithm without worrying about the simulator code.
+
+## Features
+
+- Elastic optical networks support
+- Support for different bitrates through a JSON file
+- Support for different networks through a JSON file
+- Support for multiple routes through a JSON file
+- Support the creation of your own allocation algorithm
+- Customize connection arrive/departure ratios
+- Support to create your own statistics
+- Customize the number of connection arrives that you want to simulate
+
 ## Download
 
 Download the latest release from the [release list](https://gitlab.com/DaniloBorquez/flex-net-sim/-/releases). 
 
-If you want to try the actual developed version (a little bit updated, but coulb be unstable), you can clone this repository through the git clone command.
+If you want to try the actual developed version (a little bit updated, but coul be unstable), you can clone this repository through the git clone command.
 
 ```
 git clone git@gitlab.com:DaniloBorquez/flex-net-sim.git
