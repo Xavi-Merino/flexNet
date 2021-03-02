@@ -6,6 +6,14 @@ stages:
   - test
   - deploy
 
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ "release/*"'
+      when: always
+    - when: never
+
 building:
   stage: build_library
   script:
