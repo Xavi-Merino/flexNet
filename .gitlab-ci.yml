@@ -24,6 +24,7 @@ building:
   artifacts:
     paths:
       - build/*
+    expire_in: 1 day
 
 include:
   - '/.gitlab-ci-node.yml'
