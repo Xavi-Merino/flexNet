@@ -7,13 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.1] - 2021-03-02
 
-<<<<<<< HEAD
-=======
 ### CHANGED
 
 - Setting parameters of simulation must be done BEFORE the calling to init method. If you do it after, then an exception is thrown.
 
->>>>>>> hotfix/v0.1.1
 ## [0.1.0] - 2021-02-26
 
 ### Added
@@ -28,7 +25,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Customize the number of connection arrives that you want to simulate
 
 [0.1.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/releases/v0.1.0
-<<<<<<< HEAD
-=======
 [0.1.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.1.1...v0.1.0
->>>>>>> hotfix/v0.1.1
