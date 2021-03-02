@@ -25,4 +25,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Customize the number of connection arrives that you want to simulate
 
 [0.1.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/releases/v0.1.0
-[0.1.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.1.1...v0.1.0
+[0.1.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.1.0...v0.1.1
