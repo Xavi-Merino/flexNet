@@ -63,33 +63,82 @@ Simulator::Simulator(std::string networkFilename, std::string pathFilename,
 
 Simulator::~Simulator() {}
 
-void Simulator::setLambda(double lambda) { this->lambda = lambda; }
+void Simulator::setLambda(double lambda) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set lambda parameter AFTER calling init simulator "
+        "method.");
+  }
+  this->lambda = lambda;
+}
 
-void Simulator::setMu(double mu) { this->mu = mu; }
+void Simulator::setMu(double mu) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set mu parameter AFTER calling init simulator "
+        "method.");
+  }
+  this->mu = mu;
+}
 
-void Simulator::setSeedArrive(unsigned int seed) { this->seedArrive = seed; }
+void Simulator::setSeedArrive(unsigned int seed) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set seed arrive parameter AFTER calling init simulator "
+        "method.");
+  }
+  this->seedArrive = seed;
+}
 
 void Simulator::setSeedDeparture(unsigned int seed) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set seed departure parameter AFTER calling init simulator "
+        "method.");
+  }
   this->seedDeparture = seed;
 }
 
-void Simulator::setSeedBitRate(unsigned int seed) { this->seedBitRate = seed; }
+void Simulator::setSeedBitRate(unsigned int seed) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set seed bitrate parameter AFTER calling init simulator "
+        "method.");
+  }
+  this->seedBitRate = seed;
+}
 
 void Simulator::setGoalConnections(long long goal) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set goal connections parameter AFTER calling init "
+        "simulator method.");
+  }
   this->goalConnections = goal;
 }
 
 void Simulator::setBitRates(std::vector<BitRate> bitRates) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set bitrates parameter AFTER calling init simulator "
+        "method.");
+  }
   this->bitRatesDefault = std::vector<BitRate>(bitRates);
 }
 
 void Simulator::setAllocator(Allocator *newAllocator) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set allocator parameter AFTER calling init simulator "
+        "method.");
+  }
   newAllocator->setNetwork(this->controller->getNetwork());
   newAllocator->setPaths(this->controller->getPaths());
   this->controller->setAllocator(newAllocator);
 }
 
 void Simulator::defaultValues() {
+  this->initReady = false;
   this->lambda = 3;
   this->mu = 10;
   this->seedArrive = 12345;
@@ -207,6 +256,7 @@ int Simulator::eventRoutine(void) {
 }
 
 void Simulator::init(void) {
+  this->initReady = true;
   this->clock = 0;
   this->arriveVariable = ExpVariable(this->seedArrive, this->lambda);
   this->departVariable = ExpVariable(this->seedDeparture, this->mu);
@@ -230,8 +280,5 @@ void Simulator::run(void) {
       eventRoutine();
     }
     printRow((100 / timesToShow) * i);
-    // std::cout << (100 / timesToShow) * i << "% \t Blocking probability: "
-    //          << 1 - this->allocatedConnections / this->numberOfConnections
-    //          << "\n";
   }
 }

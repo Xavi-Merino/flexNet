@@ -119,29 +119,6 @@ class Simulator {
    * @param newAllocator pointer of object type Allocator.
    */
   void setAllocator(Allocator *newAllocator);
-  /**
-   * @brief set the default values for the different fields:
-   * lambda = 3
-   * mu = 10
-   * seedArrive = 12345
-   * seedDeparture = 12345
-   * seedSrc = 12345
-   * seedDst = 12345
-   * seedBitRate = 12345
-   * numberOfConnections = 0
-   * numberOfEvents = 0
-   * goalConnections = 10000
-   * columnWidth = 10
-   */
-  void defaultValues();
-  /**
-   * @brief shows on screen the values of the current simulator configuration.
-   */
-  void printInitialInfo();
-  /**
-   * @brief shows on screen the percentage of completion of the simulation.
-   */
-  void printRow(double percentage);
 
  private:
   double clock;
@@ -155,6 +132,7 @@ class Simulator {
   Event currentEvent;
   std::vector<BitRate> bitRates;
 
+  bool initReady;
   double lambda;
   double mu;
   unsigned int seedArrive;
@@ -182,6 +160,29 @@ class Simulator {
    * NOT_ALLOCATED, N_A (not assigned )
    */
   int eventRoutine(void);
+  /**
+   * @brief set the default values for the different fields:
+   * lambda = 3
+   * mu = 10
+   * seedArrive = 12345
+   * seedDeparture = 12345
+   * seedSrc = 12345
+   * seedDst = 12345
+   * seedBitRate = 12345
+   * numberOfConnections = 0
+   * numberOfEvents = 0
+   * goalConnections = 10000
+   * columnWidth = 10
+   */
+  void defaultValues();
+  /**
+   * @brief shows on screen the values of the current simulator configuration.
+   */
+  void printInitialInfo();
+  /**
+   * @brief shows on screen the percentage of completion of the simulation.
+   */
+  void printRow(double percentage);
 };
 
 #endif
