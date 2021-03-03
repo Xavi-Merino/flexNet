@@ -1,0 +1,38 @@
+building_bitrate_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_bitrate
+  - cd ..
+  artifacts:
+    paths:
+      - build/*
+    expire_in: 1 day
+  dependencies:
+    - building
+
+testing_bitrate:
+  allow_failure: true
+  needs: ["building_bitrate_test"]
+  stage: test
+  script:
+  - cd build
+  - g++ -o test_bitrate -fprofile-arcs -ftest-coverage ../test/test_bitrate.cpp ../src/bitrate.cpp 
+  - ./test_bitrate -r junit > report_bitrate.xml
+  after_script:
+  - cd build
+  - gcovr  --filter '\.\./src/bitrate.cpp'
+  - gcovr  --filter '\.\./src/bitrate.cpp' --xml-pretty > cov_bitrate.xml 
+  - cd ..
+  dependencies:
+    - building_bitrate_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_bitrate.xml
+      - build/cov_bitrate.xml
+      - build/test_bitrate*
+    reports:
+      junit: build/report_bitrate.xml
+      cobertura: build/cov_bitrate.xml
+    expire_in: 1 day
