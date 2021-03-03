@@ -16,11 +16,32 @@ void BitRate::addModulation(std::string modulation, int slots, double reach) {
   this->reach.push_back(reach);
 }
 
-std::string BitRate::getModulation(int pos) { return this->modulation[pos]; }
+std::string BitRate::getModulation(int pos) {
+  if (pos >= this->modulation.size()) {
+    throw std::runtime_error("Bitrate does not have more than " +
+                             std::to_string(this->modulation.size()) +
+                             " modulations.");
+  }
+  return this->modulation[pos];
+}
 
-int BitRate::getNumberOfSlots(int pos) { return this->slots[pos]; }
+int BitRate::getNumberOfSlots(int pos) {
+  if (pos >= this->slots.size()) {
+    throw std::runtime_error("Bitrate does not have more than " +
+                             std::to_string(this->slots.size()) +
+                             " modulations.");
+  }
+  return this->slots[pos];
+}
 
-double BitRate::getReach(int pos) { return this->reach[pos]; }
+double BitRate::getReach(int pos) {
+  if (pos >= this->reach.size()) {
+    throw std::runtime_error("Bitrate does not have more than " +
+                             std::to_string(this->reach.size()) +
+                             " modulations.");
+  }
+  return this->reach[pos];
+}
 
 std::vector<BitRate> BitRate::readBitRateFile(std::string fileName) {
   std::ifstream file(fileName);
