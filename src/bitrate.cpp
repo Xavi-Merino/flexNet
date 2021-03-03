@@ -16,15 +16,36 @@ void BitRate::addModulation(std::string modulation, int slots, double reach) {
   this->reach.push_back(reach);
 }
 
-std::string BitRate::getModulation(int pos) { return this->modulation[pos]; }
+std::string BitRate::getModulation(int pos) {
+  if (pos >= this->modulation.size()) {
+    throw std::runtime_error(
+        "Bitrate " + this->bitRateStr + " does not have more than " +
+        std::to_string(this->modulation.size()) + " modulations.");
+  }
+  return this->modulation[pos];
+}
 
-int BitRate::getNumberOfSlots(int pos) { return this->slots[pos]; }
+int BitRate::getNumberOfSlots(int pos) {
+  if (pos >= this->slots.size()) {
+    throw std::runtime_error(
+        "Bitrate " + this->bitRateStr + " does not have more than " +
+        std::to_string(this->slots.size()) + " modulations.");
+  }
+  return this->slots[pos];
+}
 
-double BitRate::getReach(int pos) { return this->reach[pos]; }
+double BitRate::getReach(int pos) {
+  if (pos >= this->reach.size()) {
+    throw std::runtime_error(
+        "Bitrate " + this->bitRateStr + " does not have more than " +
+        std::to_string(this->reach.size()) + " modulations.");
+  }
+  return this->reach[pos];
+}
 
 std::vector<BitRate> BitRate::readBitRateFile(std::string fileName) {
   std::ifstream file(fileName);
-  nlohmann::json bitRate;
+  nlohmann::ordered_json bitRate;
   std::vector<BitRate> vect = std::vector<BitRate>();
 
   file >> bitRate;
@@ -34,6 +55,7 @@ std::vector<BitRate> BitRate::readBitRateFile(std::string fileName) {
 
     int numberOfModulations = x.value().size();
 
+    BitRate aux = BitRate(bitrate);
     for (int i = 0; i < numberOfModulations; i++) {
       for (auto& w : x.value()[i].items()) {
         std::string modulation = w.key();
@@ -56,14 +78,15 @@ std::vector<BitRate> BitRate::readBitRateFile(std::string fileName) {
           ;
         }
         // end of exceptions
-
-        BitRate aux = BitRate(bitrate);
         aux.addModulation(modulation, slots, reach);
-
-        vect.push_back(aux);
       }
     }
+    vect.push_back(aux);
   }
 
   return vect;
 }
+
+std::string BitRate::getBitRateStr() { return this->bitRateStr; }
+
+double BitRate::getBitRate() { return this->bitRate; }

@@ -32,6 +32,7 @@ include:
   - '/.gitlab-ci-network.yml'
   - '/.gitlab-ci-randomvariable.yml'
   - '/.gitlab-ci-controller.yml'
+  - '/.gitlab-ci-bitrate.yml'
   
 pages:
   stage: deploy
@@ -55,6 +56,9 @@ pages:
   - g++ -o test_controller -fprofile-arcs -ftest-coverage ../test/test_controller.cpp ../src/controller.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp ../src/connection.cpp ../src/bitrate.cpp
   - ./test_controller || exit_code=$?
   - lcov  --capture  --directory . --output-file test_controller.info
+  - g++ -o test_bitrate -fprofile-arcs -ftest-coverage ../test/test_bitrate.cpp ../src/bitrate.cpp 
+  - ./test_bitrate || exit_code=$?
+  - lcov  --capture  --directory . --output-file test_bitrate.info
   - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --add-tracefile test_random_variable.info --add-tracefile test_controller.info --output-file total.info
   - lcov --remove total.info '*/c++/*' '*test*' '*.hpp' -o final.info
   - mkdir ../public/coverage-details
