@@ -67,3 +67,7 @@ std::vector<BitRate> BitRate::readBitRateFile(std::string fileName) {
 
   return vect;
 }
+
+std::string BitRate::getBitRateStr() { return this->bitRateStr; }
+
+double BitRate::getBitRate() { return this->bitRate; }

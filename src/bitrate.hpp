@@ -72,6 +72,9 @@ class BitRate {
 
   double getReach(int pos);
 
+  std::string getBitRateStr();
+  double getBitRate();
+
   /**
    * @brief Read a json file and extract the corresponding information, to fill
    * a vector type bitrate.
