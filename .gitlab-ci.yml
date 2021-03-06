@@ -10,7 +10,7 @@ workflow:
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: always
-    - if: '$CI_COMMIT_BRANCH =~ release/*'
+    - if: $CI_COMMIT_BRANCH =~ release/
       when: always
     - when: never
 
