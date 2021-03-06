@@ -1,7 +1,6 @@
 #ifndef __EVENT_H__
 #define __EVENT_H__
 
-// #include "simulator.hpp"
 #include "controller.hpp"
 
 typedef enum eventType { ARRIVE, DEPARTURE } eventType;

@@ -7,6 +7,7 @@ building_controller_test:
   artifacts:
     paths:
       - build/*
+    expire_in: 1 day
   dependencies:
     - building
 
@@ -34,3 +35,4 @@ testing_controller:
     reports:
       junit: build/report_controller.xml
       cobertura: build/cov_controller.xml
+    expire_in: 1 day

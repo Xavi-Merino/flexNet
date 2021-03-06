@@ -7,6 +7,7 @@ building_random_variable_test:
   artifacts:
     paths:
       - build/*
+    expire_in: 1 day
   dependencies:
     - building
 
@@ -34,3 +35,4 @@ testing_random_variable:
     reports:
       junit: build/report_random_variable.xml
       cobertura: build/cov_random_variable.xml
+    expire_in: 1 day

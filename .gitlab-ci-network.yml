@@ -7,6 +7,7 @@ building_network_test:
   artifacts:
     paths:
       - build/*
+    expire_in: 1 day
   dependencies:
     - building
 
@@ -34,3 +35,4 @@ testing_network:
     reports:
       junit: build/report_network.xml
       cobertura: build/cov_network.xml
+    expire_in: 1 day
