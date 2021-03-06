@@ -10,4 +10,6 @@ add_library(fnsim STATIC ${fns})
 INSTALL(TARGETS fnsim DESTINATION lib)
 INSTALL(FILES ${headers} DESTINATION include/fnsim)
 
+INCLUDE(OneBigHeader.cmake)
+
 add_subdirectory(test)
