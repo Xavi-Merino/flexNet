@@ -24,6 +24,7 @@ git clone git@gitlab.com:DaniloBorquez/flex-net-sim.git
 ```
 
 ## Installation
+You can directly download the one file header <a id="raw-url" href="https://daniloborquez.gitlab.io/flex-net-sim/simulator.hpp">HERE</a>
 
 To compile the library, you will need:
 - [CMake](https://cmake.org)
