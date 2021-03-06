@@ -37,6 +37,7 @@ pages:
   script:
   - doxygen Doxyfile
   - mv documentation/html/ public/
+  - mv build/simulator.hpp public/simulator.hpp
   - cd build
   - lcov --capture --initial  --directory . --output-file base.info
   - g++ -o test_node -fprofile-arcs -ftest-coverage ../test/test_node.cpp ../src/node.cpp 
