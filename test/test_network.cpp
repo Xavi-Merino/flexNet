@@ -115,3 +115,26 @@ TEST_CASE("JSON of NSFNet") {
     }
   }
 }
+
+TEST_CASE("Connect links") {
+  Network net = Network();
+  Node *n1 = new Node(0);
+  Node *n2 = new Node(1);
+  Link *l1 = new Link(0, 70.0, 200);
+  CHECK(l1->getDst() == -1);
+  CHECK(l1->getSrc() == -1);
+
+  net.addNode(n1);
+  net.addNode(n2);
+  net.addLink(l1);
+  net.connect(0, 0, 1);
+
+  CHECK(l1->getDst() == n1->getId());
+  CHECK(l1->getSrc() == n2->getId());
+
+  net.setLinkDst(0, 2);
+  net.setLinkSrc(0, 3);
+
+  CHECK(l1->getDst() == 2);
+  CHECK(l1->getSrc() == 3);
+}

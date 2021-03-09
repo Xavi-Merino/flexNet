@@ -6,6 +6,8 @@ Link::Link(void) {
   this->id = -1;
   this->length = DEFAULT_LENGTH;
   this->slots = std::vector<bool>(DEFAULT_SLOTS);
+  this->src = -1;
+  this->dst = -1;
 }
 
 Link::Link(int id) {
@@ -14,6 +16,8 @@ Link::Link(int id) {
 
   this->length = DEFAULT_LENGTH;
   this->slots = std::vector<bool>(DEFAULT_SLOTS);
+  this->src = -1;
+  this->dst = -1;
 }
 
 Link::Link(int id, float length) {
@@ -25,6 +29,8 @@ Link::Link(int id, float length) {
   this->length = length;
 
   this->slots = std::vector<bool>(DEFAULT_SLOTS);
+  this->src = -1;
+  this->dst = -1;
 }
 
 Link::Link(int id, float length, int slots) {
@@ -39,6 +45,8 @@ Link::Link(int id, float length, int slots) {
     throw std::runtime_error("Cannot create a link with " +
                              std::to_string(slots) + " slots.");
   this->slots = std::vector<bool>(slots);
+  this->src = -1;
+  this->dst = -1;
 }
 
 Link::~Link() {}
@@ -92,3 +100,7 @@ bool Link::getSlot(int pos) const {
 
   return this->slots[pos];
 }
+
+int Link::getSrc(void) const { return this->src; }
+
+int Link::getDst(void) const { return this->dst; }

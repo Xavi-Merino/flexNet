@@ -216,6 +216,8 @@ class Network {
    *
    */
   bool isSlotUsed(int link, int fromSlot, int toSlot);
+  void setLinkSrc(int pos, int src);
+  void setLinkDst(int pos, int dst);
 
  private:
   std::vector<Node *> nodes;
