@@ -169,8 +169,8 @@ void Network::connect(int src, int link,
                         this->links.at(link));
   std::for_each(this->nodes_in.begin() + dst + 1, this->nodes_in.end(),
                 [](int &n) { n += 1; });
-  setLinkDst(link, dst);
-  setLinkSrc(link, src);
+  this->links.at(link)->src = src;
+  this->links.at(link)->dst = dst;
 }
 // Connects two Nodes through one Link (order is important: src != dst):
 //
@@ -262,22 +262,6 @@ bool Network::isSlotUsed(int link, int fromSlot, int toSlot) {
     }
   }
   return false;
-}
-
-void Network::setLinkDst(int linkPos, int dst) {
-  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
-    throw std::runtime_error("Link position out of bounds.");
-
-  Link *link = getLink(linkPos);
-  link->dst = dst;
-}
-
-void Network::setLinkSrc(int linkPos, int src) {
-  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
-    throw std::runtime_error("Link position out of bounds.");
-
-  Link *link = getLink(linkPos);
-  link->src = src;
 }
 
 /*
