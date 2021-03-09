@@ -129,12 +129,6 @@ TEST_CASE("Connect links") {
   net.addLink(l1);
   net.connect(0, 0, 1);
 
-  CHECK(l1->getDst() == n1->getId());
-  CHECK(l1->getSrc() == n2->getId());
-
-  net.setLinkDst(0, 2);
-  net.setLinkSrc(0, 3);
-
-  CHECK(l1->getDst() == 2);
-  CHECK(l1->getSrc() == 3);
+  CHECK(l1->getSrc() == n1->getId());
+  CHECK(l1->getDst() == n2->getId());
 }
