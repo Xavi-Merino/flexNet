@@ -15,6 +15,10 @@
 #define DST dst
 #define REQ_SLOTS(pos) bitRate.getNumberOfSlots(pos)
 #define LINK_IN_ROUTE(route, link) (*this->path)[src][dst][route][link]
+#define LINK_IN_ROUTE_SRC(route, link) \
+  (*this->path)[src][dst][route][link]->getSrc()
+#define LINK_IN_ROUTE_DST(route, link) \
+  (*this->path)[src][dst][route][link]->getDst()
 #define LINK_IN_ROUTE_ID(route, link) \
   (*this->path)[src][dst][route][link]->getId()
 #define NUMBER_OF_ROUTES (*this->path)[src][dst].size()
