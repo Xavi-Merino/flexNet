@@ -217,6 +217,16 @@ class Network {
    */
   bool isSlotUsed(int link, int fromSlot, int toSlot);
 
+  float averageNeighborhood();
+
+  float normalAverageNeighborhood();
+
+  float nodalVariance();
+
+  bool existNodeIsolated();
+
+  bool isGraphRelated();
+
  private:
   std::vector<Node *> nodes;
   std::vector<Link *> links;
