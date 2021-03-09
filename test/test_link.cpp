@@ -104,3 +104,10 @@ TEST_CASE("getting slot (Link)") {
   CHECK_THROWS(l1.getSlot(-1) == false);
   CHECK_THROWS(l1.getSlot(3000) == false);
 }
+
+TEST_CASE("getting source and destination") {
+  Link l1 = Link(21, 70.0, 200);
+
+  CHECK(l1.getSrc() == -1);
+  CHECK(l1.getDst() == -1);
+}
