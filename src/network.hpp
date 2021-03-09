@@ -216,8 +216,20 @@ class Network {
    *
    */
   bool isSlotUsed(int link, int fromSlot, int toSlot);
-  void setLinkSrc(int pos, int src);
-  void setLinkDst(int pos, int dst);
+  /**
+   * @brief Sets a link's Source attribute.
+   *
+   * @param linkPos the position of the link inside the links vector.
+   * @param src the desired value for the link's Source attribute.
+   */
+  void setLinkSrc(int linkPos, int src);
+  /**
+   * @brief Sets a link's Destination attribute.
+   *
+   * @param linkPos the position of the link inside the links vector.
+   * @param dst the desired value for the link's Destination attribute.
+   */
+  void setLinkDst(int linkPos, int dst);
 
  private:
   std::vector<Node *> nodes;
