@@ -12,6 +12,10 @@ All of the following definitions can be used to simplify the creation of a perso
 - **USE_ALLOC_FUNCTION(fun, simObject)** can be used on the main file to set the allocation algorithm to be used by the simulation. The name of said algorithm is passed as the 'fun' parameter, and simObject corresponds to the simulator object whose allocator will be set.
 - **SRC** and **DST** correspond to the source and destination nodes of an event.
 - **REQ_SLOTS(pos)** can be used to get the number of slots required for a connection between nodes. The pos paremeter refers to the required position in the slots vector of the bitRate object.
+- **REQ_REACH(pos)** Get the optical reach located in the *pos* on the JSON file 
+- **REQ_MODULATION(pos)** Get the modulation format located in the *pos* on the JSON file
+- **REQ_BITRATE_STR** Get the bitrate value as string
+- **REQ_BITRATE Get** the bitrate value as double
 - **LINK_IN_ROUTE(route, link)** can be used to access a specific link object on a route between a source and destination node.
 - **LINK_IN_ROUTE_ID(route, link)** can be used to access the id of a specific link on a route between a source and destination node.
 - **NUMBER_OF_ROUTES** represents the amount of routes that exist between the current source and destination node.

@@ -14,6 +14,10 @@
 #define SRC src
 #define DST dst
 #define REQ_SLOTS(pos) bitRate.getNumberOfSlots(pos)
+#define REQ_REACH(pos) bitRate.getReach(pos)
+#define REQ_MODULATION(pos) bitRate.getModulation(pos)
+#define REQ_BITRATE_STR bitRate.getBitRateStr()
+#define REQ_BITRATE bitRate.getBitRate()
 #define LINK_IN_ROUTE(route, link) (*this->path)[src][dst][route][link]
 #define LINK_IN_ROUTE_SRC(route, link) \
   (*this->path)[src][dst][route][link]->getSrc()
@@ -123,6 +127,20 @@ class Simulator {
    * @param newAllocator pointer of object type Allocator.
    */
   void setAllocator(Allocator *newAllocator);
+  /**
+   * @brief Get the Time Duration object, that corresponds to the simulation
+   * time.
+   *
+   * @return unsigned int the number of seconds that the simulation was running.
+   */
+  unsigned int getTimeDuration();
+  /**
+   * @brief Get the Blocking Probability of the simulation
+   *
+   * @return double The blocking probability calculated as 1 - (allocated /
+   * total connections)
+   */
+  double getBlockingProbability();
 
  private:
   double clock;
