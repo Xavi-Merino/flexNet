@@ -56,19 +56,19 @@ BEGIN_ALLOC_FUNCTION(ExactFit) {
 }
 END_ALLOC_FUNCTION
 
-TEST_CASE("MACROS with FF andd 100 simualtions (Simulator)") {
-  Simulator s =
-      Simulator(std::string("ex_NSFNet.json"), std::string("ex_routes.json"),
-                std::string("ex_bitrates.json"));
+TEST_CASE("MACROS with FF andd 100 simulations (Simulator)") {
+  Simulator s = Simulator(std::string("../networks/NSFNet.json"),
+                          std::string("../networks/NSFNet_routes.json"),
+                          std::string("../bitrate/bitrate.json"));
   USE_ALLOC_FUNCTION(macros, s);
   s.init();
   CHECK_NOTHROW(s.run());
 }
 
 TEST_CASE("Algorithm - metrics (Simulator)") {
-  Simulator s =
-      Simulator(std::string("ex_NSFNet.json"), std::string("ex_routes.json"),
-                std::string("ex_bitrates.json"));
+  Simulator s = Simulator(std::string("../networks/NSFNet.json"),
+                          std::string("../networks/NSFNet_routes.json"),
+                          std::string("../bitrate/bitrate.json"));
   USE_ALLOC_FUNCTION(ExactFit, s);
   s.init();
   s.run();
