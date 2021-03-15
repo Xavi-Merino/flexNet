@@ -282,3 +282,7 @@ void Simulator::run(void) {
     printRow((100 / timesToShow) * i);
   }
 }
+
+unsigned int Simulator::getTimeDuration() {
+  return static_cast<unsigned int>(this->timeDuration.count());
+}

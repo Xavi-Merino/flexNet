@@ -127,6 +127,13 @@ class Simulator {
    * @param newAllocator pointer of object type Allocator.
    */
   void setAllocator(Allocator *newAllocator);
+  /**
+   * @brief Get the Time Duration object, that corresponds to the simulation
+   * time.
+   *
+   * @return unsigned int the number of seconds that the simulation was running.
+   */
+  unsigned int getTimeDuration();
 
  private:
   double clock;
