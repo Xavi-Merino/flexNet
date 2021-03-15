@@ -134,6 +134,13 @@ class Simulator {
    * @return unsigned int the number of seconds that the simulation was running.
    */
   unsigned int getTimeDuration();
+  /**
+   * @brief Get the Blocking Probability of the simulation
+   *
+   * @return double The blocking probability calculated as 1 - (allocated /
+   * total connections)
+   */
+  double getBlockingProbability();
 
  private:
   double clock;

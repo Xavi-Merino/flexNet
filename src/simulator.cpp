@@ -283,6 +283,10 @@ void Simulator::run(void) {
   }
 }
 
-unsigned int Simulator::getTimeDuration() {
+unsigned int Simulator::getTimeDuration(void) {
   return static_cast<unsigned int>(this->timeDuration.count());
+}
+
+double Simulator::getBlockingProbability(void) {
+  return 1 - this->allocatedConnections / this->numberOfConnections;
 }
