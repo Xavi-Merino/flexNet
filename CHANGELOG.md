@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added Source/Destination as attributes of Link. Now Network is declared as a friend class within Link class.
 - Added macros inside Simulator.hpp in order to obtain the Source/Destination of a link inside a route.
+- Macros added to the bitrate object in the algorithm implementation:
+     - REQ_REACH(pos) Get the optical reach located in the *pos* on the JSON file 
+     - REQ_MODULATION(pos) Get the modulation format located in the *pos* on the JSON file
+     - REQ_BITRATE_STR Get the bitrate value as string
+     - REQ_BITRATE Get the bitrate value as double
+- Adding getter to the simulation time
 
 ## [0.2.0] - 2021-03-06
 
