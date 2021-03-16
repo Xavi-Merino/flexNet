@@ -58,7 +58,10 @@ pages:
   - g++ -o test_bitrate -fprofile-arcs -ftest-coverage ../test/test_bitrate.cpp ../src/bitrate.cpp 
   - ./test_bitrate || exit_code=$?
   - lcov  --capture  --directory . --output-file test_bitrate.info
-  - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --add-tracefile test_random_variable.info --add-tracefile test_controller.info --add-tracefile test_bitrate.info --output-file total.info
+  - g++ -o test_simulator -fprofile-arcs -ftest-coverage ../test/test_simulator.cpp ../src/simulator.cpp  ../src/controller.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp ../src/connection.cpp ../src/bitrate.cpp ../src/allocator.cpp ../src/event.cpp ../src/uniform_variable.cpp ../src/random_variable.cpp ../src/exp_variable.cpp 
+  - ./test_simulator || exit_code=$?
+  - lcov  --capture  --directory . --output-file test_simulator.info
+  - lcov --add-tracefile test_node.info --add-tracefile test_link.info --add-tracefile test_network.info --add-tracefile test_random_variable.info --add-tracefile test_controller.info --add-tracefile test_bitrate.info --add-tracefile test_simulator.info --output-file total.info
   - lcov --remove total.info '*/c++/*' '*test*' '*.hpp' -o final.info
   - mkdir ../public/coverage-details
   - genhtml --prefix .  --ignore-errors source final.info --legend --title "commit SHA1" --output-directory=../public/coverage-details
