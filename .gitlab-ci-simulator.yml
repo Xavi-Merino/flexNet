@@ -1,0 +1,38 @@
+building_simulator_test:
+  stage: build_tests
+  script:
+  - cd build
+  - make test_simulator
+  - cd ..
+  artifacts:
+    paths:
+      - build/*
+    expire_in: 1 day
+  dependencies:
+    - building
+
+testing_simulator:
+  allow_failure: true
+  needs: ["building_simulator_test"]
+  stage: test
+  script:
+  - cd build
+  - g++ -o test_simulator -fprofile-arcs -ftest-coverage ../test/test_simulator.cpp ../src/simulator.cpp  ../src/controller.cpp ../src/network.cpp ../src/node.cpp ../src/link.cpp ../src/connection.cpp ../src/bitrate.cpp ../src/allocator.cpp ../src/event.cpp ../src/uniform_variable.cpp ../src/random_variable.cpp ../src/exp_variable.cpp 
+  - ./test_simulator -r junit > report_simulator.xml
+  after_script:
+  - cd build
+  - gcovr  --filter '\.\./src/simulator.cpp'
+  - gcovr  --filter '\.\./src/simulator.cpp' --xml-pretty > cov_simulator.xml 
+  - cd ..
+  dependencies:
+    - building_simulator_test
+  artifacts:
+    when: always
+    paths:
+      - build/report_simulator.xml
+      - build/cov_simulator.xml
+      - build/test_simulator*
+    reports:
+      junit: build/report_simulator.xml
+      cobertura: build/cov_simulator.xml
+    expire_in: 1 day

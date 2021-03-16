@@ -16,6 +16,8 @@
  */
 
 class Link {
+  friend class Network;
+
  public:
   /**
    * @brief Constructs a new Link object. When calling with no parameters the
@@ -110,9 +112,23 @@ class Link {
    * @return bool The state of the specified Slot.
    */
   bool getSlot(int pos) const;
+  /**
+   * @brief Get the value of the Source attribute of a Link.
+   *
+   * @return int The value of the Source attribute of this Link.
+   */
+  int getSrc(void) const;
+  /**
+   * @brief Get the value of the Destination attribute of a Link.
+   *
+   * @return int The value of the Destination attribute of this Link.
+   */
+  int getDst(void) const;
 
  private:
   int id;
+  int src;
+  int dst;
   float length;
   std::vector<bool> slots;
 };
