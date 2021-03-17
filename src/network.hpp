@@ -216,15 +216,39 @@ class Network {
    *
    */
   bool isSlotUsed(int link, int fromSlot, int toSlot);
-
+  /**
+   * @brief Obtain the nodal average in the network.
+   *
+   * @return float the average value.
+   */
   float averageNeighborhood();
-
+  /**
+   * @brief Is similar but normalized, 1 show the network have full connection,
+   * and 0 null connection.
+   *
+   * @return float Return nodal neighborhood normalized.
+   */
   float normalAverageNeighborhood();
-
+  /**
+   * @brief In base a averageNeighborhood, obtain the variance of nodal average.
+   *
+   * @return float variance of average neighborhood
+   */
   float nodalVariance();
-
+  /**
+   * @brief Return true or false, if at least one node is isolated.
+   *
+   * @return true
+   * @return false
+   */
   bool existNodeIsolated();
-
+  /**
+   * @brief Return true or false, if the network is total related. If exist a
+   * graph or node separated from the network return false.
+   *
+   * @return true
+   * @return false
+   */
   bool isGraphRelated();
 
  private:

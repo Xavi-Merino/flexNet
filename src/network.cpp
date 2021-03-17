@@ -264,25 +264,25 @@ bool Network::isSlotUsed(int link, int fromSlot, int toSlot) {
 }
 
 float Network::averageNeighborhood() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
   float result = 0;
-  for (int i = 0; i < this->getNumberOfNodes(); i++) {
-    result += (this->nodes_out[i + 1] - this->nodes_out[i]);
-  }
-  result = result / this->getNumberOfNodes();
+  result = this->getNumberOfLinks() / this->getNumberOfNodes();
   return result;
 }
 
 float Network::normalAverageNeighborhood() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
   float result = 0;
-  for (int i = 0; i < this->getNumberOfNodes(); i++) {
-    result += (this->nodes_out[i + 1] - this->nodes_out[i]);
-  }
-  result =
-      2 * result / (this->getNumberOfNodes() * (this->getNumberOfNodes() - 1));
+  result = this->getNumberOfLinks() /
+           (this->getNumberOfNodes() * (this->getNumberOfNodes() - 1));
   return result;
 }
 
 float Network::nodalVariance() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
   float result = 0;
   float average = this->averageNeighborhood();
   for (int i = 0; i < this->getNumberOfNodes(); i++) {
@@ -293,6 +293,8 @@ float Network::nodalVariance() {
 }
 
 bool Network::existNodeIsolated() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
   bool value = true;
   for (int i = 0; i < this->getNumberOfNodes(); i++) {
     if (this->nodes_in[i] == this->nodes_in[i + 1]) {
@@ -304,6 +306,8 @@ bool Network::existNodeIsolated() {
 }
 
 bool Network::isGraphRelated() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
   int _n = this->getNumberOfNodes();
   if (_n <= 1) return true;
 
@@ -321,6 +325,8 @@ bool Network::isGraphRelated() {
     if (!visit[*current]) {
       for (int i = this->nodes_out[*current]; i < this->nodes_out[*current + 1];
            i++) {
+        // TODO: visitedId, must be the destiny Node ID, not the link ID.
+        // Waiting the src/dst feature.
         visitedId = this->links_out[i]->getId();
         if (!visit[visitedId]) forvisit.insert(visitedId);
       }
@@ -338,6 +344,7 @@ bool Network::isGraphRelated() {
     result = result && *iter;
   return result;
 }
+
 /*
 int Network::distanceClass(int src, int dst) {
   int path_counter = 0;
