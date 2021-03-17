@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <set>
 #include <unordered_map>
 
 Network::Network(void) {
@@ -45,7 +46,7 @@ Network::Network(std::string filename) {
   // number of links
   int cantLinks = NSFnet["links"].size();
 
-  // adding nodes to the netwrok
+  // adding nodes to the network
   for (int i = 0; i < cantNodos; i++) {
     int id;
     id = NSFnet["nodes"][i]["id"];
@@ -260,6 +261,88 @@ bool Network::isSlotUsed(int link, int fromSlot, int toSlot) {
     }
   }
   return false;
+}
+
+float Network::averageNeighborhood() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
+  float result = 0;
+  result = this->getNumberOfLinks() / this->getNumberOfNodes();
+  return result;
+}
+
+float Network::normalAverageNeighborhood() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
+  float result = 0;
+  result = this->getNumberOfLinks() /
+           (this->getNumberOfNodes() * (this->getNumberOfNodes() - 1));
+  return result;
+}
+
+float Network::nodalVariance() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
+  float result = 0;
+  float average = this->averageNeighborhood();
+  for (int i = 0; i < this->getNumberOfNodes(); i++) {
+    result += pow((this->nodes_out[i + 1] - this->nodes_out[i]) - average, 2);
+  }
+  result /= this->getNumberOfNodes();
+  return result;
+}
+
+bool Network::existNodeIsolated() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
+  bool value = true;
+  for (int i = 0; i < this->getNumberOfNodes(); i++) {
+    if (this->nodes_in[i] == this->nodes_in[i + 1]) {
+      value = false;
+      break;
+    }
+  }
+  return value;
+}
+
+bool Network::isGraphRelated() {
+  if (this->getNumberOfNodes() == 0)
+    throw std::runtime_error("The network must be have at least one node.");
+  int _n = this->getNumberOfNodes();
+  if (_n <= 1) return true;
+
+  std::vector<bool> visit(_n);
+  std::vector<bool>::iterator iter;
+
+  for (iter = visit.begin(); iter != visit.end(); iter++) *iter = false;
+
+  std::set<int> forvisit;
+  std::set<int>::iterator current;
+  int visitedId;
+  forvisit.insert(0);
+  while (!forvisit.empty()) {
+    current = forvisit.begin();
+    if (!visit[*current]) {
+      for (int i = this->nodes_out[*current]; i < this->nodes_out[*current + 1];
+           i++) {
+        // TODO: visitedId, must be the destiny Node ID, not the link ID.
+        // Waiting the src/dst feature.
+        visitedId = this->links_out[i]->getId();
+        if (!visit[visitedId]) forvisit.insert(visitedId);
+      }
+      /*
+      for (int i = 0; i < _n; i++) {
+        if (_graph[*current][i] == 1 && !visit[i]) forvisit.insert(i);
+      }*/
+    }
+    visit[*current] = true;
+    forvisit.erase(current);
+  }
+
+  bool result;
+  for (iter = visit.begin(); iter != visit.end(); iter++)
+    result = result && *iter;
+  return result;
 }
 
 /*

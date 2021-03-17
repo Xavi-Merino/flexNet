@@ -115,3 +115,19 @@ TEST_CASE("JSON of NSFNet") {
     }
   }
 }
+
+TEST_CASE("Check Metrics Features") {
+  Network netClean = Network();
+  CHECK_THROWS(netClean.averageNeighborhood());
+  CHECK_THROWS(netClean.normalAverageNeighborhood());
+  CHECK_THROWS(netClean.nodalVariance());
+  CHECK_THROWS(netClean.isGraphRelated());
+  CHECK_THROWS(netClean.existNodeIsolated());
+  Network net = Network("../networks/NSFNet.json");
+  CHECK(net.averageNeighborhood() == Approx(6).epsilon(0.01));  // 1% error
+  CHECK(net.normalAverageNeighborhood() ==
+        Approx(0.23).epsilon(0.01));                           // 1% error
+  CHECK(net.nodalVariance() == Approx(0.2857).epsilon(0.01));  // 1% error
+  CHECK(net.isGraphRelated() == true);
+  CHECK(net.existNodeIsolated() == false);
+}
