@@ -170,6 +170,8 @@ void Network::connect(int src, int link,
                         this->links.at(link));
   std::for_each(this->nodes_in.begin() + dst + 1, this->nodes_in.end(),
                 [](int &n) { n += 1; });
+  this->links.at(link)->src = src;
+  this->links.at(link)->dst = dst;
 }
 // Connects two Nodes through one Link (order is important: src != dst):
 //

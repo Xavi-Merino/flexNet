@@ -282,3 +282,11 @@ void Simulator::run(void) {
     printRow((100 / timesToShow) * i);
   }
 }
+
+unsigned int Simulator::getTimeDuration(void) {
+  return static_cast<unsigned int>(this->timeDuration.count());
+}
+
+double Simulator::getBlockingProbability(void) {
+  return 1 - this->allocatedConnections / this->numberOfConnections;
+}
