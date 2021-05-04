@@ -7,32 +7,58 @@
 /**
  * @brief Class with the node information.
  *
- * This class is used to create and access node objects, which represent the
- * nodes in the network.
+ * The Node class is used to represent a Node in an Optical Fiber Network inside
+ * the simulator. (A Node inside an Optical Fiber Network is a device that
+ * allows more than two connections of transmission lines (links) acting as a
+ * hub/switch/router for electrical-optical connections.)
+ * //https://circuitglobe.com/optical-network.html
+ * //https://nanohub.org/resources/28083/download/11_SC_Undergraduate_level_Module_11_Kost.pdf
+ * //Fund. Redes Computadores / Canessa / Tannenbaum
  *
+ * Nodes objects are needed, alongside Link objects, in order to create an
+ * Optical Fiber Network architecture used as a base for the simulations. This
+ * is needed for the Network class. In hierarchical order, a Network object is
+ * used inside a Controller class, and a Controller object is used inside a
+ * Simulator class.
+ *
+ *
+ * The Node class enfolds/contains two attributes:
+ * -A mandatory/necessary attribute called Id (id) used as an unique identifier.
+ * -An optional attribute called Label (label) used for adding extra information
+ * for identifying the node.
+ *
+ * The Node class consists of 4 methods for setting/accessing the values of
+ * their Id and Label attributes respectively.
  */
 
 class Node {
  public:
   /**
-   * @brief Constructs a new Node object. By default, the id attribute is set to
-   * -1 and the label to an empty string.
+   * @brief Constructs a new Node object that represents the default Node
+   * allocated by calling the void constructor. This constructor sets the Id
+   * attribute to -1. This constructor sets the Label to an empty string ("").
    *
    */
   Node(void);
   /**
-   * @brief Constructs a new Node object. The id attribute is set to the value
-   * passed as a parameter, and the label is set to an empty string.
+   * @brief Constructs a new Node object that represents a Node with the given
+   * Id number. This constructor sets the Id attribute to id parameter given
+   * when invoking the constructor. This constructor sets the Label to an empty
+   * string ("").
    *
-   * @param id The id of the new Node.
+   * @param id The desired Id (integer) number used to identify the Node.
    */
   Node(int id);
   /**
-   * @brief Constructs a new Node object. The id and label attributes of the
-   * node are set to the values passed as parameters.
+   * @brief Constructs a new Node object that represents a Node with the given
+   * Id number. This constructor sets the Id attribute to the value of the id
+   * parameter given when invoking the constructor. This constructor sets the
+   * Label to the value of the label parameter given when invoking the
+   * constructor.
    *
-   * @param id The id of the new Node.
-   * @param label The label of the new Node.
+   * @param id The desired Id (integer) number used to identify the Node.
+   * @param label The desired Label (string) used to add extra information to
+   * the Node.
    */
   Node(int id, std::string label);
   /**
@@ -41,28 +67,30 @@ class Node {
    */
   ~Node();
   /**
-   * @brief Set the Id of a node. This method only works on nodes that were
-   * created without a specified id.
+   * @brief Set the Id unique number of the current Node object.
+   * This method is meant to be used on Nodes that were created as default Nodes
+   * with no previous Id number given (and automatically set to -1).
    *
-   * @param id the new id of the Node object.
+   * @param id The desired Id (integer) number used to identify the Node.
    */
   void setId(int id);
   /**
-   * @brief Get the Id attribute of the node.
+   * @brief Gt the Id unique number of the current Node object.
    *
-   * @return int the Id of the Node object.
+   * @return The Id (integer) unique number used to identify the Node.
    */
   int getId(void) const;
   /**
-   * @brief Set the Label of the node.
+   * @brief Set the optional Label string of the current Node object.
    *
-   * @param label The new label of the Node object. It must be a string.
+   * @param label The desired string (std::string) used to label the Node for
+   * additional information.
    */
   void setLabel(std::string label);
   /**
-   * @brief Get the Label attribute of the node.
+   * @brief Get the Label string of the current Node object.
    *
-   * @return std::string The label of the Node object.
+   * @return The Label string (std::string) of the Node.
    */
   std::string getLabel(void) const;
 

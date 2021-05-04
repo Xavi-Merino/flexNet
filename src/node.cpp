@@ -10,6 +10,7 @@ Node::Node(void) {
 Node::Node(int id) {
   this->id = id;
   this->label = "";
+  // node_counter++;
 }
 
 Node::Node(int id, std::string label) {
