@@ -258,11 +258,11 @@ bool Network::isSlotUsed(int link, int fromSlot, int toSlot) {
     throw std::runtime_error("Slot from and slot To cannot be equals.");
 
   for (int i = fromSlot; i < toSlot; i++) {
-    if (this->links[link]->getSlot(i)) {
-      return true;
+    if (this->links[link]->getSlot(i)) {  // if(!...)
+      return true;                        // return false
     }
   }
-  return false;
+  return false;  // return true;
 }
 
 float Network::averageNeighborhood() {
