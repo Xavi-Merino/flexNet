@@ -8,19 +8,10 @@
  * @brief Class with the node information.
  *
  * The Node class is used to represent a Node in an Optical Fiber Network inside
- * the simulator. (A Node inside an Optical Fiber Network is a device that
- * allows more than two connections of transmission lines (links) acting as a
- * hub/switch/router for electrical-optical connections.)
- * //https://circuitglobe.com/optical-network.html
- * //https://nanohub.org/resources/28083/download/11_SC_Undergraduate_level_Module_11_Kost.pdf
- * //Fund. Redes Computadores / Canessa / Tannenbaum
+ * the simulator.
  *
  * Nodes objects are needed, alongside Link objects, in order to create an
- * Optical Fiber Network architecture used as a base for the simulations. This
- * is needed for the Network class. In hierarchical order, a Network object is
- * used inside a Controller class, and a Controller object is used inside a
- * Simulator class.
- *
+ * Optical Fiber Network architecture used as a base for the simulations.
  *
  * The Node class enfolds/contains two attributes:
  * -A mandatory/necessary attribute called Id (id) used as an unique identifier.
