@@ -259,12 +259,16 @@ bool Network::isSlotUsed(int linkPos, int slotFrom, int slotTo) {
   if (slotFrom == slotTo)
     throw std::runtime_error("Slot from and slot To cannot be equals.");
 
+  // Loop through all the Slots in range
   for (int i = slotFrom; i < slotTo; i++) {
-    if (this->links[linkPos]->getSlot(i)) {  // if(!...)
-      return true;                           // return false
+    // If it finds a single used slot...
+    if (this->links[linkPos]->getSlot(i)) {
+      //...then the entire slot range is considered "used".
+      return true;
     }
   }
-  return false;  // return true;
+  // Otherwise, the entire slot range is free to allocate.
+  return false;
 }
 
 float Network::averageNeighborhood() {
