@@ -127,10 +127,10 @@ class Network {
    * destiny. The nodes and link must previously exist on the network.
    *
    * @param src the source node of the connection.
-   * @param link the Id/position of the link used to connect the nodes.
+   * @param linkPos the Id/position of the link used to connect the nodes.
    * @param dst the destination node of the connection.
    */
-  void connect(int src, int link, int dst);
+  void connect(int src, int linkPos, int dst);
   /**
    * @brief Checks if the source and destination nodes are connected through a
    * link. If the connection exists, the id of the link is returned; otherwise,

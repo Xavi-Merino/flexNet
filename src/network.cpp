@@ -140,7 +140,7 @@ void Network::addLink(Link *link) {
 }
 // Add a Link to Links vector.
 
-void Network::connect(int src, int link,
+void Network::connect(int src, int linkPos,
                       int dst)  // Using Ids and Link from Nodes/Links vectors
 {
   if (src < 0 || src >= this->node_counter) {
@@ -155,23 +155,23 @@ void Network::connect(int src, int link,
         " because its ID is not in the network. Number of nodes in network: " +
         std::to_string(this->node_counter));
   }
-  if (link < 0 || link >= this->link_counter) {
+  if (linkPos < 0 || linkPos >= this->link_counter) {
     throw std::runtime_error(
-        "Cannot use link " + std::to_string(link) +
+        "Cannot use link " + std::to_string(linkPos) +
         " because its ID is not in the network. Number of links in network: " +
         std::to_string(this->link_counter));
   }
   this->links_out.insert(this->links_out.begin() + this->nodes_out.at(src),
-                         this->links.at(link));
+                         this->links.at(linkPos));
   std::for_each(this->nodes_out.begin() + src + 1, this->nodes_out.end(),
                 [](int &n) { n += 1; });
 
   this->links_in.insert(this->links_in.begin() + this->nodes_in.at(dst),
-                        this->links.at(link));
+                        this->links.at(linkPos));
   std::for_each(this->nodes_in.begin() + dst + 1, this->nodes_in.end(),
                 [](int &n) { n += 1; });
-  this->links.at(link)->src = src;
-  this->links.at(link)->dst = dst;
+  this->links.at(linkPos)->src = src;
+  this->links.at(linkPos)->dst = dst;
 }
 // Connects two Nodes through one Link (order is important: src != dst):
 //
