@@ -41,13 +41,13 @@ Network::Network(std::string filename) {
   file >> NSFnet;
 
   // number of nodes
-  int cantNodos = NSFnet["nodes"].size();
+  int numberOfNodes = NSFnet["nodes"].size();
 
   // number of links
-  int cantLinks = NSFnet["links"].size();
+  int numberOfLinks = NSFnet["links"].size();
 
   // adding nodes to the network
-  for (int i = 0; i < cantNodos; i++) {
+  for (int i = 0; i < numberOfNodes; i++) {
     int id;
     id = NSFnet["nodes"][i]["id"];
     Node *node = new Node(id);
@@ -55,7 +55,7 @@ Network::Network(std::string filename) {
   }
 
   // adding links to the network
-  for (int i = 0; i < cantLinks; i++) {
+  for (int i = 0; i < numberOfLinks; i++) {
     int id;
     id = NSFnet["links"][i]["id"];
     float lenght;
