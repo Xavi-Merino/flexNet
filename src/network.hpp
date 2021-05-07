@@ -110,17 +110,17 @@ class Network {
   /**
    * @brief Gets the Node at a index position "pos" inside the Nodes vector.
    *
-   * @param pos the position of the Node inside Nodes vector.
+   * @param nodePos the position of the Node inside Nodes vector.
    * @return Node the pointer to the node located at the required position.
    */
-  Node *getNode(int pos);
+  Node *getNode(int nodePos);
   /**
    * @brief Gets the Link pointer at a index position "pos" inside Links vector.
    *
-   * @param pos the position of the Link inside Links vector
+   * @param linkPos the position of the Link inside Links vector
    * @return Link the pointer to the link located at the required position.
    */
-  Link *getLink(int pos);
+  Link *getLink(int linkPos);
   /**
    * @brief Connects the source node to the destination node through the link
    * with the specified id. The direction of the connection is from source to
@@ -254,12 +254,12 @@ class Network {
  private:
   std::vector<Node *> nodes;
   std::vector<Link *> links;
-  std::vector<Link *> links_in;
-  std::vector<Link *> links_out;
-  std::vector<int> nodes_in;
-  std::vector<int> nodes_out;
-  int link_counter;
-  int node_counter;
+  std::vector<Link *> linksIn;
+  std::vector<Link *> linksOut;
+  std::vector<int> nodesIn;
+  std::vector<int> nodesOut;
+  int linkCounter;
+  int nodeCounter;
   //   int path_counter;
 };
 
