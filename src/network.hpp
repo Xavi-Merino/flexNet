@@ -196,26 +196,26 @@ class Network {
    * @brief This method is used to determine whether the slot in the specified
    * link is already being used or not.
    *
-   * @param link the position of the link inside the links vector.
-   * @param slot the position of the slot inside the slots vector.
+   * @param linkPos the position of the link inside the links vector.
+   * @param slotPos the position of the slot inside the slots vector.
    * @return bool the state of the specified slot. If it's active it returns
    * true, otherwise it returns false.
    *
    */
-  bool isSlotUsed(int link, int slot);
+  bool isSlotUsed(int linkPos, int slotPos);
   /**
    * @brief This method is used to determine whether the slot interval in the
    * specified link is already being used or not.
    *
-   * @param link the position of the link inside the links vector.
-   * @param fromSlot the position of the slot at the beggining of the required
+   * @param linkPos the position of the link inside the links vector.
+   * @param slotFrom the position of the slot at the beggining of the required
    * interval.
-   * @param toSlot the position of the slot at the end of the required interval.
+   * @param slotTo the position of the slot at the end of the required interval.
    * @return bool the state of the specified interval of slots. If it's active
    * it returns true, otherwise it returns false.
    *
    */
-  bool isSlotUsed(int link, int fromSlot, int toSlot);
+  bool isSlotUsed(int linkPos, int slotFrom, int slotTo);
   /**
    * @brief Obtain the nodal average in the network.
    *
