@@ -303,14 +303,14 @@ float Network::nodalVariance() {
 bool Network::existNodeIsolated() {
   if (this->getNumberOfNodes() == 0)
     throw std::runtime_error("The network must be have at least one node.");
-  bool value = true;
+  bool value = true;  // <del>
   for (int i = 0; i < this->getNumberOfNodes(); i++) {
     if (this->nodesIn[i] == this->nodesIn[i + 1]) {
-      value = false;
-      break;
+      value = false;  // return false
+      break;          // <del>
     }
   }
-  return value;
+  return value;  // return true
 }
 
 bool Network::isGraphRelated() {
