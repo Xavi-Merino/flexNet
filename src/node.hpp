@@ -66,7 +66,7 @@ class Node {
    */
   void setId(int id);
   /**
-   * @brief Gt the Id unique number of the current Node object.
+   * @brief Get the Id unique number of the current Node object.
    *
    * @return The Id (integer) unique number used to identify the Node.
    */
