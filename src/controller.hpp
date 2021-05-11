@@ -8,17 +8,20 @@
 /**
  * @brief Class with the controller information.
  *
- * This class is used to create and access controller objects. This object
- * handles the connection requests generated inside the Simulator by executing
- * an allocation algorithm from the Allocator object on the network. Once the
- * process is completed, it returns the result to the simulator.
+ * This class allows you to create the object Controller and manipulate it by
+ * its methods. The importance of this object is that it handles connection
+ * requests generated inside the Simulator by executing an allocation algorithm
+ * from the Allocator object on the network. Once the process is completed, it
+ * returns the result to the simulator. The Controller is the link between the
+ * Simulator and the Network.
  *
  */
 class Controller {
  public:
   /**
-   * @brief Constructs a new Controller object. An empty Connection vector is
-   * created inside it.
+   * @brief Constructs a new Controller object. The attribute connections is
+   * assigned to an empty Connection vector. This object does not have a network
+   * or connections registered.
    *
    */
   Controller();
@@ -27,7 +30,8 @@ class Controller {
    * stores it as an attribute. An empty Connection vector is created and
    * stored as well.
    *
-   * @param network the Network object. It must be a pointer.
+   * @param network The pointer type Network object. This contains all
+   * the information about the network, nodes, routes, path length and slots.
    */
   Controller(Network *network);
   /**
@@ -44,18 +48,21 @@ class Controller {
    * @param src the source node of the connection.
    * @param dst the destination node of the connection.
    * @param bitRate the bitRate object of the connection.
-   * @param idConnection the id of the new connection object.
-   * @return allocationStatus the result of the allocation process (whether the
-   * allocation was succesful or not).
+   * @param idConnection the id of the new connection object. It serves to
+   * identify the connection within the attribute connections.
+   * @return the result of the allocation process, whether the
+   * allocation was succesful or not. This is type allocationStatus, there are
+   * three states: ALLOCATED, NOT_ALLOCATED, N_A (not assigned).
    */
   allocationStatus assignConnection(int src, int dst, BitRate bitRate,
                                     long long idConnection);
   /**
    * @brief Unnasigns the requested connection making the resources that were
    * being used become available again. It deactivates the slots that were
-   * taken.
+   * taken in the connection.
    *
-   * @param idConnection the id of the Connection object.
+   * @param idConnection the id of the Connection object. It serves to
+   * identify the connection within the attribute connections.
    * @return int number zero if unsuccessful.
    */
   int unassignConnection(long long idConnection);
