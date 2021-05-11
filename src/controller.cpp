@@ -85,7 +85,7 @@ void Controller::setPaths(std::string filename) {
     // allocate path[src][dst][pathsNumber]
     int linksInPath;
     linksInPath = pathsNumber - 1;
-    // beacuase 3 nodes has 2 links
+    // becauase 3 nodes has 2 links
     this->path[src][dst].resize(pathsNumber);
 
     // go through available routes
