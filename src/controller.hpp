@@ -67,10 +67,11 @@ class Controller {
    */
   int unassignConnection(long long idConnection);
   /**
-   * @brief Sets the paths vector from the routes on the JSON file. From the
-   file, this method creates the paths vector based on an array of routes. This
+   * @brief Sets the paths vector from the routes on the JSON file. From this
+   file, the method creates the paths vector based on an array of routes. This
    array contains the source and destination nodes, as well as an array with all
-   the existing paths between them.
+   the existing paths between them. The path vector is important because it is
+   all the nodes and the respective routes that link them
    *
    *
    * In the example below, the network consists of three nodes: 0, 1 and 2. Node
@@ -79,7 +80,8 @@ class Controller {
    connections are unidirectional.
    *
    *
-   * @param filename name of the JSON file that contains the routes.
+   * @param filename name of the JSON file that contains the routes. Example of
+   this: "routes.json"
    * \code{.json}
      {
       "name": "Example routes between 3 nodes",
@@ -128,35 +130,41 @@ class Controller {
   void setPaths(std::string filename);
   /**
    * @brief Sets the Network object as the network attribute of the controller.
-   * This is the network that the controller will now handle.
+   * This is the network that the controller will now handle and who will
+   * interact with the simulator
    *
-   * @param network the network given to the controller. It must be a pointer.
+   * @param network The pointer type Network object. This contains all
+   * the information about the network, nodes, routes, path length and slots.
    */
   void setNetwork(Network *network);
   /**
-   * @brief Get the Network in the controller.
+   * @brief Get the Network in the controller. The return contains all
+   * the information about the network, nodes, routes, path length and slots.
    *
-   * @return Network a pointer to the network object from the controller.
+   * @return Network. a pointer to the network object from the controller. This
+   * is the network the controller is currently using
    */
   Network *getNetwork(void);
   /**
-   * @brief Set the allocator of the controller. From this Allocator object, the
-   * controller will be able to use an allocation method on the network.
+   * @brief Set the allocator of the controller. The allocator determines how
+   * the connections will be assigned in the network.
    *
-   * @param allocator a pointer to the allocator object.
+   * @param allocator A pointer to the allocator object.
    */
   void setAllocator(Allocator *allocator);
   /**
-   * @brief Get the Allocator object of the controller.
+   * @brief Get the Allocator object of the controller. The allocator determines
+   * how the connections will be assigned in the network.
    *
    * @return Allocator* a pointer to the allocator object.
    */
   Allocator *getAllocator(void);
   /**
-   * @brief Get the Paths vector.
+   * @brief Get the Paths vector. This vector represents all the routes present
+   * in the network between the source and destination nodes.
    *
-   * @return std::vector<std::vector<std::vector<std::vector<Link *>>>>* a
-   * pointer to the paths vector.
+   * @return a pointer to the four dimensional vector which represents the
+   * paths.
    */
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
 
