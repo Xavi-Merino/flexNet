@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.1] - 2021-05-11
+## [0.4.0] - 2021-05-11
 
 ### CHANGED
 
@@ -13,6 +13,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     -Extended/changed all comments on the class and methods description (.hpp).
     -Added comments on a method (isSlotUsed) to describe it clearer (.cpp).
     -Standarized some variables names: changed all similar variables names into one (i.e., from link and linkPos to linkPos), changed the variables in spanish into english and changed all variable names to camelCase (both .hpp and .cpp).
+
+## [0.4.0] - 2021-03-16
+
+### ADDED
+
+- New Feature: Five metrics for the Network.
+	- Average Neighborhood
+	- Normal Average Neighborhood
+	- Nodal Variance
+	- Exist Node Isolated
+	- Is Graph Related
 
 ## [0.3.0] - 2021-03-16
 
@@ -29,17 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - REQ_BITRATE Get the bitrate value as double
 - Adding getter to the simulation time with a method in simulator object
 - Adding getter to the blocking probability with a method in simulator object
-
-## [0.4.0] - 2021-03-16
-
-### ADDED
-
-- New Feature: Five metrics for the Network.
-	- Average Neighborhood
-	- Normal Average Neighborhood
-	- Nodal Variance
-	- Exist Node Isolated
-	- Is Graph Related
 
 ## [0.2.0] - 2021-03-06
 
