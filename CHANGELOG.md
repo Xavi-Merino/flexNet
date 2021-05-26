@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.0] - 2021-05-25
 
 ### DELETED
+
 -nodeCounter variable.
 
 ## [0.4.0] - 2021-05-11
 
 ### CHANGED
--Documentation of Node class:
-    -Extended/changed some comments on the class and methods description (.hpp).
-    -Changed a variable name to camelCase (nodeCounter).
+
+-Documentation of Network class:
+    - Extended/changed all comments on the class and methods description (.hpp).
+    - Added comments on a method (isSlotUsed) to describe it clearer (.cpp).
+    - Standarized some variables names: changed all similar variables names into one (i.e., from link and linkPos to linkPos), changed the variables in spanish into english and changed all variable names to camelCase (both .hpp and .cpp).
 
 ## [0.4.0] - 2021-03-16
 
