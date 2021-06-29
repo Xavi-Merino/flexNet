@@ -283,7 +283,7 @@ float Network::normalAverageNeighborhood() {
   if (this->getNumberOfNodes() == 0)
     throw std::runtime_error("The network must be have at least one node.");
   float result = 0;
-  result = this->getNumberOfLinks() /
+  result = (float)this->getNumberOfLinks() /
            (this->getNumberOfNodes() * (this->getNumberOfNodes() - 1));
   return result;
 }
@@ -299,78 +299,3 @@ float Network::nodalVariance() {
   result /= this->getNumberOfNodes();
   return result;
 }
-
-bool Network::existNodeIsolated() {
-  if (this->getNumberOfNodes() == 0)
-    throw std::runtime_error("The network must be have at least one node.");
-  bool value = true;  // <del>
-  for (int i = 0; i < this->getNumberOfNodes(); i++) {
-    if (this->nodesIn[i] == this->nodesIn[i + 1]) {
-      value = false;  // return false
-      break;          // <del>
-    }
-  }
-  return value;  // return true
-}
-
-bool Network::isGraphRelated() {
-  if (this->getNumberOfNodes() == 0)
-    throw std::runtime_error("The network must be have at least one node.");
-  int _n = this->getNumberOfNodes();
-  if (_n <= 1) return true;
-
-  std::vector<bool> visit(_n);
-  std::vector<bool>::iterator iter;
-
-  for (iter = visit.begin(); iter != visit.end(); iter++) *iter = false;
-
-  std::set<int> forvisit;
-  std::set<int>::iterator current;
-  int visitedId;
-  forvisit.insert(0);
-  while (!forvisit.empty()) {
-    current = forvisit.begin();
-    if (!visit[*current]) {
-      for (int i = this->nodesOut[*current]; i < this->nodesOut[*current + 1];
-           i++) {
-        // TODO: visitedId, must be the destiny Node ID, not the link ID.
-        // Waiting the src/dst feature.
-        visitedId = this->linksOut[i]->getId();
-        if (!visit[visitedId]) forvisit.insert(visitedId);
-      }
-      /*
-      for (int i = 0; i < _n; i++) {
-        if (_graph[*current][i] == 1 && !visit[i]) forvisit.insert(i);
-      }*/
-    }
-    visit[*current] = true;
-    forvisit.erase(current);
-  }
-
-  bool result;
-  for (iter = visit.begin(); iter != visit.end(); iter++)
-    result = result && *iter;
-  return result;
-}
-
-/*
-int Network::distanceClass(int src, int dst) {
-  int path_counter = 0;
-  distanceClassUntil(src, dst, path_counter);
-  return path_counter;
-};
-*/
-/*
-void Network::distanceClassUntil(int s, int d, int &path_counter) {
-  // If current node is same as destination,
-  if (s == d) path_counter++;  // then increment count
-
-  // If current node is not destination
-  else {
-    // Recur for all the nodes adjacent to
-    // current node
-    for (int i = nodeCounter; i != this->nodes.size(); ++i)
-      distanceClassUntil(i, d, path_counter);
-  }
-};
-*/

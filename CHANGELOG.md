@@ -9,12 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ADDED
 
-- New Feature: Five metrics for the Network, in network class.
+- New Feature: Three metrics for the Network, in network class.
 	- Average Neighborhood
 	- Normal Average Neighborhood
 	- Nodal Variance
-	- Exist Node Isolated
-	- Is Graph Related
 
 ### CHANGED
 
