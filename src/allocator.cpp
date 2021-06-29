@@ -21,7 +21,7 @@ Allocator::Allocator(void) {
   this->path = nullptr;
 }
 
-void Allocator::setNetwork(Network *net) { this->network = net; }
+void Allocator::setNetwork(Network *network) { this->network = network; }
 
 void Allocator::setPaths(
     std::vector<std::vector<std::vector<std::vector<Link *>>>> *path) {
