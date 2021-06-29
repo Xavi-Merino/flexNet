@@ -5,13 +5,13 @@
 Controller::Controller() {
   this->connections = std::vector<Connection>();
   this->network = nullptr;
-  this->allocator = nullptr;
+  this->allocator = new Allocator;
 };
 
 Controller::Controller(Network *network) {
   this->network = network;
   this->connections = std::vector<Connection>();
-  this->allocator = nullptr;
+  this->allocator = new Allocator;
 };
 
 Controller::~Controller() {
@@ -23,6 +23,7 @@ Controller::~Controller() {
       delete this->network->getNode(i);
     }
   }
+  delete this->allocator;
 };
 
 allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
