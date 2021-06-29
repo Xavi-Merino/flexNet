@@ -21,14 +21,14 @@ TEST_CASE("Destructor (Allocator)") {
 
 TEST_CASE("AllocationStatus (Allocator) through Controller") {
   Controller controllerExample;
-  Allocator allocatorExample;
-  controllerExample.setAllocator(&allocatorExample);
   int src = 0;
   int dst = 1;
   long long idConnection = 0;
   // Connection con = Connection(idConnection);
   BitRate bitRate(100.0);
-  CHECK_THROWS(
+  /* CHECK_THROWS(
       controllerExample.assignConnection(src, dst, bitRate, idConnection) ==
-      (ALLOCATED || NOT_ALLOCATED));
+      (ALLOCATED || NOT_ALLOCATED));*/
+  CHECK_THROWS(
+      controllerExample.assignConnection(src, dst, bitRate, idConnection));
 }
