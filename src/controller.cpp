@@ -5,11 +5,13 @@
 Controller::Controller() {
   this->connections = std::vector<Connection>();
   this->network = nullptr;
+  this->allocator = nullptr;
 };
 
 Controller::Controller(Network *network) {
   this->network = network;
   this->connections = std::vector<Connection>();
+  this->allocator = nullptr;
 };
 
 Controller::~Controller() {
