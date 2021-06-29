@@ -9,21 +9,27 @@
 /**
  * @brief Class with the network information.
  *
- * This class is used to create and access network objects, inside of which are
- * nodes connected to eachother by links. Once created, the connections will be
- * simulated on it.
+ * The Network class is used to represent an Optical Fiber Network architecture,
+ * made up with connection Links and Nodes, inside the simulator. Hence, Network
+ * class requires and implements Link and Node objects.
+ *
+ * The Network class consists of several methods for adding Links and Nodes, for
+ * connecting them, check connection, use/unuse slots in Links, and getting
+ * metrics.
  *
  */
 class Network {
  public:
   /**
-   * @brief Constructs a new Network object. This new network is empty and ready
-   * to be filled with nodes and links.
+   * @brief Constructs a new Network object that represents the default
+   * initialization of a Network allocated by calling the void constructor. This
+   * constructor sets all the information about the Network's Links and Nodes as
+   * empty so the Network is ready to be built from a clean state.
    *
    */
   Network(void);
   /**
-   * @brief Destroys the Network object
+   * @brief Destroys the Network object.
    *
    */
   ~Network();
@@ -87,93 +93,120 @@ class Network {
  */
   Network(std::string filename);
   /**
-   * @brief Constructs a new Network object from the given Network, which is
-   * passed by reference. This new network will share the same values.
+   * @brief Constructs a new Network object that represents a (deep) copy of an
+   * already existing Network object. The new Network object is allocated via
+   * this copy constructor that sets all the information about the new Network's
+   * Links and Nodes to be equal to the Network passed by reference.
    *
-   * @param net the network object. Its values won't be modified.
+   * @param net the original Network to be (deep) copied into a
+   * new Network object. The original Network doesn't get modified.
    */
   Network(const Network &net);
   /**
-   * @brief Adds a new Node to the Network object. Its id must match the amount
-   * of nodes that were on the network.
+   * @brief Adds a new Node object to the Network object. To add a new Node to a
+   * Network, the new Node's Id must match the amount of nodes that were already
+   * on the network.
    *
-   * @param node the new Node of the Network object. It must be a pointer.
+   * @param node the pointer to the Node desired to be added into the Network
+   * object.
    */
   void addNode(Node *node);
   /**
-   * @brief Adds a new Link to the Network object. Its id must match the amount
-   * of links that were on the network.
+   * @brief Adds a new Link object to the Network object. To add a new Link to a
+   * Network, the new Link's Id must match the amount of links that were already
+   * on the network.
    *
-   * @param link the new Link of the Network object. It must be a pointer.
+   * @param link the pointer to the Link desired to be added into the Network
+   * object.
    */
   void addLink(Link *link);
   /**
    * @brief Gets the Node at a index position "pos" inside the Nodes vector.
    *
-   * @param pos the position of the Node inside Nodes vector.
-   * @return Node the pointer to the node located at the required position.
+   * @param nodePos the position of the Node inside Nodes vector.
+   * @return (Node) the pointer to the Node located at the required position.
    */
-  Node *getNode(int pos);
+  Node *getNode(int nodePos);
   /**
    * @brief Gets the Link pointer at a index position "pos" inside Links vector.
    *
-   * @param pos the position of the Link inside Links vector
-   * @return Link the pointer to the link located at the required position.
+   * @param linkPos the position of the Link inside Links vector
+   * @return (Link) the pointer to the Link located at the required position.
    */
-  Link *getLink(int pos);
+  Link *getLink(int linkPos);
   /**
-   * @brief Connects the source node to the destination node through the link
-   * with the specified id. The direction of the connection is from source to
-   * destiny. The nodes and link must previously exist on the network.
+   * @brief The Connect methods establishes an Optical Fiber connection between
+   * two Nodes through a Link inside the Network object. The different
+   * connections between the different Links and Nodes of the Network build up
+   * the Network's architecture.
    *
-   * @param src the source node of the connection.
-   * @param link the Id/position of the link used to connect the nodes.
-   * @param dst the destination node of the connection.
+   * To connect the two Nodes through a Link, both Link
+   * and (the 2) Nodes must already exist inside the Network object, that is,
+   * they need to have been added previously.
+   *
+   * @param src the Id/position of the source node of the connection.
+   * @param linkPos the Id/position of the Link used to connect the nodes.
+   * @param dst the Id/position of the destination node of the connection.
    */
-  void connect(int src, int link, int dst);
+  void connect(int src, int linkPos, int dst);
   /**
-   * @brief Checks if the source and destination nodes are connected through a
-   * link. If the connection exists, the id of the link is returned; otherwise,
-   * it returns -1.
+   * @brief The isConnected method checks if the source and destination Nodes
+   * are connected through a Link. If there's a connection between the two Nodes
+   * through a Link, the Id/position of that Link is returned; otherwise, -1 is
+   * returned.
    *
-   * @param src the source node of the connection.
-   * @param dst the destination node of the connection
+   * @param src the Id/position of the source node of the connection to be
+   * checked.
+   * @param dst the Id/position of the destination node of the connection to be
+   * checked.
    */
   int isConnected(int src, int dst);
   /**
-   * @brief Activates a single slot to be used in the required link position.
+   * @brief The useSlot method activates a single Slot of a given position
+   * inside a Link of a given position inside the Network.
    *
-   * @param linkPos the position of the link in the links vector.
-   * @param slotPos the position of the single slot inside the slot vector.
+   * @param linkPos the position of the Link inside the links vector.
+   * @param slotPos the position of the single Slot to be used/activated inside
+   * the slot vector.
    */
   void useSlot(int linkPos, int slotPos);
   /**
-   * @brief  Activates an interval of slots to be used in the required link
-   * position.
+   * @brief The useSlot method activates a range of slots inside a Link of a
+   * given position inside the Network.
    *
-   * @param linkPos the position of the link in the links vector.
-   * @param slotFrom the position of the slot at the beggining of the
-   * required interval.
-   * @param slotTo the position of the slot at the end of the required
-   * interval. Its value must be greater than slotFrom.
+   * The range of slots starts from the given position slotFrom and activates
+   * all the slots up to the (slotTo - 1) position
+   *
+   * @param linkPos the position of the Link inside the links vector.
+   * @param slotFrom the starting position of the Slots to be used/activated
+   * inside the slot vector.
+   * @param slotTo the limit before the ending position of the Slots to be
+   * used/activated inside the slot vector (activates up to the (slotTo - 1)th
+   * slot). It's value must be greater than slotFrom.
    */
   void useSlot(int linkPos, int slotFrom, int slotTo);
   /**
-   * @brief Deactivates a single slot that is no longer being used located at
-   * the required link position.
+   * @brief The unuseSlot method deactivates a single Slot of a given position
+   * inside a Link of a given position inside the Network.
    *
-   * @param linkPos the position of the link inside the links vector.
-   * @param slotPos the position of the slot inside the slots vector.
+   * @param linkPos the position of the Link inside the links vector.
+   * @param slotPos the position of the single Slot to be unused/deactivated
+   * inside the slot vector.
    */
   void unuseSlot(int linkPos, int slotPos);
   /**
-   * @brief Deactivates an interval of slots that are no longer being used
-   * located at the required link position.
+   * @brief The unuseSlot method deactivates a range of slots inside a Link of a
+   * given position inside the Network.
    *
-   * @param linkPos the position of the link inside the links vector.
-   * @param slotFrom the position of the slot at the beggining of the required
-   * interval.
-   * @param slotTo the position of the slot at the end of the required interval.
+   * The range of slots starts from the given position slotFrom and deactivates
+   * all the slots up to the (slotTo - 1) position
+   *
+   * @param linkPos the position of the Link inside the links vector.
+   * @param slotFrom the starting position of the Slots to be unused/deactivated
+   * inside the slot vector.
+   * @param slotTo the limit before the ending position of the Slots to be
+   * unused/deactivated inside the slot vector (deactivates up to the (slotTo -
+   * 1)th slot). It's value must be greater than slotFrom.
    */
   void unuseSlot(int linkPos, int slotFrom, int slotTo);
 
@@ -181,51 +214,101 @@ class Network {
 
   //   void distanceClassUntil(int s, int d, int& path_counter);
   /**
-   * @brief Get the amount of links that the Network object has.
+   * @brief The getNumberOfLinks method retrieves the amount of Links that have
+   * been added to the Network object.
    *
-   * @return int the number of links in the Network.
+   * @return int The number of Links inside the Network object.
    */
   int getNumberOfLinks();
   /**
-   * @brief Get the amount of nodes that the Network object has.
+   * @brief The getNumberOfNodes method retrieves the amount of Nodes that have
+   * been added to the Network object.
    *
-   * @return int the number of nodes in the Network.
+   * @return int The number of Nodes inside the Network object.
    */
   int getNumberOfNodes();
   /**
-   * @brief This method is used to determine whether the slot in the specified
-   * link is already being used or not.
+   * @brief The isSlotUsed method determines whether the slot in the specified
+   * Link is already being used or not.
    *
-   * @param link the position of the link inside the links vector.
-   * @param slot the position of the slot inside the slots vector.
-   * @return bool the state of the specified slot. If it's active it returns
+   * @param linkPos the position of the specified Link to check it's Slot inside
+   * the links vector.
+   * @param slotPos the position of the specified Slot to check inside the slots
+   * vector (inside the specified Link).
+   *
+   * @return bool The condition of the specified Slot. If it's active it returns
    * true, otherwise it returns false.
    *
    */
-  bool isSlotUsed(int link, int slot);
+  bool isSlotUsed(int linkPos, int slotPos);
   /**
-   * @brief This method is used to determine whether the slot interval in the
-   * specified link is already being used or not.
+   * @brief The isSlotUsed method determines whether a range of Slots in the
+   * specified Link are already being used or not.
    *
-   * @param link the position of the link inside the links vector.
-   * @param fromSlot the position of the slot at the beggining of the required
-   * interval.
-   * @param toSlot the position of the slot at the end of the required interval.
-   * @return bool the state of the specified interval of slots. If it's active
-   * it returns true, otherwise it returns false.
+   * @param linkPos the position of the specified Link to check it's Slot inside
+   * the links vector.
+   * @param slotFrom the starting position of the Slots to be checked if they
+   * are being used inside the slot vector.
+   * @param slotTo the limit before the ending position of the Slots to be
+   * checked if they are being used inside the slot vector (checks up to the
+   * (slotTo - 1)th slot). It's value must be greater than slotFrom.
    *
+   * @return bool The condition of the specified range of Slots. If it finds at
+   * least one Slot activated/used then the entire desired range of Slots is
+   * considered used and returns true, otherwise they are all unused returns
+   * false.
    */
-  bool isSlotUsed(int link, int fromSlot, int toSlot);
+  bool isSlotUsed(int linkPos, int slotFrom, int slotTo);
+  /**
+   * @brief The averageNeighborhood method obtains the Nodal average metric of
+   * the Network.
+   *
+   * @return float The Nodal neighborhood average metric value.
+   */
+  float averageNeighborhood();
+  /**
+   * @brief @brief The normalAverageNeighborhood method obtains the
+   * Normalized/Standarized Nodal average metric of the Network.
+   *
+   * @return float The Normalized Nodal neighborhood average metric value, 1
+   * representing Full Connection and 0 representing Null Connection.
+   */
+  float normalAverageNeighborhood();
+  /**
+   * @brief The nodalVariance method obtains the Nodal Variance given the Nodal
+   * Average.
+   *
+   * @return float The Nodal Variance value of average neighborhood
+   */
+  float nodalVariance();
+  /**
+   * @brief The existNodeIsolated method determines whether there is an Isolated
+   * Node inside the Network or not.
+   *
+   * @return bool The condition of existence of an Isolated Node inside the
+   * Network. Returns true if there exists at least one and false otherwise.
+   */
+  bool existNodeIsolated();
+  /**
+   * @brief The isGraphRelated method determines whether the Network's graph
+   * representation is totally related or not, that is, there exists a Node or
+   * sub-graph that is not connected from the main graph.
+   *
+   * @return bool The condition of relation of the graph given the Network's
+   * architecture. Returns true if the graph is totally related and false
+   * otherwise.
+   */
+  bool isGraphRelated();
 
  private:
   std::vector<Node *> nodes;
   std::vector<Link *> links;
-  std::vector<Link *> links_in;
-  std::vector<Link *> links_out;
-  std::vector<int> nodes_in;
-  std::vector<int> nodes_out;
-  int link_counter;
-  int node_counter;
+  std::vector<Link *> linksIn;
+  std::vector<Link *> linksOut;
+  std::vector<int> nodesIn;
+  std::vector<int> nodesOut;
+  int linkCounter;
+  int nodeCounter;
   //   int path_counter;
 };
 

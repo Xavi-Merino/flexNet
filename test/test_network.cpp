@@ -132,3 +132,86 @@ TEST_CASE("Connect links") {
   CHECK(l1->getSrc() == n1->getId());
   CHECK(l1->getDst() == n2->getId());
 }
+
+TEST_CASE("Check Metrics Features") {
+  Network netClean = Network();
+  Network net = Network("../networks/NSFNet.json");
+  CHECK_THROWS(netClean.averageNeighborhood());
+  CHECK_THROWS(netClean.normalAverageNeighborhood());
+  CHECK_THROWS(netClean.nodalVariance());
+  CHECK(net.averageNeighborhood() == Approx(3).epsilon(0.01));  // 1% error
+  CHECK(net.normalAverageNeighborhood() ==
+        Approx(0.23).epsilon(0.01));                           // 1% error
+  CHECK(net.nodalVariance() == Approx(0.2857).epsilon(0.01));  // 1% error
+}
+
+TEST_CASE("Unuse Slot/s") {
+  Network net = Network();
+  Link *link = new Link(0, 70.0, 200);
+  net.addLink(link);
+  net.useSlot(0, 0);
+  net.useSlot(0, 190, 199);
+
+  CHECK_NOTHROW(net.unuseSlot(0, 190, 199));
+  CHECK_NOTHROW(net.unuseSlot(0, 0));
+}
+
+TEST_CASE("Unuse Slot/s Checking Errors") {
+  Network net = Network();
+  Link *link = new Link(0, 70.0, 200);
+  net.addLink(link);
+  net.useSlot(0, 0);
+  net.useSlot(0, 190, 199);
+
+  // Check Throw Link Position Out-Of-Bounds Error
+  CHECK_THROWS(net.unuseSlot(-1, 0));
+  CHECK_THROWS(net.unuseSlot(3, 0));
+  CHECK_THROWS(net.unuseSlot(-1, 190, 199));
+  CHECK_THROWS(net.unuseSlot(3, 190, 199));
+
+  // Check Throw Slots Positions Out-Of-Bounds Error
+  CHECK_THROWS(net.unuseSlot(0, 201, 205));
+  CHECK_THROWS(net.unuseSlot(0, -1));
+
+  // Check Throw Slots Positions Wrong Order Error
+  CHECK_THROWS(net.unuseSlot(0, 199, 190));
+
+  // Check Throw Slots Positions Can't Be Equal
+  CHECK_THROWS(net.unuseSlot(0, 190, 190));
+}
+
+TEST_CASE("Is Slot/s Used") {
+  Network net = Network();
+  Link *link = new Link(0, 70.0, 200);
+  net.addLink(link);
+  net.useSlot(0, 0);
+  net.useSlot(0, 190, 199);
+
+  CHECK(net.isSlotUsed(0, 190, 199) == true);
+  CHECK(net.isSlotUsed(0, 0) == true);
+  CHECK(net.isSlotUsed(0, 180, 185) == false);
+  CHECK(net.isSlotUsed(0, 10) == false);
+}
+
+TEST_CASE("Is Slot/s Used Checking Errors") {
+  Network net = Network();
+  Link *link = new Link(0, 70.0, 200);
+  net.addLink(link);
+  net.useSlot(0, 0);
+  net.useSlot(0, 190, 199);
+
+  CHECK_THROWS(net.isSlotUsed(-1, 0));
+  CHECK_THROWS(net.isSlotUsed(3, 0));
+  CHECK_THROWS(net.isSlotUsed(-1, 190, 199));
+  CHECK_THROWS(net.isSlotUsed(3, 190, 199));
+
+  // Check Throw Slots Positions Out-Of-Bounds Error
+  CHECK_THROWS(net.isSlotUsed(0, 201, 205));
+  CHECK_THROWS(net.isSlotUsed(0, -1));
+
+  // Check Throw Slots Positions Wrong Order Error
+  CHECK_THROWS(net.isSlotUsed(0, 199, 190));
+
+  // Check Throw Slots Positions Can't Be Equal
+  CHECK_THROWS(net.isSlotUsed(0, 190, 190));
+}

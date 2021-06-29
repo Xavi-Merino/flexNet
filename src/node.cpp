@@ -1,7 +1,5 @@
 #include "node.hpp"
 
-int node_counter = 0;
-
 Node::Node(void) {
   this->id = -1;
   this->label = "";
@@ -14,7 +12,6 @@ Node::Node(int id) {
 
 Node::Node(int id, std::string label) {
   this->id = id;
-  node_counter++;
 
   this->label = label;
 }
@@ -26,7 +23,6 @@ void Node::setId(int id) {
     throw std::runtime_error(
         "Cannot set Id to a Node with Id different than -1.");
   this->id = id;
-  node_counter++;
 }
 
 int Node::getId(void) const { return this->id; }

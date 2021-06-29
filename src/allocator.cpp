@@ -15,9 +15,13 @@ allocationStatus Allocator::exec(int src, int dst, BitRate bitRate,
 }
 
 std::string Allocator::getName(void) { return this->name; }
-Allocator::Allocator(void) {}
 
-void Allocator::setNetwork(Network *net) { this->network = net; }
+Allocator::Allocator(void) {
+  this->network = nullptr;
+  this->path = nullptr;
+}
+
+void Allocator::setNetwork(Network *network) { this->network = network; }
 
 void Allocator::setPaths(
     std::vector<std::vector<std::vector<std::vector<Link *>>>> *path) {

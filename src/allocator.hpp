@@ -10,36 +10,47 @@ typedef enum allocStatus { ALLOCATED, NOT_ALLOCATED, N_A } allocationStatus;
 /**
  * @brief Class with the allocator information.
  *
- * The allocator handles the assignment of the connections in the network. This
- * class must be inherited by a new class, in which a method to allocate
+ * The Allocator class handles the assignment of connections inside a Network.
+ * This class must be inherited by another class, in which a method to allocate
  * resources has to be implemented.
  *
+ * The Allocator class consists of a Network object, a Path vector to the Links
+ * inside said Network and a Name attribute and methods for setting them.
  */
 class Allocator {
  public:
   /**
-   * @brief Constructs a new Allocator object.
-   *
+   * @brief Constructs a new Allocator object that represents the default
+   * initialization of an Allocator invoked by calling the void constructor.
+   This
+   * constructor sets all the information about the Allocator's Networks and
+   Paths as
+   * empty so the Allocator is ready to be built from a clean state.
+
    */
   Allocator(void);
   /**
-   * @brief Constructs a new Allocator object and assigns the network, which is
-   * passed as a pointer, to the network attribute.
-   * @param network the network that the new allocator object will handle.
+   * @brief Constructs a new Allocator object that represents the
+   * initialization of an Allocator with a given (already existing) Network
+   * to be set as the Allocator's own Network.
+   *
+   * @param network the pointer to the Network object that will be set as the
+   * Allocator's own Network.
    */
   Allocator(Network *network);
   /**
-   * @brief Set the Network attribute of the allocator. The network must be
-   * passed as a pointer.
+   * @brief Set the Allocator's Network as the one given by the pointer of an
+   * already existing Network object.
    *
-   * @param net the pointer to the network.
+   * @param network the pointer to the Network object that will be set as the
+   * Allocator's own Network.
    */
-  void setNetwork(Network *net);
+  void setNetwork(Network *network);
   /**
-   * @brief Set the path attribute of the allocator.
+   * @brief Set the Path attribute of the Allocator.
    *
-   * @param path the pointer to the path vector. This vector contains the
-   * information regarding the routes between the nodes on the network.
+   * @param path the pointer to the Path vector. This vector contains the
+   * information regarding the routes between the Nodes inside Network.
    */
   void setPaths(
       std::vector<std::vector<std::vector<std::vector<Link *>>>> *path);
@@ -49,8 +60,9 @@ class Allocator {
    */
   ~Allocator();
   /**
-   * @brief The method to allocate resources. It must be implemented on an
-   * inherited class.
+   * @brief The method to allocate resources inside the Network of the
+   * Allocator. It must be implemented inside an inherited class, such as a
+   * controller.
    *
    * @param src the id of the source Node in the requested connection.
    * @param dst the id of the destination Node in the requested connection.
@@ -70,19 +82,19 @@ class Allocator {
 
  protected:
   /**
-   * @brief A pointer to the network object that the allocator will generate
+   * @brief A pointer to the Network object that the Allocator will generate
    * connections on.
    *
    */
   Network *network;
   /**
    * @brief A pointer to a four dimensional vector that contains pointers to
-   * each link on every existing route between the nodes on the network.
+   * each Link on every existing route between the Nodes inside the Network.
    *
    */
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *path;
   /**
-   * @brief The name of the allocation function.
+   * @brief The Name of the allocation algorithm.
    *
    */
   std::string name;
