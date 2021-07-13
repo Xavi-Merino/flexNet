@@ -77,6 +77,14 @@ std::vector<BitRate> BitRate::readBitRateFile(std::string fileName) {
           throw std::runtime_error("value entered for slots is less than zero");
           ;
         }
+
+        /*Suggestion: these last 3 exceptions may be condensed into one:
+         *
+         *if ((slots || reach) < 0 ) {
+         * throw ...
+         *}
+         */
+
         // end of exceptions
         aux.addModulation(modulation, slots, reach);
       }
