@@ -32,3 +32,12 @@ TEST_CASE("AllocationStatus (Allocator) through Controller") {
   CHECK_THROWS(
       controllerExample.assignConnection(src, dst, bitRate, idConnection));
 }
+
+TEST_CASE("Test Connection AddLink") {
+  int testConnectionId = 1;
+  int testLinkId = 0;
+  std::vector<int> testSlots(3, 0);
+
+  Connection connectionExample(testConnectionId);
+  CHECK_NOTHROW(connectionExample.addLink(testLinkId, testSlots));
+}
