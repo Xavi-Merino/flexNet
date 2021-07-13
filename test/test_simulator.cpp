@@ -78,6 +78,9 @@ TEST_CASE("Algorithm - metrics (Simulator)") {
 }
 
 TEST_CASE("Uniform Variable Tests") {
-  // CHECK_THROWS(UniformVariable uniformTest(0, -1));
   CHECK_THROWS(UniformVariable(12345, -5.0));
+
+  UniformVariable uniformExample(12345, 5.0);
+  CHECK_NOTHROW(uniformExample.getNextValue() !=
+                0);  // Not sure if should ALWAYS work...
 }
