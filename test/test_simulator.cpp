@@ -76,3 +76,8 @@ TEST_CASE("Algorithm - metrics (Simulator)") {
   CHECK_NOTHROW(s.getBlockingProbability());
   CHECK_NOTHROW(s.getTimeDuration());
 }
+
+TEST_CASE("Uniform Variable Tests") {
+  // CHECK_THROWS(UniformVariable uniformTest(0, -1));
+  CHECK_THROWS(UniformVariable(12345, -5.0));
+}
