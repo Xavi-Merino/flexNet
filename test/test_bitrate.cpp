@@ -74,3 +74,12 @@ TEST_CASE("Getting BitRate from file (Bitrate)") {
 
   CHECK_THROWS(bs[4].getModulation(1));
 }
+
+TEST_CASE("Throwing Getter Errors") {
+  BitRate b1 = BitRate(40.0);
+  b1.addModulation("BPSK", 4, 5520);
+
+  CHECK_THROWS(b1.getModulation(5) == "QPSK");
+  CHECK_THROWS(b1.getNumberOfSlots(5) == 2);
+  CHECK_THROWS(b1.getReach(5) == 2720);
+}
