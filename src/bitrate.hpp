@@ -9,81 +9,106 @@
 /**
  * @brief Class BitRate
  *
- * This class contains the variables: bitRate, modulation, slots and reach
+ * The BitRate class is used to represent the Bit Rate, which is the amount of
+ * data transmitted/processed (in bits) per unit of time inside a digital
+ * transmission system or a computer network (and, for simulation purposes,
+ * inside the Simulator (class) itself.)
  *
+ * A Bit Rate of certain magnitude can be represented in different modulations,
+ * each with it's own number of slots and maximum reach.
+ * <Preguntar/explicar mejor los slots y el reach>
+ *
+ * The BitRate class contains 2 main attributes: the bit rate itself (as a
+ * magnitude/quantity in Gbps) represented as a float (bitRate) and it's
+ * stringified equivalent (bitRateStr); and 3 vectors attributes: a string
+ * vector to store the name of the different desired modulations for the bit
+ * rate (such as "BPSK", "QPSK", "8-QAM", etc), an integer vector to store the
+ * number of slots desired for each modulation and a float vector to store the
+ * reach for each modulation. Throughout all these vectors, each modulation is
+ * located at the same index.
+ *
+ * The BitRate class contains several methods: getters for all it's attributes,
+ * a method to add a new modulation and another to get a BitRate objects vector
+ * filled with information from a given JSON file.
  */
 class BitRate {
  public:
   /**
-   * @brief Construct a new bitRate objet. It receives a double which represents
-   * the bitrate and returns the object with the set bitrate
+   * @brief Construct a new bitRate object using the given double for setting
+   * the object's bit rate magnitude and it's respective string.
    *
-   * @param bitRate bit rate selected. Is a variable tipe double
-   *
-   * @return object BitRate
+   * @param bitRate (float): The desired bit rate magnitude.
    */
   BitRate(double bitRate);
 
   /**
-   * @brief Delete the objet BitRate
+   * @brief Delete the BitRate object.
    */
   ~BitRate();
 
   /**
-   * @brief Set modulation and add this to an array
+   * @brief Adds a new modulation to the current BitRate object, given it's
+   * name, slots numbers and reach distance.
    *
-   * @param modulation string representing the type of modulation chosen
-   * @param slots int, number of slot to set
-   * @param reach double, which represents the max distance to set
+   * @param modulation (std::string): The name of the desired modulation.
+   * @param slots (integer): The number of slots to be set for the modulation.
+   * @param reach (double): The maximum distance to be reached for this
+   * modulation.
    */
   void addModulation(std::string modulation, int slots, double reach);
 
   /**
-   * @brief Get the modulation from a vector
+   * @brief Gets the modulation name in a given position (argument) inside the
+   * modulations string (names) vector.
    *
-   * @param pos int which represent the position in the array
+   * @param pos (integer): The position index for the desired modulation.
    *
-   * @return string which represent the modulation
+   * @return (std::string): The modulation name of the desired modulation.
    */
   std::string getModulation(int pos);
 
   /**
-   * @brief Get the number of slot from a vector
+   * @brief Gets the number of slots in a given position (argument) inside the
+   * modulations slots vector.
    *
-   * @param pos int which represent the position in the array
+   * @param pos (integer): The position index for the desired modulation.
    *
-   * @return string which represent the number of slots
+   * @return (integer): The number of slots of the desired modulation.
    */
   int getNumberOfSlots(int pos);
 
   /**
-   * @brief Get the reach from a vector
+   * @brief Gets the maximum reach distance in a given position (argument)
+   * inside the modulations reach vector.
    *
-   * @param pos int which represent the position in the array
+   * @param pos (integer): The position index for the desired modulation.
    *
-   * @return int which represent the reach
+   * @return (double): The maximum reach distance of the desired modulation.
    */
   double getReach(int pos);
 
   /**
-   * @brief Get the Bitrate string. This bitrate is a number in string
-   * format. By example, 10 (that generally means 10 Gbps).
+   * @brief Gets the bit rate magnitude (quantity) in string format, i.e. "10.0"
+   * (Gbps).
    *
-   * @return std::string The bitrate of this object in string format.
+   * @return (std::string): The bit rate of the current BitRate object in string
+   * format.
    */
   std::string getBitRateStr();
 
   /**
-   * @brief Get the Bitrate. This bitrate is a number of type double. By
-   * example, 10.0 (that generally means 10 Gbps).
+   * @brief Gets the bit rate magnitude (quantity) in numerical (double) format,
+   * i.e. 10.0 (Gbps).
    *
-   * @return double The bitrate of this object.
+   * @return (double): The bit rate magnitude of the current BitRate object.
    */
   double getBitRate();
 
   /**
-   * @brief Read a json file and extract the corresponding information, to fill
-   * a vector type bitrate. The json format is shown in the next code:
+   * @brief Reads a JSON file and extracts it's information to fill
+   * a vector of BitRate objects.
+   *
+   * The JSON format is shown as an example in the next code snippet:
    *
    * \code{.json}
        {
@@ -135,10 +160,11 @@ class BitRate {
             ]
         }
     \endcode
-   * Each JSON item corresponds to an specific bitrate, and each bitrate has a
-   * list of modulation formats. Every modulation format in an specific bitrate
-   * has its own optical reach and slots demand.
-   * @param fileName location of json file, as a relative path. By example:
+   * Each JSON item corresponds to an specific bit rate, and each bit rate has a
+   * list of modulation formats.
+   * Every modulation format inside an specific bit rate has its own optical
+reach and slots demand.
+   * @param fileName location of JSON file, as a relative path. For example:
 "../bitrate/bitrate.json"
    */
   static std::vector<BitRate> readBitRateFile(std::string fileName);
