@@ -14,22 +14,22 @@
  * transmission system or a computer network (and, for simulation purposes,
  * inside the Simulator (class) itself.)
  *
- * A Bit Rate of certain magnitude can be represented in different modulations,
- * each with it's own number of slots and maximum reach.
+ * A Bit Rate of certain magnitude can be represented in different modulation
+ * formats, each with it's own number of slots and maximum reach.
  * <Preguntar/explicar mejor los slots y el reach>
  *
  * The BitRate class contains 2 main attributes: the bit rate itself (as a
  * magnitude/quantity in Gbps) represented as a float (bitRate) and it's
  * stringified equivalent (bitRateStr); and 3 vectors attributes: a string
- * vector to store the name of the different desired modulations for the bit
- * rate (such as "BPSK", "QPSK", "8-QAM", etc), an integer vector to store the
- * number of slots desired for each modulation and a float vector to store the
- * reach for each modulation. Throughout all these vectors, each modulation is
- * located at the same index.
+ * vector to store the name of the different desired modulations formats for the
+ * bit rate (such as "BPSK", "QPSK", "8-QAM", etc), an integer vector to store
+ * the number of slots desired for each modulation and a float vector to store
+ * the reach for each modulation. Throughout all these vectors, each modulation
+ * is located at the same index.
  *
  * The BitRate class contains several methods: getters for all it's attributes,
- * a method to add a new modulation and another to get a BitRate objects vector
- * filled with information from a given JSON file.
+ * a method to add a new modulation format and another to get a BitRate objects
+ * vector filled with information from a given JSON file.
  */
 class BitRate {
  public:
