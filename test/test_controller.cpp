@@ -7,7 +7,6 @@
 TEST_CASE("Constructor (Controller)")
 {
     CHECK_NOTHROW(Controller());
-
     int n1_pos;
     int n2_pos;
     int l1_pos;
