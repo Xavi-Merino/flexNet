@@ -5,19 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2021-07-22
+
+### CHANGED
+
+- The doxygen documentation in link.hpp was changed for a better compresion.
+
 ## [0.3.0] - 2021-03-16
 
 ### ADDED
 
 - Added Source/Destination as attributes of Link. Now Network is declared as a friend class within Link class.
 - Added macros inside Simulator.hpp in order to obtain the Source/Destination of a link inside a route.
-    - LINK_IN_ROUTE_SRC(route, link)
-    - LINK_IN_ROUTE_DST(route, link)
+  - LINK_IN_ROUTE_SRC(route, link)
+  - LINK_IN_ROUTE_DST(route, link)
 - Macros added to the bitrate object in the algorithm implementation:
-    - REQ_REACH(pos) Get the optical reach located in the *pos* on the JSON file 
-    - REQ_MODULATION(pos) Get the modulation format located in the *pos* on the JSON file
-    - REQ_BITRATE_STR Get the bitrate value as string
-    - REQ_BITRATE Get the bitrate value as double
+  - REQ*REACH(pos) Get the optical reach located in the \_pos* on the JSON file
+  - REQ*MODULATION(pos) Get the modulation format located in the \_pos* on the JSON file
+  - REQ_BITRATE_STR Get the bitrate value as string
+  - REQ_BITRATE Get the bitrate value as double
 - Adding getter to the simulation time with a method in simulator object
 - Adding getter to the blocking probability with a method in simulator object
 
@@ -26,11 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### ADDED
 
 - New Feature: Five metrics for the Network.
-	- Average Neighborhood
-	- Normal Average Neighborhood
-	- Nodal Variance
-	- Exist Node Isolated
-	- Is Graph Related
+  - Average Neighborhood
+  - Normal Average Neighborhood
+  - Nodal Variance
+  - Exist Node Isolated
+  - Is Graph Related
 
 ## [0.2.0] - 2021-03-06
 
