@@ -38,106 +38,115 @@
 #include "exp_variable.hpp"
 #include "uniform_variable.hpp"
 /**
- * @brief class Simulator, represents network execution.
+ * @brief Class Simulator, represents network execution.
  */
 class Simulator {
  public:
   /**
-   * @brief construct the object Simulator.
+   * @brief Construct a new Simulator object.
    */
   Simulator(void);
   /**
-   * @brief construct the object Simulator.
+   * @brief Construct the object Simulator from two JSON files, this files
+   * contains the network configuration and the routes.
    *
-   * @param networkFilename source of network file.
-   * @param pathFilename source of path file.
+   * @param networkFilename Source of network file. This file is the
+   * configuration of the network, nodes information (id, destiny, source,
+   * lenght, slots).
+   * @param pathFilename Source of path file. This file contains the routes
+   * between nodes.
    */
   Simulator(std::string networkFilename, std::string pathFilename);
   /**
-   * @brief Constructs a new Simulator object.
+   * @brief Construct the object Simulator from three JSON files, this files
+   * contains the network configuration the routes and the bit rates.
    *
-   * @param networkFilename the source of the file with the network information.
-   * @param pathFilename the source of the file with the network paths
-   * information.
-   * @param bitrateFilename the source of the bitrate file.
+   * @param networkFilename Source of network file. This file is the
+   * configuration of the network, nodes information (id, destiny, source,
+   * lenght, slots).
+   * @param pathFilename Source of path file. This file contains the routes
+   * between nodes.
+   * @param bitrateFilename Source of bit rates file. This file contains the
+   * differents bit rates configurations.
    */
   Simulator(std::string networkFilename, std::string pathFilename,
             std::string bitrateFilename);
   /**
-   * @brief deletes the object Simulator.
+   * @brief Deletes the object Simulator.
    */
   ~Simulator();
   /**
-   * @brief saves the simulator processes to run and leaves them ready to start,
+   * @brief Saves the simulator processes to run and leaves them ready to start,
    * does not start them.
    */
   void init(void);
   /**
-   * @brief start the simulator processes.
+   * @brief Start the simulator processes.
    */
   void run(void);
   /**
-   * @brief assign the lambda for simulation.
+   * @brief Assign the lambda for simulation.
    *
-   * @param lambda param type double.
+   * @param lambda Param type double.
    */
   void setLambda(double lambda);
   /**
-   * @brief assign the mu for simulation.
+   * @brief Assign the mu for simulation.
    *
-   * @param mu param type doble.
+   * @param mu Param type doble.
    */
   void setMu(double mu);
   /**
-   * @brief set the seed for the arrives. The aleatory arrives are generated
+   * @brief Set the seed for the arrives. The aleatory arrives are generated
    * from these seeds.
    *
-   * @param seed param type unsigned integer.
+   * @param seed Param type unsigned integer.
    */
   void setSeedArrive(unsigned int seed);
   /**
-   * @brief set the seed for the departures. The aleatory departures are
+   * @brief Set the seed for the departures. The aleatory departures are
    * generated from these seeds.
    *
    * @param seed param type unsigned integer.
    */
   void setSeedDeparture(unsigned int seed);
   /**
-   * @brief set the seed for the bit rates. The aleatory bit rates are generated
+   * @brief Set the seed for the bit rates. The aleatory bit rates are generated
    * from these seeds.
    *
-   * @param seed param type unsigned integer.
+   * @param seed Param type unsigned integer.
    */
   void setSeedBitRate(unsigned int seed);
   /**
-   * @brief set connections goal.
+   * @brief Set connections goal.
    *
-   * @param goal param type long long.
+   * @param goal Param type long long. Represents the total number of
+   * connections to be simulated.
    */
   void setGoalConnections(long long goal);
   /**
-   * @brief set type of Bit Rates.
+   * @brief Set type of Bit Rates.
    *
-   * @param bitRates array of bitrate objects.
+   * @param bitRates Array of bitrate objects.
    */
   void setBitRates(std::vector<BitRate> bitRates);
   /**
    * @brief
    *
-   * @param newAllocator pointer of object type Allocator.
+   * @param newAllocator Pointer of object type Allocator.
    */
   void setAllocator(Allocator *newAllocator);
   /**
    * @brief Get the Time Duration object, that corresponds to the simulation
    * time.
    *
-   * @return unsigned int the number of seconds that the simulation was running.
+   * @return Unsigned int the number of seconds that the simulation was running.
    */
   unsigned int getTimeDuration();
   /**
    * @brief Get the Blocking Probability of the simulation
    *
-   * @return double The blocking probability calculated as 1 - (allocated /
+   * @return Double The blocking probability calculated as 1 - (allocated /
    * total connections)
    */
   double getBlockingProbability();
@@ -176,14 +185,14 @@ class Simulator {
   std::chrono::high_resolution_clock::time_point checkTime;
   std::chrono::duration<double> timeDuration;
   /**
-   * @brief takes the event and executes it.
+   * @brief Takes the event and executes it.
    *
-   * @return the status of the allocation. It can be ALLOCATED,
+   * @return The status of the allocation. It can be ALLOCATED,
    * NOT_ALLOCATED, N_A (not assigned )
    */
   int eventRoutine(void);
   /**
-   * @brief set the default values for the different fields:
+   * @brief Set the default values for the different fields:
    * lambda = 3
    * mu = 10
    * seedArrive = 12345
@@ -198,11 +207,11 @@ class Simulator {
    */
   void defaultValues();
   /**
-   * @brief shows on screen the values of the current simulator configuration.
+   * @brief Shows on screen the values of the current simulator configuration.
    */
   void printInitialInfo();
   /**
-   * @brief shows on screen the percentage of completion of the simulation.
+   * @brief Shows on screen the percentage of completion of the simulation.
    */
   void printRow(double percentage);
 };
