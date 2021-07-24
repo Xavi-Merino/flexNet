@@ -1,7 +1,9 @@
 #define CATCH_CONFIG_MAIN
 
+#include "../src/bitrate.hpp"
 #include "../src/simulator.hpp"
 #include "catch.hpp"
+
 BEGIN_ALLOC_FUNCTION(macros) {
   REQ_SLOTS(0);
   REQ_REACH(0);
@@ -120,4 +122,11 @@ TEST_CASE("Set goal connections") {
   Simulator s = Simulator();
   long long goalConnections = 1e7;
   CHECK_NOTHROW(s.setGoalConnections(goalConnections));
+}
+
+TEST_CASE("Set bit rates") {
+  Simulator s = Simulator();
+  std::vector<BitRate> netBitRates = std::vector<BitRate>();
+  netBitRates = BitRate::readBitRateFile("../bitrate/bitrate.json");
+  CHECK_NOTHROW(s.setBitRates(netBitRates));
 }
