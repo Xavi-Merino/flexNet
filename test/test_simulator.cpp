@@ -130,3 +130,10 @@ TEST_CASE("Set bit rates") {
   netBitRates = BitRate::readBitRateFile("../bitrate/bitrate.json");
   CHECK_NOTHROW(s.setBitRates(netBitRates));
 }
+
+TEST_CASE("Set allocator") {
+  Network net = Network();
+  Allocator aloc = Allocator(&net);
+  Simulator s = Simulator();
+  CHECK_NOTHROW(s.setAllocator(&aloc));
+}
