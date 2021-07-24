@@ -116,4 +116,8 @@ TEST_CASE("Set seed bit rate") {
   CHECK_NOTHROW(s.setSeedDeparture(seed));
 }
 
-// set goal connection test case to do
+TEST_CASE("Set goal connections") {
+  Simulator s = Simulator();
+  long long goalConnections = 1e7;
+  CHECK_NOTHROW(s.setGoalConnections(goalConnections));
+}
