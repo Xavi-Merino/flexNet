@@ -1,7 +1,9 @@
 #define CATCH_CONFIG_MAIN
 
+#include "../src/bitrate.hpp"
 #include "../src/simulator.hpp"
 #include "catch.hpp"
+
 BEGIN_ALLOC_FUNCTION(macros) {
   REQ_SLOTS(0);
   REQ_REACH(0);
@@ -75,4 +77,63 @@ TEST_CASE("Algorithm - metrics (Simulator)") {
 
   CHECK_NOTHROW(s.getBlockingProbability());
   CHECK_NOTHROW(s.getTimeDuration());
+}
+
+TEST_CASE("Constructor - (Simulator)") {
+  CHECK_NOTHROW(Simulator());
+  CHECK_NOTHROW(
+      Simulator("../networks/NSFNet.json", "../networks/NSFNet_routes.json"));
+  CHECK_NOTHROW(Simulator("../networks/NSFNet.json",
+                          "../networks/NSFNet_routes.json",
+                          "../bitrate/bitrate.json"));
+}
+
+TEST_CASE("Set lambda") {
+  Simulator s = Simulator();
+  double lambda = 8.16;
+  CHECK_NOTHROW(s.setLambda(lambda));
+}
+
+TEST_CASE("Set mu") {
+  Simulator s = Simulator();
+  double mu = 4.3;
+  CHECK_NOTHROW(s.setMu(mu));
+}
+
+TEST_CASE("Set seed arrive") {
+  Simulator s = Simulator();
+  unsigned int seed = 32;
+  CHECK_NOTHROW(s.setSeedArrive(seed));
+}
+
+TEST_CASE("Set seed departure") {
+  Simulator s = Simulator();
+  unsigned int seed = 32;
+  CHECK_NOTHROW(s.setSeedDeparture(seed));
+}
+
+TEST_CASE("Set seed bit rate") {
+  Simulator s = Simulator();
+  unsigned int seed = 32;
+  CHECK_NOTHROW(s.setSeedDeparture(seed));
+}
+
+TEST_CASE("Set goal connections") {
+  Simulator s = Simulator();
+  long long goalConnections = 1e7;
+  CHECK_NOTHROW(s.setGoalConnections(goalConnections));
+}
+
+TEST_CASE("Set bit rates") {
+  Simulator s = Simulator();
+  std::vector<BitRate> netBitRates = std::vector<BitRate>();
+  netBitRates = BitRate::readBitRateFile("../bitrate/bitrate.json");
+  CHECK_NOTHROW(s.setBitRates(netBitRates));
+}
+
+TEST_CASE("Set allocator") {
+  Network net = Network();
+  Allocator aloc = Allocator(&net);
+  Simulator s = Simulator();
+  CHECK_NOTHROW(s.setAllocator(&aloc));
 }

@@ -5,20 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.4.1] - 2021-07-22
+## [0.4.1] - 2021-07-26
 
 ### CHANGED
 
 - The doxygen documentation of Link class was changed for a better compresion.
+- Documentation of Simulator class:
+  - Extended/changed comments on the class and methods description (.hpp).
+- Test case in test_simulator.cpp:
+  - Was added the test for the setters methods for each variable.
+  - Added constructor case.
 
 ## [0.4.0] - 2021-06-29
 
 ### ADDED
 
 - New Feature: Three metrics for the Network, in network class.
-	- Average Neighborhood
-	- Normal Average Neighborhood
-	- Nodal Variance
+  - Average Neighborhood
+  - Normal Average Neighborhood
+  - Nodal Variance
 
 ### CHANGED
 
@@ -26,7 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Extended/changed all comments on the class and methods description (.hpp).
   - Added comments on a method (isSlotUsed) to describe it clearer (.cpp).
   - Standarized some variables names: changed all similar variables names into one (i.e., from link and linkPos to linkPos), changed the variables in spanish into english and changed all variable names to camelCase (both .hpp and .cpp).
-
 
 ### DELETED
 
@@ -85,4 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.2.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.1.1...v0.2.0
 [0.3.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.2.0...v0.3.0
 [0.4.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.3.0...v0.4.0
+<<<<<<< HEAD
 [0.4.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.0...v0.4.0.1
+=======
+>>>>>>> feature/documentation-simulator
