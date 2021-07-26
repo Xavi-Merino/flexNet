@@ -5,22 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2021-07-26
+
+### CHANGED
+
+- Documentation of Simulator class:
+  - Extended/changed comments on the class and methods description (.hpp).
+- Test case in test_simulator.cpp:
+  - Was added the test for the setters methods for each variable.
+  - Added constructor case.
+
 ## [0.4.0] - 2021-06-29
 
 ### ADDED
 
 - New Feature: Three metrics for the Network, in network class.
-	- Average Neighborhood
-	- Normal Average Neighborhood
-	- Nodal Variance
+  - Average Neighborhood
+  - Normal Average Neighborhood
+  - Nodal Variance
 
 ### CHANGED
 
 - Documentation of Network/Controller class:
-    - Extended/changed all comments on the class and methods description (.hpp).
-    - Added comments on a method (isSlotUsed) to describe it clearer (.cpp).
-    - Standarized some variables names: changed all similar variables names into one (i.e., from link and linkPos to linkPos), changed the variables in spanish into english and changed all variable names to camelCase (both .hpp and .cpp).
-
+  - Extended/changed all comments on the class and methods description (.hpp).
+  - Added comments on a method (isSlotUsed) to describe it clearer (.cpp).
+  - Standarized some variables names: changed all similar variables names into one (i.e., from link and linkPos to linkPos), changed the variables in spanish into english and changed all variable names to camelCase (both .hpp and .cpp).
 
 ### DELETED
 
@@ -32,13 +41,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added Source/Destination as attributes of Link. Now Network is declared as a friend class within Link class.
 - Added macros inside Simulator.hpp in order to obtain the Source/Destination of a link inside a route.
-    - LINK_IN_ROUTE_SRC(route, link)
-    - LINK_IN_ROUTE_DST(route, link)
+  - LINK_IN_ROUTE_SRC(route, link)
+  - LINK_IN_ROUTE_DST(route, link)
 - Macros added to the bitrate object in the algorithm implementation:
-    - REQ_REACH(pos) Get the optical reach located in the *pos* on the JSON file 
-    - REQ_MODULATION(pos) Get the modulation format located in the *pos* on the JSON file
-    - REQ_BITRATE_STR Get the bitrate value as string
-    - REQ_BITRATE Get the bitrate value as double
+  - REQ*REACH(pos) Get the optical reach located in the \_pos* on the JSON file
+  - REQ*MODULATION(pos) Get the modulation format located in the \_pos* on the JSON file
+  - REQ_BITRATE_STR Get the bitrate value as string
+  - REQ_BITRATE Get the bitrate value as double
 - Adding getter to the simulation time with a method in simulator object
 - Adding getter to the blocking probability with a method in simulator object
 
