@@ -87,13 +87,14 @@ class Simulator {
   /**
    * @brief Assign the lambda for simulation.
    *
-   * @param lambda Param type double.
+   * @param lambda Param type double. It represents the frequency of the
+   * arrives.
    */
   void setLambda(double lambda);
   /**
    * @brief Assign the mu for simulation.
    *
-   * @param mu Param type doble.
+   * @param mu Param type doble. It represents the frequency of the departures.
    */
   void setMu(double mu);
   /**
