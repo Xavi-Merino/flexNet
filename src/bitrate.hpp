@@ -16,7 +16,6 @@
  *
  * A Bit Rate of certain magnitude can be represented in different modulation
  * formats, each with it's own number of slots and maximum reach.
- * <Preguntar/explicar mejor los slots y el reach>
  *
  * The BitRate class contains 2 main attributes: the bit rate itself (as a
  * magnitude/quantity in Gbps) represented as a float (bitRate) and it's
