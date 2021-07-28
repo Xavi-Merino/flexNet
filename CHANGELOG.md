@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added test case for testing UniformVariable class' non-void constructor and getNextValue method.
   - Was added the test for the setters methods for each variable.
   - Added constructor case.
+- Test case in test_controller.cpp
+    -Added test for checking no error throwing on Connection's addLink method.
 
 ## [0.4.0] - 2021-06-29
 

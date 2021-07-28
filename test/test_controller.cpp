@@ -64,3 +64,12 @@ TEST_CASE("Correct format JSON file paths (Controller)") {
   CHECK_NOTHROW(jsonRoutes["routes"][0]["src"]);
   CHECK_NOTHROW(jsonRoutes["routes"][0]["dst"]);
 }
+
+TEST_CASE("Test Connection AddLink") {
+  int testConnectionId = 1;
+  int testLinkId = 0;
+  std::vector<int> testSlots(3, 0);
+
+  Connection connectionExample(testConnectionId);
+  CHECK_NOTHROW(connectionExample.addLink(testLinkId, testSlots));
+}
