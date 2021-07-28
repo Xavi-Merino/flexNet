@@ -137,3 +137,19 @@ TEST_CASE("Set allocator") {
   Simulator s = Simulator();
   CHECK_NOTHROW(s.setAllocator(&aloc));
 }
+
+TEST_CASE("Uniform Variable Tests") {
+  CHECK_THROWS(UniformVariable(12345, -5.0));
+
+  UniformVariable uniformExample(12345, 5.0);
+  bool flag = true;
+  int value;
+  for (int i = 0; i < 1000; i++) {
+    value = uniformExample.getNextValue();
+    if (value < 0 || value > 5) {
+      flag = false;
+      break;
+    }
+  }
+  CHECK(flag);
+}
