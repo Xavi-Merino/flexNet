@@ -81,6 +81,14 @@ TEST_CASE("Uniform Variable Tests") {
   CHECK_THROWS(UniformVariable(12345, -5.0));
 
   UniformVariable uniformExample(12345, 5.0);
-  CHECK_NOTHROW(uniformExample.getNextValue() !=
-                0);  // Not sure if should ALWAYS work...
+  bool flag = true;
+  int value;
+  for (int i = 0; i < 1000; i++) {
+    value = uniformExample.getNextValue();
+    if (value < 0 || value > 5) {
+      flag = false;
+      break;
+    }
+  }
+  CHECK(flag);
 }
