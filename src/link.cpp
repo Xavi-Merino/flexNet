@@ -1,7 +1,5 @@
 #include "link.hpp"
 
-int link_counter = 0;
-
 Link::Link(void) {
   this->id = -1;
   this->length = DEFAULT_LENGTH;
@@ -12,7 +10,6 @@ Link::Link(void) {
 
 Link::Link(int id) {
   this->id = id;
-  link_counter++;
 
   this->length = DEFAULT_LENGTH;
   this->slots = std::vector<bool>(DEFAULT_SLOTS);
@@ -22,7 +19,6 @@ Link::Link(int id) {
 
 Link::Link(int id, float length) {
   this->id = id;
-  link_counter++;
 
   if (length <= 0)
     throw std::runtime_error("Cannot create a link with non-positive length.");
@@ -35,7 +31,6 @@ Link::Link(int id, float length) {
 
 Link::Link(int id, float length, int slots) {
   this->id = id;
-  link_counter++;
 
   if (length <= 0)
     throw std::runtime_error("Cannot create a link with non-positive length.");
@@ -57,7 +52,6 @@ void Link::setId(int id) {
         "Cannot set Id to a Link with Id different than -1.");
 
   this->id = id;
-  link_counter++;
 }
 
 void Link::setLength(float length) {
