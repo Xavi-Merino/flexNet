@@ -3,7 +3,7 @@
 UniformVariable::UniformVariable(void) : RandomVariable() {}
 
 UniformVariable::UniformVariable(unsigned int seed, double parameter1) {
-  if (parameter1 <= 0) {
+  if (parameter1 < 0) {
     throw std::runtime_error("Parameter 1  must be positive.");
   }
   this->generator = std::mt19937(seed);
