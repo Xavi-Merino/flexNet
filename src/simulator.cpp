@@ -272,10 +272,10 @@ void Simulator::init(void) {
 }
 
 void Simulator::run(void) {
-  int timesToShow = 20;
+  float timesToShow = 20;
   float arrivesByCycle = this->goalConnections / timesToShow;
   printInitialInfo();
-  for (float i = 1; i <= timesToShow; i++) {
+  for (int i = 1; i <= timesToShow; i++) {
     while (this->numberOfConnections <= i * arrivesByCycle) {
       eventRoutine();
     }
