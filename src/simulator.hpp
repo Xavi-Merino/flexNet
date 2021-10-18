@@ -152,6 +152,11 @@ class Simulator {
    */
   double getBlockingProbability();
 
+  // Nuevos
+  double getAllocatedProbability(void);
+  double infCI(double confidence);
+  double supCI(double confidence);
+
  private:
   double clock;
   std::list<Event> events;

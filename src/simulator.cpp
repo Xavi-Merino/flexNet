@@ -1,5 +1,6 @@
 #include "simulator.hpp"
 
+#include <cmath>  //Nuevo
 #include <iostream>
 
 Simulator::Simulator(void) {
@@ -174,18 +175,21 @@ void Simulator::printInitialInfo() {
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
+  std::cout << std::setw(11) << "+";  // Nueva
   std::cout << std::setw(1) << "+\n";
 
   std::cout << std::setfill(' ') << std::setw(11) << "| progress";
   std::cout << std::setw(11) << "| arrives";
   std::cout << std::setw(11) << "| blocking";
   std::cout << std::setw(11) << "| time(s)";
+  std::cout << std::setw(11) << "| Wald CI";  // Nueva
   std::cout << std::setw(1) << "|\n";
 
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";  // Nueva
   std::cout << std::setfill('-') << std::setw(1) << std::left << "+\n";
 
   this->startingTime = std::chrono::high_resolution_clock::now();
@@ -205,9 +209,16 @@ void Simulator::printRow(double percentage) {
   std::cout << std::setfill(' ') << std::setw(9) << std::right
             << std::scientific
             << 1 - this->allocatedConnections / this->numberOfConnections
-            << " |";
+            << " |";  // getBlockingProbability
   std::cout << std::setprecision(0) << std::setfill(' ') << std::setw(8)
             << std::right << std::fixed << this->timeDuration.count() << "  |";
+
+  // Nuevo
+
+  std::cout << std::setprecision(2) << std::setfill(' ') << std::right
+            << std::setw(7) << std::fixed << "[" << this->infCI(0.95) << ";"
+            << this->supCI(0.95) << "]"
+            << " |";
 
   std::cout << std::setw(1) << "\n";
 }
@@ -289,4 +300,42 @@ unsigned int Simulator::getTimeDuration(void) {
 
 double Simulator::getBlockingProbability(void) {
   return 1 - this->allocatedConnections / this->numberOfConnections;
+}
+
+double Simulator::getAllocatedProbability(void) {
+  return this->allocatedConnections / this->numberOfConnections;
+}
+
+double Simulator::infCI(double confidence) {
+  if (confidence <= 0 || confidence >= 1) {
+    throw std::runtime_error(
+        "You can't set a confidence interval with confidence equal/higher than "
+        "1 or equal/lower than 0.");
+  }
+
+  // double significance = 1 - confidence; //Para después
+  float z = 1.96;
+  float error =
+      z *
+      sqrt((this->getAllocatedProbability() * this->getBlockingProbability()) /
+           this->numberOfConnections);
+
+  return this->getAllocatedProbability() - error;
+}
+
+double Simulator::supCI(double confidence) {
+  if (confidence <= 0 || confidence >= 1) {
+    throw std::runtime_error(
+        "You can't set a confidence interval with confidence equal/higher than "
+        "1 or equal/lower than 0.");
+  }
+
+  // double significance = 1 - confidence; //Para después
+  float z = 1.96;
+  float error =
+      z *
+      sqrt((this->getAllocatedProbability() * this->getBlockingProbability()) /
+           this->numberOfConnections);
+
+  return this->getAllocatedProbability() + error;
 }
