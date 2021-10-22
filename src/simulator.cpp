@@ -108,6 +108,25 @@ void Simulator::setSeedBitRate(unsigned int seed) {
   this->seedBitRate = seed;
 }
 
+void Simulator::setSeedSrc(unsigned int seed) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set seed source parameter AFTER calling init simulator "
+        "method.");
+  }
+  this->seedSrc = seed;
+}
+
+void Simulator::setSeedDst(unsigned int seed) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set seed destination parameter AFTER calling init "
+        "simulator "
+        "method.");
+  }
+  this->seedDst = seed;
+}
+
 void Simulator::setGoalConnections(long long goal) {
   if (this->initReady) {
     throw std::runtime_error(
