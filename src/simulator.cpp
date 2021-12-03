@@ -175,21 +175,21 @@ void Simulator::printInitialInfo() {
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
-  std::cout << std::setw(11) << "+";  // Nueva
+  std::cout << std::setw(30) << "+";  // Nueva
   std::cout << std::setw(1) << "+\n";
 
   std::cout << std::setfill(' ') << std::setw(11) << "| progress";
   std::cout << std::setw(11) << "| arrives";
   std::cout << std::setw(11) << "| blocking";
   std::cout << std::setw(11) << "| time(s)";
-  std::cout << std::setw(11) << "| Wald CI";  // Nueva
+  std::cout << std::setw(30) << "| Wald CI | Agresti-Coull |";  // Nueva
   std::cout << std::setw(1) << "|\n";
 
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
-  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";  // Nueva
+  std::cout << std::setfill('-') << std::setw(30) << std::left << "+";  // Nueva
   std::cout << std::setfill('-') << std::setw(1) << std::left << "+\n";
 
   this->startingTime = std::chrono::high_resolution_clock::now();
@@ -215,9 +215,16 @@ void Simulator::printRow(double percentage) {
 
   // Nuevo
 
-  std::cout << std::setprecision(2) << std::setfill(' ') << std::right
-            << std::setw(7) << std::fixed << "[" << this->infCI(0.95) << ";"
-            << this->supCI(0.95) << "]"
+  std::cout << std::scientific << std::setprecision(3) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << "["
+            << this->confidenceInterval(0.95, true, 0) << ";"
+            << this->confidenceInterval(0.95, false, 0) << "]"
+            << " |";
+
+  std::cout << std::scientific << std::setprecision(3) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << "["
+            << this->confidenceInterval(0.95, true, 1) << ";"
+            << this->confidenceInterval(0.95, false, 1) << "]"
             << " |";
 
   std::cout << std::setw(1) << "\n";
@@ -298,15 +305,82 @@ unsigned int Simulator::getTimeDuration(void) {
   return static_cast<unsigned int>(this->timeDuration.count());
 }
 
-double Simulator::getBlockingProbability(void) {
+double Simulator::getBlockingProbability(bool type) {
+  if (type)
+    return 1 -
+           ((this->allocatedConnections + 2) / (this->numberOfConnections + 4));
+
   return 1 - this->allocatedConnections / this->numberOfConnections;
 }
 
-double Simulator::getAllocatedProbability(void) {
+double Simulator::getAllocatedProbability(bool type) {
+  if (type)
+    return (this->allocatedConnections + 2) / (this->numberOfConnections + 4);
+
   return this->allocatedConnections / this->numberOfConnections;
 }
 
+/*
 double Simulator::infCI(double confidence) {
+  if (confidence <= 0 || confidence >= 1) {
+    throw std::runtime_error(
+        "You can't set a confidence interval with confidence equal/higher than "
+        "1 or equal/lower than 0.");
+  }
+
+  // double significance = 1 - confidence; //Para después
+  float z = 1.96;
+  float error =
+      z *
+      sqrt((this->getAllocatedProbability() * this->getBlockingProbability()) /
+           this->numberOfConnections);
+
+  return this->getBlockingProbability() - error;
+}
+*/
+
+double Simulator::confidenceInterval(double confidence, bool inf, int type) {
+  if (confidence <= 0 || confidence >= 1) {
+    throw std::runtime_error(
+        "You can't set a confidence interval with confidence equal/higher than "
+        "1 or equal/lower than 0.");
+  }
+
+  // double significance = 1 - confidence; //Para después
+  float z = 1.96;
+  float error, result;
+
+  switch (type) {
+    default:
+      error = z * sqrt((this->getAllocatedProbability(false) *
+                        this->getBlockingProbability(false)) /
+                       this->numberOfConnections);
+
+      if (inf == true) {
+        result = this->getBlockingProbability(false) - error;
+      }
+
+      result = this->getBlockingProbability(false) + error;
+      break;
+
+    case 1:
+      error = z * sqrt((this->getAllocatedProbability(true) *
+                        this->getBlockingProbability(true)) /
+                           this->numberOfConnections +
+                       4);
+
+      if (inf == true) {
+        result = this->getBlockingProbability(true) - error;
+      }
+
+      result = this->getBlockingProbability(true) + error;
+      break;
+  }
+
+  return result;
+}
+
+double Simulator::infCI(double confidence, int type) {
   if (confidence <= 0 || confidence >= 1) {
     throw std::runtime_error(
         "You can't set a confidence interval with confidence equal/higher than "

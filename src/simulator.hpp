@@ -150,12 +150,13 @@ class Simulator {
    * @return Double The blocking probability calculated as 1 - (allocated /
    * total connections)
    */
-  double getBlockingProbability();
+  double getBlockingProbability(bool type);
 
   // Nuevos
-  double getAllocatedProbability(void);
-  double infCI(double confidence);
-  double supCI(double confidence);
+  double getAllocatedProbability(bool type);
+  double confidenceInterval(double confidence, bool inf, int type);
+  double infCI(double confidence, int type);
+  double supCI(double confidence, int type);
 
  private:
   double clock;
