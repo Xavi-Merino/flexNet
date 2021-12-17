@@ -75,7 +75,7 @@ TEST_CASE("Algorithm - metrics (Simulator)") {
   s.init();
   s.run();
 
-  CHECK_NOTHROW(s.getBlockingProbability(false));
+  CHECK_NOTHROW(s.getBlockingProbability());
   CHECK_NOTHROW(s.getTimeDuration());
 }
 
