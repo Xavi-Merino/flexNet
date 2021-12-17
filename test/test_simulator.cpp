@@ -153,3 +153,120 @@ TEST_CASE("Uniform Variable Tests") {
   }
   CHECK(flag);
 }
+
+TEST_CASE("Check decreasing Confidence Interval (Wald, 0.95)") {
+  float CI1, CI2, CI3;
+
+  Simulator s1 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s1);
+  s1.setGoalConnections(1e2);
+  s1.init();
+  s1.run();
+  CI1 =
+      s1.confidenceInterval(95, false, 0) - s1.confidenceInterval(95, true, 0);
+
+  Simulator s2 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s2);
+  s2.setGoalConnections(1e3);
+  s2.init();
+  s2.run();
+
+  CI2 =
+      s2.confidenceInterval(95, false, 0) - s2.confidenceInterval(95, true, 0);
+
+  Simulator s3 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s3);
+  s3.setGoalConnections(1e4);
+  s3.init();
+  s3.run();
+
+  CI3 =
+      s3.confidenceInterval(95, false, 0) - s3.confidenceInterval(95, true, 0);
+
+  CHECK(CI3 < CI2);
+  CHECK(CI2 < CI1);
+}
+
+TEST_CASE("Check decreasing Confidence Interval (Agresti-Coull, 0.95)") {
+  float CI1, CI2, CI3;
+
+  Simulator s1 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s1);
+  s1.setGoalConnections(1e2);
+  s1.init();
+  s1.run();
+  CI1 =
+      s1.confidenceInterval(95, false, 1) - s1.confidenceInterval(95, true, 1);
+
+  Simulator s2 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s2);
+  s2.setGoalConnections(1e3);
+  s2.init();
+  s2.run();
+
+  CI2 =
+      s2.confidenceInterval(95, false, 1) - s2.confidenceInterval(95, true, 1);
+
+  Simulator s3 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s3);
+  s3.setGoalConnections(1e4);
+  s3.init();
+  s3.run();
+
+  CI3 =
+      s3.confidenceInterval(95, false, 1) - s3.confidenceInterval(95, true, 1);
+
+  CHECK(CI3 < CI2);
+  CHECK(CI2 < CI1);
+}
+
+TEST_CASE("Check decreasing Confidence Interval (Wilson, 0.95)") {
+  float CI1, CI2, CI3;
+
+  Simulator s1 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s1);
+  s1.setGoalConnections(1e2);
+  s1.init();
+  s1.run();
+  CI1 =
+      s1.confidenceInterval(95, false, 2) - s1.confidenceInterval(95, true, 2);
+
+  Simulator s2 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s2);
+  s2.setGoalConnections(1e3);
+  s2.init();
+  s2.run();
+
+  CI2 =
+      s2.confidenceInterval(95, false, 2) - s2.confidenceInterval(95, true, 2);
+
+  Simulator s3 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s3);
+  s3.setGoalConnections(1e4);
+  s3.init();
+  s3.run();
+
+  CI3 =
+      s3.confidenceInterval(95, false, 2) - s3.confidenceInterval(95, true, 2);
+
+  CHECK(CI3 < CI2);
+  CHECK(CI2 < CI1);
+}

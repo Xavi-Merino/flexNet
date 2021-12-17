@@ -155,7 +155,8 @@ class Simulator {
   // Nuevos
   double getAllocatedProbability(void);
 
-  double confidenceValue(double alpha);
+  double confidenceInterval(int level, bool lower, int type);
+  double confidenceValue(int level);
   double waldCI(double confidence, bool lower);
   double agrestiCI(double confidence, bool lower);
   double wilsonCI(double confidence, bool lower);
@@ -173,6 +174,7 @@ class Simulator {
   Controller *controller;
   Event currentEvent;
   std::vector<BitRate> bitRates;
+  std::map<int, float> confidenceValues;
 
   bool initReady;
   double lambda;

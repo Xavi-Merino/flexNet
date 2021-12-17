@@ -151,6 +151,10 @@ void Simulator::defaultValues() {
   this->numberOfEvents = 0;
   this->goalConnections = 10000;
   this->columnWidth = 10;
+
+  this->confidenceValues[90] = 1.65;
+  this->confidenceValues[95] = 1.96;
+  this->confidenceValues[99] = 2.58;
 }
 
 void Simulator::printInitialInfo() {
@@ -175,21 +179,22 @@ void Simulator::printInitialInfo() {
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
-  std::cout << std::setw(30) << "+";  // Nueva
+  // std::cout << std::setw(30) << "+";  // Nueva
   std::cout << std::setw(1) << "+\n";
 
   std::cout << std::setfill(' ') << std::setw(11) << "| progress";
   std::cout << std::setw(11) << "| arrives";
   std::cout << std::setw(11) << "| blocking";
   std::cout << std::setw(11) << "| time(s)";
-  std::cout << std::setw(30) << "| Wald CI | Agresti-Coull |";  // Nueva
+  // std::cout << std::setw(30) << "| Wald CI | Agresti-Coull |";  // Nueva
   std::cout << std::setw(1) << "|\n";
 
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
-  std::cout << std::setfill('-') << std::setw(30) << std::left << "+";  // Nueva
+  // std::cout << std::setfill('-') << std::setw(30) << std::left << "+";  //
+  // Nueva
   std::cout << std::setfill('-') << std::setw(1) << std::left << "+\n";
 
   this->startingTime = std::chrono::high_resolution_clock::now();
@@ -213,28 +218,57 @@ void Simulator::printRow(double percentage) {
   std::cout << std::setprecision(0) << std::setfill(' ') << std::setw(8)
             << std::right << std::fixed << this->timeDuration.count() << "  |";
 
-  std::cout << std::scientific << std::setprecision(8) << std::setfill(' ')
-            << std::right << std::setw(7) << std::fixed << std::endl
-            << "\t[" << this->waldCI(1.96, true) << ";"
-            << this->waldCI(1.96, false) << "]"
-            << " = " << this->waldCI(1.96, false) - this->waldCI(1.96, true)
-            << " |";
+  /*
+    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+              << std::right << std::setw(7) << std::fixed << std::endl
+              << "\t[" << this->waldCI(1.96, true) << ";"
+              << this->waldCI(1.96, false) << "]"
+              << " = " << this->waldCI(1.96, false) - this->waldCI(1.96, true)
+              << " |";
 
-  std::cout << std::scientific << std::setprecision(8) << std::setfill(' ')
-            << std::right << std::setw(7) << std::fixed << "\t["
-            << this->agrestiCI(1.96, true) << ";"
-            << this->agrestiCI(1.96, false) << "]"
-            << " = "
-            << this->agrestiCI(1.96, false) - this->agrestiCI(1.96, true)
-            << " |";
+    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+              << std::right << std::setw(7) << std::fixed << "\t["
+              << this->agrestiCI(1.96, true) << ";"
+              << this->agrestiCI(1.96, false) << "]"
+              << " = "
+              << this->agrestiCI(1.96, false) - this->agrestiCI(1.96, true)
+              << " |";
 
-  std::cout << std::scientific << std::setprecision(8) << std::setfill(' ')
-            << std::right << std::setw(7) << std::fixed << "\t["
-            << this->wilsonCI(1.96, true) << ";" << this->wilsonCI(1.96, false)
-            << "]"
-            << " = " << this->wilsonCI(1.96, false) - this->wilsonCI(1.96, true)
-            << " |";
+    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+              << std::right << std::setw(7) << std::fixed << "\t["
+              << this->wilsonCI(1.96, true) << ";" << this->wilsonCI(1.96,
+    false)
+              << "]"
+              << " = " << this->wilsonCI(1.96, false) - this->wilsonCI(1.96,
+    true)
+              << " |";
 
+    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+              << std::right << std::setw(7) << std::fixed << std::endl
+              << "\t[" << this->confidenceInterval(95, true, 0) << ";"
+              << this->confidenceInterval(95, false, 0) << "]"
+              << " = "
+              << this->confidenceInterval(95, false, 0) -
+                     this->confidenceInterval(95, true, 0)
+              << " |";
+
+    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+              << std::right << std::setw(7) << std::fixed << "\t["
+              << "\t[" << this->confidenceInterval(95, true, 1) << ";"
+              << this->confidenceInterval(95, false, 1) << "]"
+              << " = "
+              << this->confidenceInterval(95, false, 1) -
+                     this->confidenceInterval(95, true, 1)
+              << " |";
+
+    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+              << std::right << std::setw(7) << std::fixed << "\t["
+              << "\t[" << this->confidenceInterval(95, true, 2) << ";"
+              << this->confidenceInterval(95, false, 2) << "]"
+              << " = "
+              << this->confidenceInterval(95, false, 2) -
+                     this->confidenceInterval(95, true, 2)
+              << " |"; */
   std::cout << std::setw(1) << "\n";
 }
 
@@ -320,136 +354,40 @@ double Simulator::getBlockingProbability(void) {
 double Simulator::getAllocatedProbability(void) {
   return this->allocatedConnections / this->numberOfConnections;
 }
-/*
-double Simulator::confidenceInterval(double confidence, bool inf, int type) {
-  if (confidence <= 0 || confidence >= 1) {
+
+double Simulator::confidenceInterval(int level, bool lower, int type) {
+  if (type < 0 || type > 2) {
+    throw std::runtime_error(
+        "You can only choose an interval type of 0 (Wald), 1(Agresti-Coull) or "
+        "2(Wilson)");
+  }
+
+  if (level <= 0 || level >= 100) {
     throw std::runtime_error(
         "You can't set a confidence interval with confidence equal/higher than "
         "1 or equal/lower than 0.");
   }
 
-  // double significance = 1 - confidence; //Para después
-  float z = 1.96;
-  float error, result;
+  double alpha = this->confidenceValue(level);
 
   switch (type) {
-    default:
-      error = z * sqrt((this->getAllocatedProbability() *
-                        this->getBlockingProbability()) /
-                       this->numberOfConnections);
-
-      if (inf == true) {
-        result = this->getBlockingProbability() - error;
-      }
-
-      else {
-        result = this->getBlockingProbability() + error;
-      }
-
-      break;
-
     case 1:
-      error = z * sqrt((this->getAllocatedProbability() *
-                        this->getBlockingProbability()) /
-                           this->numberOfConnections +
-                       4);
-
-      if (inf == true) {
-        result = this->getBlockingProbability() - error;
-      }
-
-      else {
-        result = this->getBlockingProbability() + error;
-      }
-      break;
+      return this->agrestiCI(alpha, lower);
+    case 2:
+      return this->wilsonCI(alpha, lower);
   }
-
-  return result;
+  return this->waldCI(alpha, lower);
 }
 
-double Simulator::confidenceInterval2(double confidence, bool inf, int type) {
-  /* Type:
-   * 0 = Wald
-   * 1 = Agresti-Coull
-   * 2 = Wilson
-   * 3 = Clopper-Pearson
-   * 4 = Bayesian
-
-
-  if (confidence <= 0 || confidence >= 1) {
+double Simulator::confidenceValue(int level) {
+  if (level <= 0 || level >= 100) {
     throw std::runtime_error(
         "You can't set a confidence interval with confidence equal/higher than "
         "1 or equal/lower than 0.");
   }
 
-  // float p = this->getBlockingProbability(type);
-  // float np = 1 - p;
-
-  float np = this->getAllocatedProbability();
-  float p = 1 - np;
-
-  float z = 1.96;
-  float sd = sqrt((np * p) / (this->numberOfConnections + type * 4));
-
-  if (inf) return p - (z * sd);
-  return p + (z * sd);
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-double Simulator::confidenceInterval3(double confidence, bool inf, int type) {
-  /* Type:
-   * 0 = Wald
-   * 1 = Agresti-Coull
-   * 2 = Wilson
-   * 3 = Clopper-Pearson
-   * 4 = Bayesian
-
-
-if (confidence <= 0 || confidence >= 1) {
-  throw std::runtime_error(
-      "You can't set a confidence interval with confidence equal/higher than "
-      "1 or equal/lower than 0.");
-}
-float p, np, sd;
-float z = 1.96;
-// Si funciona bien, se pueden simplificar las funciones
-// getBlocking/getAllocated Prob
-switch (type) {
-  case 0:  // Wald
-  case 1:  // Agresti-Coul
-  case 2:  // Wilson
-    np = this->getAllocatedProbability();
-
-    // Agresti-Coul = agrega dos observaciones a cada estado
-    if (type == 1) {
-      np =
-          np * ((this->numberOfConnections * (this->allocatedConnections + 2)) /
-                (this->allocatedConnections * (this->numberOfConnections + 4)));
-    }
-
-    p = 1 - np;
-
-    sd = sqrt((np * p) / (this->numberOfConnections + type * 4));
-
-    if (type == 2) {
-      float denom = (1 + ((z * z) / this->numberOfConnections));
-      // sd = sqrt()
-    }
-}
-
-if (inf) return p - (z * sd);
-return p + (z * sd);
-}
-*/
-double Simulator::confidenceValue(double alpha) {
-  if (alpha <= 0 || alpha >= 1) {
-    throw std::runtime_error(
-        "You can't set a confidence interval with confidence equal/higher than "
-        "1 or equal/lower than 0.");
-  }
-
-  return 1.96;
+  return (this->confidenceValues[level] == 0) ? 1.96
+                                              : this->confidenceValues[level];
 }
 
 double Simulator::waldCI(double confidence, bool lower) {
@@ -490,6 +428,7 @@ double Simulator::wilsonCI(double confidence, bool lower) {
   return (k + (confidence * sd)) / denom;
 }
 
+/*
 double Simulator::clopperCI(double confidence, bool lower) {
   int n = this->numberOfConnections;
   int r = n - this->allocatedConnections;  // Numero conexiones rechazadas
@@ -504,3 +443,4 @@ double Simulator::clopperCI(double confidence, bool lower) {
   }
   return 1.0;
 }
+*/
