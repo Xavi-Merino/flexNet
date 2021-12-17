@@ -155,8 +155,20 @@ class Simulator {
   // Nuevos
   double getAllocatedProbability(bool type);
   double confidenceInterval(double confidence, bool inf, int type);
+  double confidenceInterval2(double confidence, bool inf, int type);
+  double confidenceInterval3(double confidence, bool inf, int type);
+  double confidenceInterval4(double confidence, bool inf, int type);
+
+  double confidenceValue(double alpha);
+  double waldCI(double confidence, bool lower);
+  double agrestiCI(double confidence, bool lower);
+  double wilsonCI(double confidence, bool lower);
+  double clopperCI(double confidence, bool lower);
+  double bayesCI(double confidence, bool lower);
+
   double infCI(double confidence, int type);
   double supCI(double confidence, int type);
+  void printConfInt(double conf);
 
  private:
   double clock;

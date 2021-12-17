@@ -214,19 +214,57 @@ void Simulator::printRow(double percentage) {
             << std::right << std::fixed << this->timeDuration.count() << "  |";
 
   // Nuevo
-
-  std::cout << std::scientific << std::setprecision(3) << std::setfill(' ')
+  /*
+  std::cout << std::scientific << std::setprecision(8) << std::setfill(' ')
             << std::right << std::setw(7) << std::fixed << "["
             << this->confidenceInterval(0.95, true, 0) << ";"
             << this->confidenceInterval(0.95, false, 0) << "]"
             << " |";
 
-  std::cout << std::scientific << std::setprecision(3) << std::setfill(' ')
+  std::cout << std::scientific << std::setprecision(8) << std::setfill(' ')
             << std::right << std::setw(7) << std::fixed << "["
             << this->confidenceInterval(0.95, true, 1) << ";"
             << this->confidenceInterval(0.95, false, 1) << "]"
             << " |";
+  */
 
+  std::cout << std::scientific << std::setprecision(8) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << std::endl
+            << "\t[" << this->waldCI(1.96, true) << ";"
+            << this->waldCI(1.96, false) << "]"
+            << " = " << this->waldCI(1.96, false) - this->waldCI(1.96, true)
+            << " |";
+
+  std::cout << std::scientific << std::setprecision(8) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << "\t["
+            << this->agrestiCI(1.96, true) << ";"
+            << this->agrestiCI(1.96, false) << "]"
+            << " = "
+            << this->agrestiCI(1.96, false) - this->agrestiCI(1.96, true)
+            << " |";
+
+  std::cout << std::scientific << std::setprecision(8) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << "\t["
+            << this->wilsonCI(1.96, true) << ";" << this->wilsonCI(1.96, false)
+            << "]"
+            << " = " << this->wilsonCI(1.96, false) - this->wilsonCI(1.96, true)
+            << " |";
+  /*
+  std::cout << "n: " << this->numberOfConnections
+            << " | a: " << this->allocatedConnections
+            << " | p: " << this->getBlockingProbability(false)
+            << " | np: " << this->getAllocatedProbability(false)
+            << " | np2: " << 1 - this->getBlockingProbability(false);
+
+  float z = 1.96;
+  float n = this->numberOfConnections;
+  float p = this->getAllocatedProbability(false);
+  float np = 1 - p;
+  float np2 = this->getBlockingProbability(false);
+  float sd = sqrt((np * p) / this->numberOfConnections);
+  std::cout << "n: " << n << " | p: " << p << " | np: " << np
+            << "  | np2:" << np2 << " |" << std::endl;
+  */
   std::cout << std::setw(1) << "\n";
 }
 
@@ -306,7 +344,7 @@ unsigned int Simulator::getTimeDuration(void) {
 }
 
 double Simulator::getBlockingProbability(bool type) {
-  if (type)
+  if (type == true)
     return 1 -
            ((this->allocatedConnections + 2) / (this->numberOfConnections + 4));
 
@@ -314,7 +352,7 @@ double Simulator::getBlockingProbability(bool type) {
 }
 
 double Simulator::getAllocatedProbability(bool type) {
-  if (type)
+  if (type == true)
     return (this->allocatedConnections + 2) / (this->numberOfConnections + 4);
 
   return this->allocatedConnections / this->numberOfConnections;
@@ -360,7 +398,10 @@ double Simulator::confidenceInterval(double confidence, bool inf, int type) {
         result = this->getBlockingProbability(false) - error;
       }
 
-      result = this->getBlockingProbability(false) + error;
+      else {
+        result = this->getBlockingProbability(false) + error;
+      }
+
       break;
 
     case 1:
@@ -373,11 +414,187 @@ double Simulator::confidenceInterval(double confidence, bool inf, int type) {
         result = this->getBlockingProbability(true) - error;
       }
 
-      result = this->getBlockingProbability(true) + error;
+      else {
+        result = this->getBlockingProbability(true) + error;
+      }
       break;
   }
 
   return result;
+}
+
+double Simulator::confidenceInterval2(double confidence, bool inf, int type) {
+  /* Type:
+   * 0 = Wald
+   * 1 = Agresti-Coull
+   * 2 = Wilson
+   * 3 = Clopper-Pearson
+   * 4 = Bayesian
+   */
+
+  if (confidence <= 0 || confidence >= 1) {
+    throw std::runtime_error(
+        "You can't set a confidence interval with confidence equal/higher than "
+        "1 or equal/lower than 0.");
+  }
+
+  // float p = this->getBlockingProbability(type);
+  // float np = 1 - p;
+
+  float np = this->getAllocatedProbability(type);
+  float p = 1 - np;
+
+  float z = 1.96;
+  float sd = sqrt((np * p) / (this->numberOfConnections + type * 4));
+
+  if (inf) return p - (z * sd);
+  return p + (z * sd);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+double Simulator::confidenceInterval3(double confidence, bool inf, int type) {
+  /* Type:
+   * 0 = Wald
+   * 1 = Agresti-Coull
+   * 2 = Wilson
+   * 3 = Clopper-Pearson
+   * 4 = Bayesian
+   */
+
+  if (confidence <= 0 || confidence >= 1) {
+    throw std::runtime_error(
+        "You can't set a confidence interval with confidence equal/higher than "
+        "1 or equal/lower than 0.");
+  }
+  float p, np, sd;
+  float z = 1.96;
+  // Si funciona bien, se pueden simplificar las funciones
+  // getBlocking/getAllocated Prob
+  switch (type) {
+    case 0:  // Wald
+    case 1:  // Agresti-Coul
+    case 2:  // Wilson
+      np = this->getAllocatedProbability(false);
+
+      // Agresti-Coul = agrega dos observaciones a cada estado
+      if (type == 1) {
+        np = np *
+             ((this->numberOfConnections * (this->allocatedConnections + 2)) /
+              (this->allocatedConnections * (this->numberOfConnections + 4)));
+      }
+
+      p = 1 - np;
+
+      sd = sqrt((np * p) / (this->numberOfConnections + type * 4));
+
+      if (type == 2) {
+        float denom = (1 + ((z * z) / this->numberOfConnections));
+        // sd = sqrt()
+      }
+  }
+
+  if (inf) return p - (z * sd);
+  return p + (z * sd);
+}
+
+double Simulator::confidenceValue(double alpha) {
+  if (alpha <= 0 || alpha >= 1) {
+    throw std::runtime_error(
+        "You can't set a confidence interval with confidence equal/higher than "
+        "1 or equal/lower than 0.");
+  }
+
+  return 1.96;
+}
+
+double Simulator::waldCI(double confidence, bool lower) {
+  double np = this->getAllocatedProbability(false);
+  double p = 1 - np;
+  int n = this->numberOfConnections;
+  double sd = sqrt((np * p) / n);
+
+  if (lower) return p - (confidence * sd);
+  return p + (confidence * sd);
+}
+
+double Simulator::agrestiCI(double confidence, bool lower) {
+  double np = this->getAllocatedProbability(false);
+  int n = this->numberOfConnections;
+
+  np = np * ((n * (this->allocatedConnections + 2)) /
+             (this->allocatedConnections * (n + 4)));
+
+  double p = 1 - np;
+  double sd = sqrt((np * p) / (n + 4));
+
+  if (lower) return p - (confidence * sd);
+  return p + (confidence * sd);
+}
+
+double Simulator::wilsonCI(double confidence, bool lower) {
+  double np = this->getAllocatedProbability(false);
+  double p = 1 - np;
+  int n = this->numberOfConnections;
+
+  double denom = (1 + (pow(confidence, 2) / n));
+
+  double k = p + pow(confidence, 2) / (2 * n);
+  double sd = sqrt(((np * p) / n) + ((pow(confidence, 2)) / (4 * pow(n, 2))));
+
+  if (lower) return (k - (confidence * sd)) / denom;
+  return (k + (confidence * sd)) / denom;
+}
+
+double Simulator::clopperCI(double confidence, bool lower) {
+  int n = this->numberOfConnections;
+  int r = n - this->allocatedConnections;  // Numero conexiones rechazadas
+  double m1 = 2 * (n - r + 1);
+  double m2 = 2 * r;
+  std::fisher_f_distribution<> distribution(m1, m2);
+
+  double number;
+  if (lower) {
+    // number = distribution(1.0 - confidence / 2);
+    // return r / (r + (n - r + 1) * distribution(1 - confidence / 2));
+  }
+  return 1.0;
+}
+/*
+// Fail
+double Simulator::confidenceInterval4(double confidence, bool inf, int type) {
+  /* Type:
+   * 0 = Wald
+   * 1 = Agresti-Coull
+   * 2 = Wilson
+   * 3 = Clopper-Pearson
+   * 4 = Bayesian
+
+
+if (confidence <= 0 || confidence >= 1) {
+  throw std::runtime_error(
+      "You can't set a confidence interval with confidence equal/higher than "
+      "1 or equal/lower than 0.");
+}
+
+// Si funciona bien, se pueden simplificar las funciones
+// getBlocking/getAllocated Prob
+float p = this->getBlockingProbability(false);
+
+// Agresti-Coul = agrega dos observaciones a cada estado
+if (type == 1) {
+  p = p * ((this->numberOfConnections *
+            (this->numberOfConnections - this->allocatedConnections + 6)) /
+           ((this->numberOfConnections - this->allocatedConnections) *
+            (this->numberOfConnections + 4)));
+}
+
+float np = 1 - p;
+float z = 1.96;
+float sd = sqrt((np * p) / (this->numberOfConnections + type * 4));
+
+if (inf) return p - (z * sd);
+return p + (z * sd);
 }
 
 double Simulator::infCI(double confidence, int type) {
@@ -413,3 +630,4 @@ double Simulator::supCI(double confidence) {
 
   return this->getAllocatedProbability() + error;
 }
+*/
