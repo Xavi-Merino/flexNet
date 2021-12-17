@@ -427,20 +427,3 @@ double Simulator::wilsonCI(double confidence, bool lower) {
   if (lower) return (k - (confidence * sd)) / denom;
   return (k + (confidence * sd)) / denom;
 }
-
-/*
-double Simulator::clopperCI(double confidence, bool lower) {
-  int n = this->numberOfConnections;
-  int r = n - this->allocatedConnections;  // Numero conexiones rechazadas
-  double m1 = 2 * (n - r + 1);
-  double m2 = 2 * r;
-  std::fisher_f_distribution<> distribution(m1, m2);
-
-  double number;
-  if (lower) {
-    // number = distribution(1.0 - confidence / 2);
-    // return r / (r + (n - r + 1) * distribution(1 - confidence / 2));
-  }
-  return 1.0;
-}
-*/

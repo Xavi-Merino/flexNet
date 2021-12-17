@@ -160,8 +160,6 @@ class Simulator {
   double waldCI(double confidence, bool lower);
   double agrestiCI(double confidence, bool lower);
   double wilsonCI(double confidence, bool lower);
-  double clopperCI(double confidence, bool lower);
-  double bayesCI(double confidence, bool lower);
 
  private:
   double clock;
