@@ -1,5 +1,6 @@
 #include "simulator.hpp"
 
+#include <cmath>  //Nuevo
 #include <iostream>
 
 Simulator::Simulator(void) {
@@ -156,6 +157,15 @@ void Simulator::setAllocator(Allocator *newAllocator) {
   this->controller->setAllocator(newAllocator);
 }
 
+void Simulator::setConfidence(double c) {
+  if (c <= 0 || c >= 1) {
+    throw std::runtime_error(
+        "You can't set a confidence interval with confidence equal/higher than "
+        "1 or equal/lower than 0.");
+  }
+  this->confidence = c;
+}
+
 void Simulator::defaultValues() {
   this->initReady = false;
   this->lambda = 3;
@@ -169,6 +179,7 @@ void Simulator::defaultValues() {
   this->numberOfEvents = 0;
   this->goalConnections = 10000;
   this->columnWidth = 10;
+  this->confidence = 0.95;
 }
 
 void Simulator::printInitialInfo() {
@@ -193,18 +204,28 @@ void Simulator::printInitialInfo() {
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
+  std::cout << std::setw(11) << "+";
+  std::cout << std::setw(11) << "+";
+  std::cout << std::setw(11) << "+";
   std::cout << std::setw(1) << "+\n";
 
   std::cout << std::setfill(' ') << std::setw(11) << "| progress";
   std::cout << std::setw(11) << "| arrives";
   std::cout << std::setw(11) << "| blocking";
   std::cout << std::setw(11) << "| time(s)";
+  std::cout << std::setw(11) << "| Wald CI";
+  std::cout << std::setw(11) << "| A-C. CI";
+  std::cout << std::setw(11) << "| Wilson CI";
   std::cout << std::setw(1) << "|\n";
 
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
+  // Nueva
   std::cout << std::setfill('-') << std::setw(1) << std::left << "+\n";
 
   this->startingTime = std::chrono::high_resolution_clock::now();
@@ -224,9 +245,18 @@ void Simulator::printRow(double percentage) {
   std::cout << std::setfill(' ') << std::setw(9) << std::right
             << std::scientific
             << 1 - this->allocatedConnections / this->numberOfConnections
-            << " |";
+            << " |";  // getBlockingProbability
   std::cout << std::setprecision(0) << std::setfill(' ') << std::setw(8)
             << std::right << std::fixed << this->timeDuration.count() << "  |";
+
+  std::cout << std::setprecision(1) << std::setfill(' ') << std::setw(9)
+            << std::right << std::scientific << this->waldCI() << " |";
+
+  std::cout << std::setfill(' ') << std::setw(9) << std::right
+            << std::scientific << this->agrestiCI() << " |";
+
+  std::cout << std::setfill(' ') << std::setw(9) << std::right
+            << std::scientific << this->wilsonCI() << " |";
 
   std::cout << std::setw(1) << "\n";
 }
@@ -288,6 +318,7 @@ void Simulator::init(void) {
   this->events.push_back(Event(ARRIVE, this->arriveVariable.getNextValue(),
                                this->numberOfConnections++));
   this->bitRates = this->bitRatesDefault;
+  this->initZScore();
 }
 
 void Simulator::run(void) {
@@ -308,4 +339,70 @@ unsigned int Simulator::getTimeDuration(void) {
 
 double Simulator::getBlockingProbability(void) {
   return 1 - this->allocatedConnections / this->numberOfConnections;
+}
+
+double Simulator::getAllocatedProbability(void) {
+  return this->allocatedConnections / this->numberOfConnections;
+}
+
+double Simulator::waldCI() {
+  double np = this->getAllocatedProbability();
+  double p = 1 - np;
+  int n = this->numberOfConnections;
+  double sd = sqrt((np * p) / n);
+
+  return this->zScore * sd;
+}
+
+double Simulator::agrestiCI() {
+  double np = this->getAllocatedProbability();
+  int n = this->numberOfConnections;
+
+  np = np * ((n * (this->allocatedConnections + 2)) /
+             (this->allocatedConnections * (n + 4)));
+
+  double p = 1 - np;
+  double sd = sqrt((np * p) / (n + 4));
+
+  return this->zScore * sd;
+}
+
+double Simulator::wilsonCI() {
+  double np = this->getAllocatedProbability();
+  double p = 1 - np;
+  int n = this->numberOfConnections;
+
+  double denom = (1 + (pow(this->zScore, 2) / n));
+
+  double k = p + pow(this->zScore, 2) / (2 * n);
+  double sd = sqrt(((np * p) / n) + ((pow(this->zScore, 2)) / (4 * pow(n, 2))));
+
+  return (this->zScore * sd) / denom;
+}
+
+void Simulator::initZScore(void) {
+  double actual = 0.0;
+  double step = 1.0;
+  double covered = 0.0;
+  double objective = this->confidence;
+  double epsilon = 1e-6;
+
+  while (fabs(objective - covered) > epsilon) {
+    if (objective > covered) {
+      actual += step;
+      covered =
+          ((1 + erf(actual / sqrt(2))) - (1 + erf(-actual / sqrt(2)))) / 2;
+      if (covered > objective) {
+        step /= 2;
+      }
+    } else {
+      actual -= step;
+      covered =
+          ((1 + erf(actual / sqrt(2))) - (1 + erf(-actual / sqrt(2)))) / 2;
+      if (covered < objective) {
+        step /= 2;
+      }
+    }
+  }
+  this->zScore = actual;
 }
