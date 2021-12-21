@@ -138,6 +138,8 @@ void Simulator::setAllocator(Allocator *newAllocator) {
   this->controller->setAllocator(newAllocator);
 }
 
+void Simulator::setConfidence(double c) { this->confidence = c; }
+
 void Simulator::defaultValues() {
   this->initReady = false;
   this->lambda = 3;
@@ -151,6 +153,7 @@ void Simulator::defaultValues() {
   this->numberOfEvents = 0;
   this->goalConnections = 10000;
   this->columnWidth = 10;
+  this->confidence = 0.95;
 
   this->confidenceValues[90] = 1.65;
   this->confidenceValues[95] = 1.96;
@@ -179,21 +182,21 @@ void Simulator::printInitialInfo() {
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
   std::cout << std::setw(11) << "+";
-  // std::cout << std::setw(30) << "+";  // Nueva
+  std::cout << std::setw(30) << "+";  // Nueva
   std::cout << std::setw(1) << "+\n";
 
   std::cout << std::setfill(' ') << std::setw(11) << "| progress";
   std::cout << std::setw(11) << "| arrives";
   std::cout << std::setw(11) << "| blocking";
   std::cout << std::setw(11) << "| time(s)";
-  // std::cout << std::setw(30) << "| Wald CI | Agresti-Coull |";  // Nueva
+  std::cout << std::setw(30) << "| Wald CI | Agresti-Coull |";  // Nueva
   std::cout << std::setw(1) << "|\n";
 
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
-  // std::cout << std::setfill('-') << std::setw(30) << std::left << "+";  //
+  std::cout << std::setfill('-') << std::setw(30) << std::left << "+";  //
   // Nueva
   std::cout << std::setfill('-') << std::setw(1) << std::left << "+\n";
 
@@ -218,57 +221,54 @@ void Simulator::printRow(double percentage) {
   std::cout << std::setprecision(0) << std::setfill(' ') << std::setw(8)
             << std::right << std::fixed << this->timeDuration.count() << "  |";
 
-  /*
-    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
-              << std::right << std::setw(7) << std::fixed << std::endl
-              << "\t[" << this->waldCI(1.96, true) << ";"
-              << this->waldCI(1.96, false) << "]"
-              << " = " << this->waldCI(1.96, false) - this->waldCI(1.96, true)
-              << " |";
+  std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << std::endl
+            << "\t[" << this->waldCI(1.96, true) << ";"
+            << this->waldCI(1.96, false) << "]"
+            << " = " << this->waldCI(1.96, false) - this->waldCI(1.96, true)
+            << " |";
 
-    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
-              << std::right << std::setw(7) << std::fixed << "\t["
-              << this->agrestiCI(1.96, true) << ";"
-              << this->agrestiCI(1.96, false) << "]"
-              << " = "
-              << this->agrestiCI(1.96, false) - this->agrestiCI(1.96, true)
-              << " |";
+  std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << "\t["
+            << this->agrestiCI(1.96, true) << ";"
+            << this->agrestiCI(1.96, false) << "]"
+            << " = "
+            << this->agrestiCI(1.96, false) - this->agrestiCI(1.96, true)
+            << " |";
 
-    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
-              << std::right << std::setw(7) << std::fixed << "\t["
-              << this->wilsonCI(1.96, true) << ";" << this->wilsonCI(1.96,
-    false)
-              << "]"
-              << " = " << this->wilsonCI(1.96, false) - this->wilsonCI(1.96,
-    true)
-              << " |";
+  std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << "\t["
+            << this->wilsonCI(1.96, true) << ";" << this->wilsonCI(1.96, false)
+            << "]"
+            << " = " << this->wilsonCI(1.96, false) - this->wilsonCI(1.96, true)
+            << " |";
 
-    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
-              << std::right << std::setw(7) << std::fixed << std::endl
-              << "\t[" << this->confidenceInterval(95, true, 0) << ";"
-              << this->confidenceInterval(95, false, 0) << "]"
-              << " = "
-              << this->confidenceInterval(95, false, 0) -
-                     this->confidenceInterval(95, true, 0)
-              << " |";
+  std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << std::endl
+            << "\t[" << this->confidenceInterval(0.95, true, 0) << ";"
+            << this->confidenceInterval(0.95, false, 0) << "]"
+            << " = "
+            << this->confidenceInterval(0.95, false, 0) -
+                   this->confidenceInterval(0.95, true, 0)
+            << " |";
 
-    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
-              << std::right << std::setw(7) << std::fixed << "\t["
-              << "\t[" << this->confidenceInterval(95, true, 1) << ";"
-              << this->confidenceInterval(95, false, 1) << "]"
-              << " = "
-              << this->confidenceInterval(95, false, 1) -
-                     this->confidenceInterval(95, true, 1)
-              << " |";
+  std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << "\t["
+            << "\t[" << this->confidenceInterval(0.95, true, 1) << ";"
+            << this->confidenceInterval(0.95, false, 1) << "]"
+            << " = "
+            << this->confidenceInterval(0.95, false, 1) -
+                   this->confidenceInterval(0.95, true, 1)
+            << " |";
 
-    std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
-              << std::right << std::setw(7) << std::fixed << "\t["
-              << "\t[" << this->confidenceInterval(95, true, 2) << ";"
-              << this->confidenceInterval(95, false, 2) << "]"
-              << " = "
-              << this->confidenceInterval(95, false, 2) -
-                     this->confidenceInterval(95, true, 2)
-              << " |"; */
+  std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
+            << std::right << std::setw(7) << std::fixed << "\t["
+            << "\t[" << this->confidenceInterval(0.95, true, 2) << ";"
+            << this->confidenceInterval(0.95, false, 2) << "]"
+            << " = "
+            << this->confidenceInterval(0.95, false, 2) -
+                   this->confidenceInterval(0.90, true, 2)
+            << " |";
   std::cout << std::setw(1) << "\n";
 }
 
@@ -355,7 +355,7 @@ double Simulator::getAllocatedProbability(void) {
   return this->allocatedConnections / this->numberOfConnections;
 }
 
-double Simulator::confidenceInterval(int level, bool lower, int type) {
+double Simulator::confidenceInterval(float level, bool lower, int type) {
   if (type < 0 || type > 2) {
     throw std::runtime_error(
         "You can only choose an interval type of 0 (Wald), 1(Agresti-Coull) or "
@@ -379,7 +379,7 @@ double Simulator::confidenceInterval(int level, bool lower, int type) {
   return this->waldCI(alpha, lower);
 }
 
-double Simulator::confidenceValue(int level) {
+double Simulator::confidenceValue(float level) {
   if (level <= 0 || level >= 100) {
     throw std::runtime_error(
         "You can't set a confidence interval with confidence equal/higher than "
@@ -426,4 +426,31 @@ double Simulator::wilsonCI(double confidence, bool lower) {
 
   if (lower) return (k - (confidence * sd)) / denom;
   return (k + (confidence * sd)) / denom;
+}
+
+void Simulator::initZScore(void) {
+  double actual = 0.0;
+  double step = 1.0;
+  double covered = 0.0;
+  double objective = this->confidence;
+  double epsilon = 1e-6;
+
+  while (fabs(objective - covered) > epsilon) {
+    if (objective > covered) {
+      actual += step;
+      covered =
+          ((1 + erf(actual / sqrt(2))) - (1 + erf(-actual / sqrt(2)))) / 2;
+      if (covered > objective) {
+        step /= 2;
+      }
+    } else {
+      actual -= step;
+      covered =
+          ((1 + erf(actual / sqrt(2))) - (1 + erf(-actual / sqrt(2)))) / 2;
+      if (covered < objective) {
+        step /= 2;
+      }
+    }
+  }
+  this->zScore = actual;
 }

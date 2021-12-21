@@ -155,8 +155,10 @@ class Simulator {
   // Nuevos
   double getAllocatedProbability(void);
 
-  double confidenceInterval(int level, bool lower, int type);
-  double confidenceValue(int level);
+  void setConfidence(double c);
+
+  double confidenceInterval(float level, bool lower, int type);
+  double confidenceValue(float level);
   double waldCI(double confidence, bool lower);
   double agrestiCI(double confidence, bool lower);
   double wilsonCI(double confidence, bool lower);
@@ -173,6 +175,8 @@ class Simulator {
   Event currentEvent;
   std::vector<BitRate> bitRates;
   std::map<int, float> confidenceValues;
+  double confidence;
+  double zScore;
 
   bool initReady;
   double lambda;
@@ -225,6 +229,8 @@ class Simulator {
    * @brief Shows on screen the percentage of completion of the simulation.
    */
   void printRow(double percentage);
+
+  void initZScore(void);
 };
 
 #endif
