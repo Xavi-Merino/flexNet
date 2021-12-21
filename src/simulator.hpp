@@ -157,11 +157,9 @@ class Simulator {
 
   void setConfidence(double c);
 
-  double confidenceInterval(float level, bool lower, int type);
-  double confidenceValue(float level);
   double waldCI(void);
   double agrestiCI(void);
-  double wilsonCI(double confidence, bool lower);
+  double wilsonCI(void);
 
  private:
   double clock;
@@ -174,7 +172,6 @@ class Simulator {
   Controller *controller;
   Event currentEvent;
   std::vector<BitRate> bitRates;
-  std::map<int, float> confidenceValues;
   double confidence;
   double zScore;
 
