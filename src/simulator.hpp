@@ -119,6 +119,20 @@ class Simulator {
    */
   void setSeedBitRate(unsigned int seed);
   /**
+   * @brief Set the seed for the source of the connection. The aleatory sources
+   * are generated from these seeds.
+   *
+   * @param seed Param type unsigned integer.
+   */
+  void setSeedSrc(unsigned int seed);
+  /**
+   * @brief Set the seed for the destination of the connection. The aleatory
+   * destinations are generated from these seeds.
+   *
+   * @param seed Param type unsigned integer.
+   */
+  void setSeedDst(unsigned int seed);
+  /**
    * @brief Set connections goal.
    *
    * @param goal Param type long long. Represents the total number of

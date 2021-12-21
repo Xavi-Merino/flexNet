@@ -118,6 +118,18 @@ TEST_CASE("Set seed bit rate") {
   CHECK_NOTHROW(s.setSeedDeparture(seed));
 }
 
+TEST_CASE("Set seed src") {
+  Simulator s = Simulator();
+  unsigned int seed = 32;
+  CHECK_NOTHROW(s.setSeedSrc(seed));
+}
+
+TEST_CASE("Set seed dst") {
+  Simulator s = Simulator();
+  unsigned int seed = 32;
+  CHECK_NOTHROW(s.setSeedDst(seed));
+}
+
 TEST_CASE("Set goal connections") {
   Simulator s = Simulator();
   long long goalConnections = 1e7;

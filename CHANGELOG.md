@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### ADDED
 
 - Confidence intervals: Wilson, Wald, and Agresti-Coull
+- Added seed setters for the Src/Dst seeds' inside Simulator's class. 
+- Test cases inside test_simulator.cpp for the corresponding Src/Dst seed setters.
 
 ## [0.4.1] - 2021-07-28
 
@@ -109,3 +111,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.3.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.2.0...v0.3.0
 [0.4.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.3.0...v0.4.0
 [0.4.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.0...v0.4.1
+[0.5.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.1...v0.5.0
