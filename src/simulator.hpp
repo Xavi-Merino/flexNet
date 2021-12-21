@@ -159,8 +159,8 @@ class Simulator {
 
   double confidenceInterval(float level, bool lower, int type);
   double confidenceValue(float level);
-  double waldCI(double confidence, bool lower);
-  double agrestiCI(double confidence, bool lower);
+  double waldCI(void);
+  double agrestiCI(void);
   double wilsonCI(double confidence, bool lower);
 
  private:

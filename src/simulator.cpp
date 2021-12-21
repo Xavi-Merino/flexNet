@@ -221,20 +221,11 @@ void Simulator::printRow(double percentage) {
   std::cout << std::setprecision(0) << std::setfill(' ') << std::setw(8)
             << std::right << std::fixed << this->timeDuration.count() << "  |";
 
-  std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
-            << std::right << std::setw(7) << std::fixed << std::endl
-            << "\t[" << this->waldCI(1.96, true) << ";"
-            << this->waldCI(1.96, false) << "]"
-            << " = " << this->waldCI(1.96, false) - this->waldCI(1.96, true)
-            << " |";
+  std::cout << std::setprecision(1) << std::setfill(' ') << std::setw(8)
+            << std::right << std::scientific << this->waldCI() << " |";
 
-  std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
-            << std::right << std::setw(7) << std::fixed << "\t["
-            << this->agrestiCI(1.96, true) << ";"
-            << this->agrestiCI(1.96, false) << "]"
-            << " = "
-            << this->agrestiCI(1.96, false) - this->agrestiCI(1.96, true)
-            << " |";
+  std::cout << std::setfill(' ') << std::setw(8) << std::right
+            << std::scientific << this->agrestiCI() << " |";
 
   std::cout << std::scientific << std::setprecision(5) << std::setfill(' ')
             << std::right << std::setw(7) << std::fixed << "\t["
@@ -329,6 +320,7 @@ void Simulator::init(void) {
   this->events.push_back(Event(ARRIVE, this->arriveVariable.getNextValue(),
                                this->numberOfConnections++));
   this->bitRates = this->bitRatesDefault;
+  this->initZScore();
 }
 
 void Simulator::run(void) {
@@ -372,11 +364,11 @@ double Simulator::confidenceInterval(float level, bool lower, int type) {
 
   switch (type) {
     case 1:
-      return this->agrestiCI(alpha, lower);
+      return this->agrestiCI();
     case 2:
       return this->wilsonCI(alpha, lower);
   }
-  return this->waldCI(alpha, lower);
+  return this->waldCI();
 }
 
 double Simulator::confidenceValue(float level) {
@@ -390,17 +382,16 @@ double Simulator::confidenceValue(float level) {
                                               : this->confidenceValues[level];
 }
 
-double Simulator::waldCI(double confidence, bool lower) {
+double Simulator::waldCI() {
   double np = this->getAllocatedProbability();
   double p = 1 - np;
   int n = this->numberOfConnections;
   double sd = sqrt((np * p) / n);
 
-  if (lower) return p - (confidence * sd);
-  return p + (confidence * sd);
+  return this->zScore * sd;
 }
 
-double Simulator::agrestiCI(double confidence, bool lower) {
+double Simulator::agrestiCI() {
   double np = this->getAllocatedProbability();
   int n = this->numberOfConnections;
 
@@ -410,8 +401,7 @@ double Simulator::agrestiCI(double confidence, bool lower) {
   double p = 1 - np;
   double sd = sqrt((np * p) / (n + 4));
 
-  if (lower) return p - (confidence * sd);
-  return p + (confidence * sd);
+  return this->zScore * sd;
 }
 
 double Simulator::wilsonCI(double confidence, bool lower) {
