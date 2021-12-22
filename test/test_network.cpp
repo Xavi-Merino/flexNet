@@ -61,7 +61,7 @@ TEST_CASE("Connect source and destination nodes (Network)") {
 };
 
 TEST_CASE("JSON constructor") {
-  Network n1 = Network("../networks/NSFNet_routes.json");
+  Network n1 = Network("../networks/NSFNet.json");
 }
 
 TEST_CASE("Use slot (Network)") {
