@@ -119,6 +119,20 @@ class Simulator {
    */
   void setSeedBitRate(unsigned int seed);
   /**
+   * @brief Set the seed for the source of the connection. The aleatory sources
+   * are generated from these seeds.
+   *
+   * @param seed Param type unsigned integer.
+   */
+  void setSeedSrc(unsigned int seed);
+  /**
+   * @brief Set the seed for the destination of the connection. The aleatory
+   * destinations are generated from these seeds.
+   *
+   * @param seed Param type unsigned integer.
+   */
+  void setSeedDst(unsigned int seed);
+  /**
    * @brief Set connections goal.
    *
    * @param goal Param type long long. Represents the total number of
@@ -150,7 +164,65 @@ class Simulator {
    * @return Double The blocking probability calculated as 1 - (allocated /
    * total connections)
    */
-  double getBlockingProbability();
+  double getBlockingProbability(void);
+
+  /**
+   * @brief Get the Allocated Probability. This probability is calculated as the
+   * ratio between the number of connection efectively allocated v/s the total
+   * number of connections.
+   *
+   * @return double The allocation probability.
+   */
+  double getAllocatedProbability(void);
+
+  /**
+   * @brief Set the Confidence of confidence interval.
+   *
+   * @param c Must be a number between 0.00 and 1.00
+   */
+  void setConfidence(double c);
+
+  /**
+   * @brief Wald Confidence Interval
+   * The most basic confidence interval.
+   *
+   * \f{eqnarray*}{
+          \pm z \cdot \sqrt{\frac{p^\^ \cdot (1-p^\^)}{n}}
+     \f}
+   *
+   * @return double The Wald confidence interval.
+   */
+  double waldCI(void);
+
+  /**
+   * @brief Agresti-Coull Confidence Interval
+   *
+   * \f{eqnarray*}{
+          \pm z \cdot \sqrt{\frac{p^~ \cdot (1-p^~)}{n}}
+     \f}
+   *
+   * where
+   *
+   * \f{eqnarray*}{
+          p^~ = \frac{X+2}{n+4}
+     \f}
+   *
+   *
+   * @return double
+   */
+  double agrestiCI(void);
+
+  /**
+   * @brief Wilson Confidence Interval
+   *
+   * \f{eqnarray*}{
+          \pm  \frac{\sqrt{\frac{p^\^ \cdot (1-p^\^)}{n} + \frac{z^2}{4n^2}}}{1
+   + \frac{z^2}{n}} \f}
+   *
+   *
+   * @return double
+   */
+  double wilsonCI(void);
 
  private:
   double clock;
@@ -163,6 +235,8 @@ class Simulator {
   Controller *controller;
   Event currentEvent;
   std::vector<BitRate> bitRates;
+  double confidence;
+  double zScore;
 
   bool initReady;
   double lambda;
@@ -215,6 +289,8 @@ class Simulator {
    * @brief Shows on screen the percentage of completion of the simulation.
    */
   void printRow(double percentage);
+
+  void initZScore(void);
 };
 
 #endif

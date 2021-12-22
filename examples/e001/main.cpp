@@ -64,6 +64,7 @@ int main(int argc, char* argv[]) {
                                               // that contain the network
                                               // information
   USE_ALLOC_FUNCTION(FirstFit, sim);
+  sim.setGoalConnections(1e6);
   sim.init();
   sim.run();
 
