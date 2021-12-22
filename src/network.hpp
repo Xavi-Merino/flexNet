@@ -291,7 +291,8 @@ class Network {
   std::vector<int> nodesOut;
   int linkCounter;
   int nodeCounter;
-  //   int path_counter;
+
+  void validateSlotFromTo(int linkPos, int slotFrom, int slotTo);
 };
 
 #endif
