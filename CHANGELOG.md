@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### FIXED
 
 - There was a typo in JSON network file, and the related class: lenght -> length
+- Minor bugs
 
 ## [0.4.1] - 2021-07-28
 
