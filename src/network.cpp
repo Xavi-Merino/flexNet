@@ -299,3 +299,18 @@ float Network::nodalVariance() {
   result /= this->getNumberOfNodes();
   return result;
 }
+
+void Network::validateSlotFromTo(int linkPos, int slotFrom, int slotTo) {
+  if (slotFrom < 0 ||
+      slotFrom >= static_cast<int>(this->links[linkPos]->getSlots()))
+    throw std::runtime_error("slot position out of bounds.");
+  if (slotTo < 0 ||
+      slotTo >= static_cast<int>(this->links[linkPos]->getSlots()))
+    throw std::runtime_error("slot position out of bounds.");
+  if (slotFrom > slotTo)
+    throw std::runtime_error(
+        "Initial slot position must be lower than the final slot position.");
+
+  if (slotFrom == slotTo)
+    throw std::runtime_error("Slot from and slot To cannot be equals.");
+}
