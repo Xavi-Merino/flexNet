@@ -301,6 +301,8 @@ float Network::nodalVariance() {
 }
 
 void Network::validateSlotFromTo(int linkPos, int slotFrom, int slotTo) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
   if (slotFrom < 0 ||
       slotFrom >= static_cast<int>(this->links[linkPos]->getSlots()))
     throw std::runtime_error("slot position out of bounds.");
