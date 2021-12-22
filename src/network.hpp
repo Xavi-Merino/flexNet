@@ -281,24 +281,6 @@ class Network {
    * @return float The Nodal Variance value of average neighborhood
    */
   float nodalVariance();
-  /**
-   * @brief The existNodeIsolated method determines whether there is an Isolated
-   * Node inside the Network or not.
-   *
-   * @return bool The condition of existence of an Isolated Node inside the
-   * Network. Returns true if there exists at least one and false otherwise.
-   */
-  bool existNodeIsolated();
-  /**
-   * @brief The isGraphRelated method determines whether the Network's graph
-   * representation is totally related or not, that is, there exists a Node or
-   * sub-graph that is not connected from the main graph.
-   *
-   * @return bool The condition of relation of the graph given the Network's
-   * architecture. Returns true if the graph is totally related and false
-   * otherwise.
-   */
-  bool isGraphRelated();
 
  private:
   std::vector<Node *> nodes;
