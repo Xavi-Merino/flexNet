@@ -58,12 +58,12 @@ Network::Network(std::string filename) {
   for (int i = 0; i < numberOfLinks; i++) {
     int id;
     id = NSFnet["links"][i]["id"];
-    float lenght;
-    lenght = NSFnet["links"][i]["lenght"];
+    float length;
+    length = NSFnet["links"][i]["length"];
     float slots;
     slots = NSFnet["links"][i]["slots"];
 
-    Link *link = new Link(id, lenght, slots);
+    Link *link = new Link(id, length, slots);
     this->addLink(link);
 
     // connecting nodes
