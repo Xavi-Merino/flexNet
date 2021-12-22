@@ -196,12 +196,7 @@ void Network::useSlot(int linkPos, int slotPos) {
 }
 
 void Network::useSlot(int linkPos, int slotFrom, int slotTo) {
-  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
-    throw std::runtime_error("Link position out of bounds.");
-
-  if (slotFrom > slotTo)
-    throw std::runtime_error(
-        "Initial slot position must be lower than the final slot position.");
+  this->validateSlotFromTo(linkPos, slotFrom, slotTo);
 
   for (int i = slotFrom; i < slotTo; i++)
     this->links[linkPos]->setSlot(i, true);
@@ -215,14 +210,7 @@ void Network::unuseSlot(int linkPos, int slotPos) {
 }
 
 void Network::unuseSlot(int linkPos, int slotFrom, int slotTo) {
-  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
-    throw std::runtime_error("Link position out of bounds.");
-
-  if (slotFrom > slotTo)
-    throw std::runtime_error(
-        "Initial slot position must be lower than the final slot position.");
-  if (slotFrom == slotTo)
-    throw std::runtime_error("Slot from and slot To cannot be equals.");
+  this->validateSlotFromTo(linkPos, slotFrom, slotTo);
 
   for (int i = slotFrom; i < slotTo; i++)
     this->links[linkPos]->setSlot(i, false);
@@ -243,21 +231,7 @@ bool Network::isSlotUsed(int linkPos, int slotPos) {
 }
 
 bool Network::isSlotUsed(int linkPos, int slotFrom, int slotTo) {
-  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
-    throw std::runtime_error("Link position out of bounds.");
-
-  if (slotFrom < 0 ||
-      slotFrom >= static_cast<int>(this->links[linkPos]->getSlots()))
-    throw std::runtime_error("slot position out of bounds.");
-  if (slotTo < 0 ||
-      slotTo >= static_cast<int>(this->links[linkPos]->getSlots()))
-    throw std::runtime_error("slot position out of bounds.");
-  if (slotFrom > slotTo)
-    throw std::runtime_error(
-        "Initial slot position must be lower than the final slot position.");
-
-  if (slotFrom == slotTo)
-    throw std::runtime_error("Slot from and slot To cannot be equals.");
+  this->validateSlotFromTo(linkPos, slotFrom, slotTo);
 
   // Loop through all the Slots in range
   for (int i = slotFrom; i < slotTo; i++) {
