@@ -144,3 +144,8 @@ std::vector<std::vector<std::vector<std::vector<Link *>>>>
     *Controller::getPaths() {
   return &(this->path);
 }
+
+void Controller::setUnassignCallback(void (*callbackFunction)(Connection,
+                                                              double)) {
+  this->unassignCallback = callbackFunction;
+}

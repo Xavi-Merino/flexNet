@@ -168,6 +168,8 @@ class Controller {
    */
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
 
+  void setUnassignCallback(void (*callbackFunction)(Connection, double));
+
  private:
   Network *network;
   Allocator *allocator;
@@ -177,6 +179,7 @@ class Controller {
 
   int unassignConnectionNormal(long long idConnection);
   int unassignConnectionWCallback(long long idConnection);
+  void (*unassignCallback)(Connection c, double time);
 };
 
 #endif
