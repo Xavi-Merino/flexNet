@@ -65,7 +65,7 @@ class Controller {
    * identify the connection within the attribute connections.
    * @return int number zero if unsuccessful.
    */
-  int unassignConnection(long long idConnection);
+  int (Controller::*unassignConnection)(long long idConnection);
   /**
    * @brief Sets the paths vector from the routes on the JSON file. From this
    file, the method creates the paths vector based on an array of routes. This
@@ -174,6 +174,9 @@ class Controller {
   std::vector<std::vector<std::vector<std::vector<Link *>>>> path;
   std::vector<Connection> connections;
   allocationStatus rtnAllocation;
+
+  int unassignConnectionNormal(long long idConnection);
+  int unassignConnectionWCallback(long long idConnection);
 };
 
 #endif

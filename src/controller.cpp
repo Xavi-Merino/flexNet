@@ -6,12 +6,14 @@ Controller::Controller() {
   this->connections = std::vector<Connection>();
   this->network = nullptr;
   this->allocator = new Allocator;
+  this->unassignConnection = &Controller::unassignConnectionNormal;
 };
 
 Controller::Controller(Network *network) {
   this->network = network;
   this->connections = std::vector<Connection>();
   this->allocator = new Allocator;
+  this->unassignConnection = &Controller::unassignConnectionNormal;
 };
 
 Controller::~Controller() {
@@ -41,7 +43,24 @@ allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
   return this->rtnAllocation;
 }
 
-int Controller::unassignConnection(long long idConnection) {
+int Controller::unassignConnectionNormal(long long idConnection) {
+  for (unsigned int i = 0; i < this->connections.size(); i++) {
+    if (this->connections[i].id == idConnection) {
+      for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
+        for (unsigned int k = 0; k < this->connections[i].slots[j].size();
+             k++) {
+          this->network->unuseSlot(this->connections[i].links[j],
+                                   this->connections[i].slots[j][k]);
+        }
+      }
+      this->connections.erase(this->connections.begin() + i);
+      break;
+    }
+  }
+  return 0;
+}
+
+int Controller::unassignConnectionWCallback(long long idConnection) {
   for (unsigned int i = 0; i < this->connections.size(); i++) {
     if (this->connections[i].id == idConnection) {
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {

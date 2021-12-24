@@ -298,8 +298,9 @@ int Simulator::eventRoutine(void) {
       this->allocatedConnections++;
     }
   } else if (this->currentEvent.getType() == DEPARTURE) {
-    this->controller->unassignConnection(this->currentEvent.getIdConnection());
-  }
+    (this->controller->*(this->controller->unassignConnection))(
+        this->currentEvent.getIdConnection());
+    }
   this->events.pop_front();
   return this->rtnAllocation;
 }
