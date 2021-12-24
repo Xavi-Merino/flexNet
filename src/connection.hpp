@@ -17,7 +17,7 @@ class Connection {
    *
    * @param id the id of the new connection object.
    */
-  Connection(long long id);
+  Connection(long long id, double time);
   /**
    * @brief Destroys the Connection object.
    *
@@ -44,9 +44,11 @@ class Connection {
 
   std::vector<int> getLinks(void);
   std::vector<std::vector<int> > getSlots(void);
+  double getTimeConnection(void);
 
  private:
   long long id;
+  double timeConnection;
   std::vector<int> links;
   std::vector<std::vector<int> > slots;
 

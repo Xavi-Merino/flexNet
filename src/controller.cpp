@@ -29,8 +29,9 @@ Controller::~Controller() {
 };
 
 allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
-                                              long long idConnection) {
-  Connection con = Connection(idConnection);
+                                              long long idConnection,
+                                              double time) {
+  Connection con = Connection(idConnection, time);
   this->rtnAllocation = this->allocator->exec(src, dst, bitRate, con);
   if (this->rtnAllocation == ALLOCATED) {
     this->connections.push_back(con);
@@ -43,7 +44,7 @@ allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
   return this->rtnAllocation;
 }
 
-int Controller::unassignConnectionNormal(long long idConnection) {
+int Controller::unassignConnectionNormal(long long idConnection, double time) {
   for (unsigned int i = 0; i < this->connections.size(); i++) {
     if (this->connections[i].id == idConnection) {
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
@@ -60,10 +61,11 @@ int Controller::unassignConnectionNormal(long long idConnection) {
   return 0;
 }
 
-int Controller::unassignConnectionWCallback(long long idConnection) {
+int Controller::unassignConnectionWCallback(long long idConnection,
+                                            double time) {
   for (unsigned int i = 0; i < this->connections.size(); i++) {
     if (this->connections[i].id == idConnection) {
-      this->unassignCallback(this->connections[i], 0.0, this->network);
+      this->unassignCallback(this->connections[i], time, this->network);
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
         for (unsigned int k = 0; k < this->connections[i].slots[j].size();
              k++) {

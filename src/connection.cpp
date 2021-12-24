@@ -1,9 +1,10 @@
 #include "connection.hpp"
 
-Connection::Connection(long long id) {
+Connection::Connection(long long id, double time) {
   this->id = id;
   this->links = std::vector<int>();
   this->slots = std::vector<std::vector<int> >();
+  this->timeConnection = time;
 }
 
 Connection::~Connection() {}
@@ -27,3 +28,5 @@ std::vector<int> Connection::getLinks(void) { return this->links; }
 std::vector<std::vector<int> > Connection::getSlots(void) {
   return this->slots;
 }
+
+double Connection::getTimeConnection(void) { return this->timeConnection; }

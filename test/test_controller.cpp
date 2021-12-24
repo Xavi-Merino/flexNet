@@ -51,7 +51,7 @@ TEST_CASE("AllocationStatus (Allocator) through Controller") {
       controllerExample.assignConnection(src, dst, bitRate, idConnection) ==
       (ALLOCATED || NOT_ALLOCATED));*/
   CHECK_THROWS(
-      controllerExample.assignConnection(src, dst, bitRate, idConnection));
+      controllerExample.assignConnection(src, dst, bitRate, idConnection, 0.0));
 }
 
 TEST_CASE("Correct format JSON file paths (Controller)") {
@@ -70,6 +70,6 @@ TEST_CASE("Test Connection AddLink") {
   int testLinkId = 0;
   std::vector<int> testSlots(3, 0);
 
-  Connection connectionExample(testConnectionId);
+  Connection connectionExample(testConnectionId, 0.0);
   CHECK_NOTHROW(connectionExample.addLink(testLinkId, testSlots));
 }
