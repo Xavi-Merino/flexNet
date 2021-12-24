@@ -63,6 +63,7 @@ int Controller::unassignConnectionNormal(long long idConnection) {
 int Controller::unassignConnectionWCallback(long long idConnection) {
   for (unsigned int i = 0; i < this->connections.size(); i++) {
     if (this->connections[i].id == idConnection) {
+      this->unassignCallback(this->connections[i], 0.0);
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
         for (unsigned int k = 0; k < this->connections[i].slots[j].size();
              k++) {
@@ -147,5 +148,6 @@ std::vector<std::vector<std::vector<std::vector<Link *>>>>
 
 void Controller::setUnassignCallback(void (*callbackFunction)(Connection,
                                                               double)) {
+  this->unassignConnection = &Controller::unassignConnectionWCallback;
   this->unassignCallback = callbackFunction;
 }

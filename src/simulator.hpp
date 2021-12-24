@@ -224,6 +224,8 @@ class Simulator {
    */
   double wilsonCI(void);
 
+  void setUnassignCallback(void (*callbackFunction)(Connection, double));
+
  private:
   double clock;
   std::list<Event> events;

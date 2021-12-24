@@ -300,7 +300,7 @@ int Simulator::eventRoutine(void) {
   } else if (this->currentEvent.getType() == DEPARTURE) {
     (this->controller->*(this->controller->unassignConnection))(
         this->currentEvent.getIdConnection());
-    }
+  }
   this->events.pop_front();
   return this->rtnAllocation;
 }
@@ -406,4 +406,9 @@ void Simulator::initZScore(void) {
     }
   }
   this->zScore = actual;
+}
+
+void Simulator::setUnassignCallback(void (*callbackFunction)(Connection,
+                                                             double)) {
+  this->controller->setUnassignCallback(callbackFunction);
 }
