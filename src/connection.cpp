@@ -22,3 +22,8 @@ void Connection::addLink(int idLink, int fromSlot, int toSlot) {
     j++;
   }
 }
+
+std::vector<int> Connection::getLinks(void) { return this->links; }
+std::vector<std::vector<int> > Connection::getSlots(void) {
+  return this->slots;
+}

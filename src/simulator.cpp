@@ -408,7 +408,7 @@ void Simulator::initZScore(void) {
   this->zScore = actual;
 }
 
-void Simulator::setUnassignCallback(void (*callbackFunction)(Connection,
-                                                             double)) {
+void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
+                                                             Network *)) {
   this->controller->setUnassignCallback(callbackFunction);
 }

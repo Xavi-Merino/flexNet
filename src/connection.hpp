@@ -42,6 +42,9 @@ class Connection {
    */
   void addLink(int idLink, int fromSlot, int toSlot);
 
+  std::vector<int> getLinks(void);
+  std::vector<std::vector<int> > getSlots(void);
+
  private:
   long long id;
   std::vector<int> links;

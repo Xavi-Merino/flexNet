@@ -30,7 +30,7 @@
 #define ALLOC_SLOTS(link, from, to) con.addLink(link, from, from + to);
 
 #define BEGIN_UNALLOC_CALLBACK_FUNCTION \
-  void _f_unallocate_function(Connection c, double t)
+  void _f_unallocate_function(Connection c, double t, Network n)
 #define END_UNALLOC_CALLBACK_FUNCTION  // end function
 #define USE_UNALLOC_FUNCTION(simObject) \
   simObject.setUnassignCallback(_f_unallocate_function);
@@ -230,7 +230,8 @@ class Simulator {
    */
   double wilsonCI(void);
 
-  void setUnassignCallback(void (*callbackFunction)(Connection, double));
+  void setUnassignCallback(void (*callbackFunction)(Connection, double,
+                                                    Network *));
 
  private:
   double clock;
