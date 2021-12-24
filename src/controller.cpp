@@ -31,7 +31,7 @@ Controller::~Controller() {
 allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
                                               long long idConnection,
                                               double time) {
-  Connection con = Connection(idConnection, time);
+  Connection con = Connection(idConnection, time, &bitRate);
   this->rtnAllocation = this->allocator->exec(src, dst, bitRate, con);
   if (this->rtnAllocation == ALLOCATED) {
     this->connections.push_back(con);
