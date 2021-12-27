@@ -6,8 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.6.0] - 2021-12-22
+### ADDED
+- A callback function after each disconnection.
 
-- Examp´le 001 fixed. Reset slots in each route.
+### FIXED
+
+- Example 001 fixed. Reset slots in each route.
   
 ## [0.5.0] - 2021-12-22
 
