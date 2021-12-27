@@ -34,6 +34,9 @@
 #define END_UNALLOC_CALLBACK_FUNCTION  // end function
 #define USE_UNALLOC_FUNCTION(simObject) \
   simObject.setUnassignCallback(_f_unallocate_function);
+#define CONNECTION c
+#define TIME_DISCONNECTION t
+#define NETWORK n
 
 #include <chrono>
 #include <iomanip>
