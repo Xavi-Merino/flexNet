@@ -195,9 +195,9 @@ class Simulator {
    * @brief Wald Confidence Interval
    * The most basic confidence interval.
    *
-   * \f{eqnarray*}{
-          \pm z \cdot \sqrt{\frac{p^\^ \cdot (1-p^\^)}{n}}
-     \f}
+   * \f[
+          \pm z \cdot \sqrt{\frac{\hat{p} \cdot
+   (1-\hat{p})}{n}} \f]
    *
    * @return double The Wald confidence interval.
    */
@@ -206,14 +206,14 @@ class Simulator {
   /**
    * @brief Agresti-Coull Confidence Interval
    *
-   * \f{eqnarray*}{
-          \pm z \cdot \sqrt{\frac{p^~ \cdot (1-p^~)}{n}}
-     \f}
+   * \f[
+          \pm z \cdot \sqrt{\frac{\tilde{p} \cdot (1-\tilde{p})}{n}}
+     \f]
    *
    * where
    *
    * \f{eqnarray*}{
-          p^~ = \frac{X+2}{n+4}
+          \tilde{p} = \frac{X+2}{n+4}
      \f}
    *
    *
@@ -225,7 +225,8 @@ class Simulator {
    * @brief Wilson Confidence Interval
    *
    * \f{eqnarray*}{
-          \pm  \frac{\sqrt{\frac{p^\^ \cdot (1-p^\^)}{n} + \frac{z^2}{4n^2}}}{1
+          \pm  \frac{\sqrt{\frac{\hat{p} \cdot (1-\hat{p})}{n} +
+   \frac{z^2}{4n^2}}}{1
    + \frac{z^2}{n}} \f}
    *
    *
