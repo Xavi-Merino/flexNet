@@ -40,7 +40,9 @@ git clone git@gitlab.com:DaniloBorquez/flex-net-sim.git
 ```
 
 ## Installation
-You can directly download the one file header <a href="https://daniloborquez.gitlab.io/flex-net-sim/simulator.hpp" download>HERE</a>
+You can directly download the one file header <a href="https://daniloborquez.gitlab.io/flex-net-sim/simulator.hpp" download>HERE</a> (RECOMMENDED!)
+
+### Install in your path (more difficult!)
 
 To compile the library, you will need:
 - [CMake](https://cmake.org)
@@ -49,7 +51,7 @@ Thanks to the next libraries used:
 - [JSON for modern C++](https://github.com/nlohmann/json)
 - [Catch2](https://github.com/catchorg/Catch2)
 
-### Unix systems (Mac and linux)
+#### Unix systems (Mac and linux)
 
 Create a build directory in the project root tree and run cmake there:
 ```
@@ -60,7 +62,7 @@ Create a build directory in the project root tree and run cmake there:
  $ sudo cmake --install .
 ```
 
-### Windows systems 
+#### Windows systems 
 
 Create a build directory in the project root tree and run cmake there. Open a cmd as adminstrator (type cmd on windows start, right click on it and select **run as admin...**):
 ```
@@ -82,7 +84,13 @@ If you do not have Visual Studio installed on your operative system, but you hav
 
 ## Using  library
 
-After installation, the use of the library is easy. You just have to include the header **<fnsim/simulator.h>** in your code (as in [examples](https://gitlab.com/DaniloBorquez/flex-net-sim/-/tree/master/examples)), and the compile it with the library flag:
+If you download the one big header file, so you only need to put it on the same folder with your C++ code, and use it as any other header file:
+
+```c++
+#include "simulator.hpp"
+```
+
+But if you choose to install it in your path, then after installation, you just have to include the header **<fnsim/simulator.h>** in your code (as in [examples](https://gitlab.com/DaniloBorquez/flex-net-sim/-/tree/master/examples)), and the compile it with the library flag:
 ```
  $ g++ <your cpp files> -lfnsim
 ```

@@ -5,9 +5,9 @@ BEGIN_ALLOC_FUNCTION(ExactFit) {
   int currentNumberSlots;
   int currentSlotIndex;
   int firstIndex;
-  std::vector<bool> totalSlots =
-      std::vector<bool>(LINK_IN_ROUTE(0, 0)->getSlots(), false);
+  std::vector<bool> totalSlots;
   for (int i = 0; i < NUMBER_OF_ROUTES; i++) {
+    totalSlots = std::vector<bool>(LINK_IN_ROUTE(0, 0)->getSlots(), false);
     firstIndex = -1;
     for (int j = 0; j < NUMBER_OF_LINKS(i); j++) {
       for (int k = 0; k < LINK_IN_ROUTE(i, j)->getSlots(); k++) {
