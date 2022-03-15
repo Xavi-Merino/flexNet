@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.5.1] - 2022-03-15
+
+### FIXED
+
+- There was a typo in JSON network files, and the related class: lenght -> length
+- Changing vector initialization error in examples. 
 
 ## [0.5.0] - 2021-12-22
 
@@ -117,3 +123,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.4.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.3.0...v0.4.0
 [0.4.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.0...v0.4.1
 [0.5.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.1...v0.5.0
+[0.5.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.0...v0.5.1
