@@ -23,35 +23,35 @@
             "id": 0,
             "end1": 0,
             "end2": 2,
-            "lenght": 1130,
+            "length": 1130,
             "slots": 100
         },
         {
             "id": 1,
             "end1": 2,
             "end2": 3,
-            "lenght": 1710,
+            "length": 1710,
             "slots": 100
         },
         {
             "id": 2,
             "end1": 3,
             "end2": 4,
-            "lenght": 2840,
+            "length": 2840,
             "slots": 100
         },
         {
             "id": 3,
             "end1": 4,
             "end2": 1,
-            "lenght": 700,
+            "length": 700,
             "slots": 100
         },
         {
             "id": 4,
             "end1": 1,
             "end2": 0,
-            "lenght": 960,
+            "length": 960,
             "slots": 100
         }
     ]
