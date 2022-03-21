@@ -131,4 +131,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.4.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.0...v0.4.1
 [0.5.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.1...v0.5.0
 [0.5.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.0...v0.5.1
-[0.5.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.1...v0.5.2
+[0.5.2]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.1...v0.5.2
