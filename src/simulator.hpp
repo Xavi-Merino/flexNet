@@ -237,6 +237,8 @@ class Simulator {
   std::vector<BitRate> bitRates;
   double confidence;
   double zScore;
+  int zScoreEven;
+
 
   bool initReady;
   double lambda;
@@ -291,6 +293,7 @@ class Simulator {
   void printRow(double percentage);
 
   void initZScore(void);
+  void initZScoreEven(void);
 };
 
 #endif
