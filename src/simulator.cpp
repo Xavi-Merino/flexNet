@@ -319,6 +319,7 @@ void Simulator::init(void) {
                                this->numberOfConnections++));
   this->bitRates = this->bitRatesDefault;
   this->initZScore();
+  this->initZScoreEven();
 }
 
 void Simulator::run(void) {
