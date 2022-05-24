@@ -319,6 +319,7 @@ void Simulator::init(void) {
                                this->numberOfConnections++));
   this->bitRates = this->bitRatesDefault;
   this->initZScore();
+  this->initZScoreEven();
 }
 
 void Simulator::run(void) {
@@ -358,11 +359,11 @@ double Simulator::agrestiCI() {
   double np = this->getAllocatedProbability();
   int n = this->numberOfConnections;
 
-  np = np * ((n * (this->allocatedConnections + 2)) /
-             (this->allocatedConnections * (n + 4)));
+  np = np * ((n * (this->allocatedConnections + (this->zScoreEven/2))) /
+             (this->allocatedConnections * (n + this->zScoreEven)));
 
   double p = 1 - np;
-  double sd = sqrt((np * p) / (n + 4));
+  double sd = sqrt((np * p) / (n + this->zScoreEven));
 
   return this->zScore * sd;
 }
@@ -405,4 +406,12 @@ void Simulator::initZScore(void) {
     }
   }
   this->zScore = actual;
+}
+
+void Simulator::initZScoreEven(void) {
+  double zEven = pow(this->zScore,2);
+  zEven = floorf(zEven*1000)/1000; //Redondeo a la centesima, similar a error
+  zEven = ceil(zEven/2)*2;
+
+  this->zScoreEven = zEven;
 }

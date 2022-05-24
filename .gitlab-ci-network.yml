@@ -34,5 +34,7 @@ testing_network:
       - build/test_network*
     reports:
       junit: build/report_network.xml
-      cobertura: build/cov_network.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: build/cov_network.xml
     expire_in: 1 day
