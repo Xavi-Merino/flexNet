@@ -33,8 +33,8 @@ testing_node:
       - build/cov_node.xml
       - build/test_node*
     reports:
+      junit: build/report_node.xml
       coverage_report:
         coverage_format: cobertura
-        junit: build/report_node.xml
         path: build/cov_node.xml
     expire_in: 1 day
