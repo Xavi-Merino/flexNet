@@ -9,12 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ADDED
 
-- Added support for multi-core and multi-mode for Link object.
-- Test cases in test_link.cpp for the corresponding methods of multi-core/mode Link object.
-- Added support for multi-core and multi-mode for Network object.
-- Test cases in test_network.cpp for the corresponding methods of multi-core/mode Network object.
-- Added member class 'networkType' in order to know what type of network is being used and work acordingly.
-- Test cases for Simulator and Network objects that checks each network type creation and also for setters and getters of 'networkType' variable.
+- Added support for SDM: 
+  - Added support for multi-core and multi-mode for Link object
+  - Added Test cases in test_link.cpp for the corresponding methods of multi-core/mode Link object.
+  - Added support for multi-core and multi-mode for Network object.
+  - Added Test cases in test_network.cpp for the corresponding methods of multi-core/mode Network object.
+  - Added member class 'networkType' in order to know what type of network is being used and work acordingly.
+  - Test cases in test_simulator.cpp for each network type creation and also for setters and getters of 'networkType' variable.
+- Added getters for Simulator class:
+  - getBitRates() gets the BitRates vector attributes of the simulator object.
+  - getPaths() gets the paths for every pair of nodes.
+  - Added tests.
+- Added getters for BitRate class:
+  - getNumberOfModulations() gets the number of modulations available in the BitRate object.
+  - Added tests.
 
 ## [0.5.3] - 2022-05-19
 

@@ -427,3 +427,7 @@ void Simulator::initZScoreEven(void) {
 
   this->zScoreEven = zEven;
 }
+
+std::vector<BitRate> Simulator::getBitRates(void){ return this->bitRates; }
+
+std::vector<std::vector<std::vector<std::vector<Link *>>>> *Simulator::getPaths() { return this->controller->getPaths(); };

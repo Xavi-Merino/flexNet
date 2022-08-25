@@ -16,6 +16,7 @@
 #define REQ_SLOTS(pos) bitRate.getNumberOfSlots(pos)
 #define REQ_REACH(pos) bitRate.getReach(pos)
 #define REQ_MODULATION(pos) bitRate.getModulation(pos)
+#define NUMBER_OF_MODULATIONS bitRate.getNumberOfModulations()
 #define REQ_BITRATE_STR bitRate.getBitRateStr()
 #define REQ_BITRATE bitRate.getBitRate()
 #define LINK_IN_ROUTE(route, link) (*this->path)[src][dst][route][link]
@@ -238,6 +239,21 @@ class Simulator {
    * @return double
    */
   double wilsonCI(void);
+
+  /**
+   * @brief Get the BitRates vector attribute of the Simulator object.
+   *
+   * @return std::vector<BitRate> 
+   */
+  std::vector<BitRate> getBitRates(void);
+
+  /**
+   * @brief Gets the Paths vector of the network.
+   *
+   * @return Matrix vector of the paths between two nodes and the respective
+   * Links inside that route.
+   */
+  std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
 
  private:
   double clock;

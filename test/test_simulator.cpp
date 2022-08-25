@@ -274,6 +274,23 @@ TEST_CASE("Check decreasing Confidence Interval (Wilson, 0.95)") {
   CHECK(CI2 < CI1);
 }
 
+TEST_CASE("Get bitrates") {
+  Simulator s = Simulator();
+  std::vector<BitRate> netBitRates = std::vector<BitRate>();
+  netBitRates = BitRate::readBitRateFile("../bitrate/bitrate.json");
+  CHECK_NOTHROW(s.getBitRates());
+
+}
+
+TEST_CASE("Get paths") {
+  Simulator s = Simulator(std::string("../networks/NSFNet.json"),
+                          std::string("../networks/NSFNet_routes.json"),
+                          std::string("../bitrate/bitrate.json"));
+                          
+  CHECK_NOTHROW(s.getPaths());
+  CHECK_NOTHROW(s.getBitRates());
+}
+
 TEST_CASE("Network type SDM") {
   Simulator s1 = Simulator(std::string("../networks/NSFNet.json"),
                            std::string("../networks/NSFNet_routes.json"),
@@ -295,5 +312,4 @@ TEST_CASE("Network type SDM") {
   s2.setGoalConnections(1e2);
   s2.init();
   CHECK(s2.getNetworkType() == 2);
-
-};
+}
