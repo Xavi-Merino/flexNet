@@ -195,11 +195,25 @@ void Network::useSlot(int linkPos, int slotPos) {
   this->links[linkPos]->setSlot(slotPos, true);
 }
 
+void Network::useSlot(int linkPos, int core, int mode, int slotPos) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  this->links[linkPos]->setSlot(core, mode, slotPos, true);
+}
+
 void Network::useSlot(int linkPos, int slotFrom, int slotTo) {
   this->validateSlotFromTo(linkPos, slotFrom, slotTo);
 
   for (int i = slotFrom; i < slotTo; i++)
     this->links[linkPos]->setSlot(i, true);
+}
+
+void Network::useSlot(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+  this->validateSlotFromTo(linkPos, core, mode, slotFrom, slotTo);
+
+  for (int i = slotFrom; i < slotTo; i++)
+    this->links[linkPos]->setSlot(core, mode, i, true);
 }
 
 void Network::unuseSlot(int linkPos, int slotPos) {
@@ -209,11 +223,25 @@ void Network::unuseSlot(int linkPos, int slotPos) {
   this->links[linkPos]->setSlot(slotPos, false);
 }
 
+void Network::unuseSlot(int linkPos, int core, int mode, int slotPos) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  this->links[linkPos]->setSlot(core, mode, slotPos, false);
+}
+
 void Network::unuseSlot(int linkPos, int slotFrom, int slotTo) {
   this->validateSlotFromTo(linkPos, slotFrom, slotTo);
 
   for (int i = slotFrom; i < slotTo; i++)
     this->links[linkPos]->setSlot(i, false);
+}
+
+void Network::unuseSlot(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+  this->validateSlotFromTo(linkPos, core, mode, slotFrom, slotTo);
+
+  for (int i = slotFrom; i < slotTo; i++)
+    this->links[linkPos]->setSlot(core, mode, i, false);
 }
 
 int Network::getNumberOfLinks() { return this->linkCounter; }
@@ -230,6 +258,16 @@ bool Network::isSlotUsed(int linkPos, int slotPos) {
   return this->links[linkPos]->getSlot(slotPos);
 }
 
+bool Network::isSlotUsed(int linkPos, int core, int mode, int slotPos) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  if (slotPos < 0 ||
+      slotPos >= static_cast<int>(this->links[linkPos]->getSlots(core, mode)))
+    throw std::runtime_error("slot position out of bounds.");
+  return this->links[linkPos]->getSlot(core, mode, slotPos);
+}
+
 bool Network::isSlotUsed(int linkPos, int slotFrom, int slotTo) {
   this->validateSlotFromTo(linkPos, slotFrom, slotTo);
 
@@ -237,6 +275,21 @@ bool Network::isSlotUsed(int linkPos, int slotFrom, int slotTo) {
   for (int i = slotFrom; i < slotTo; i++) {
     // If it finds a single used slot...
     if (this->links[linkPos]->getSlot(i)) {
+      //...then the entire slot range is considered "used".
+      return true;
+    }
+  }
+  // Otherwise, the entire slot range is free to allocate.
+  return false;
+}
+
+bool Network::isSlotUsed(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+  this->validateSlotFromTo(linkPos, core, mode, slotFrom, slotTo);
+
+  // Loop through all the Slots in range
+  for (int i = slotFrom; i < slotTo; i++) {
+    // If it finds a single used slot...
+    if (this->links[linkPos]->getSlot(core, mode, i)) {
       //...then the entire slot range is considered "used".
       return true;
     }
@@ -282,6 +335,23 @@ void Network::validateSlotFromTo(int linkPos, int slotFrom, int slotTo) {
     throw std::runtime_error("slot position out of bounds.");
   if (slotTo < 0 ||
       slotTo >= static_cast<int>(this->links[linkPos]->getSlots()))
+    throw std::runtime_error("slot position out of bounds.");
+  if (slotFrom > slotTo)
+    throw std::runtime_error(
+        "Initial slot position must be lower than the final slot position.");
+
+  if (slotFrom == slotTo)
+    throw std::runtime_error("Slot from and slot To cannot be equals.");
+}
+
+void Network::validateSlotFromTo(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+  if (slotFrom < 0 ||
+      slotFrom >= static_cast<int>(this->links[linkPos]->getSlots(core, mode)))
+    throw std::runtime_error("slot position out of bounds.");
+  if (slotTo < 0 ||
+      slotTo >= static_cast<int>(this->links[linkPos]->getSlots(core, mode)))
     throw std::runtime_error("slot position out of bounds.");
   if (slotFrom > slotTo)
     throw std::runtime_error(

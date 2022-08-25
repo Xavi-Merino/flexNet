@@ -71,21 +71,25 @@ class Network {
           "end1": 0,
           "end2": 1,
           "lenght": 1130,
-          "slots": 100
+          "cores": 3,
+          "modes": 2,
+          "slots": [[320, 100], [100, 320], [100, 100]] // N arrays of size M, for N numbers of cores and M number of modes
           },
           {
           "id": 1,
           "end1": 0,
           "end2": 2,
           "lenght": 1710,
-          "slots": 100
+          "cores": 3,
+          "modes": 2,
+          "slots": [[320, 100], [100, 320], [100, 100]]
           },
           {
           "id": 3,
           "end1": 1,
           "end2": 2,
           "lenght": 700,
-          "slots": 100
+          "slots": [[320, 100], [100, 320], [100, 100]]
                },
           ]
       };
@@ -171,6 +175,19 @@ class Network {
    */
   void useSlot(int linkPos, int slotPos);
   /**
+   * @brief The useSlot method activates a single Slot position of the slots vector
+   * of a given core and mode inside a Link of a given position inside the Network.
+   *
+   * @param linkPos the position of the Link inside the links vector.
+   * @param core the core index on the object Link. Type int, greater than or
+   * equal to zero.
+   * @param mode The mode index on the object Link. Type int, greater than or
+   * equal to zero.
+   * @param slotPos the position of the single Slot to be used/activated inside
+   * the slots vector.
+   */
+  void useSlot(int linkPos, int core, int mode, int slotPos);
+  /**
    * @brief The useSlot method activates a range of slots inside a Link of a
    * given position inside the Network.
    *
@@ -185,6 +202,26 @@ class Network {
    * slot). It's value must be greater than slotFrom.
    */
   void useSlot(int linkPos, int slotFrom, int slotTo);
+    /**
+   * @brief The useSlot method activates a range of slots in the slots vector
+   * of a given core and mode inside a Link of a given position inside the Network.
+   *
+   * The range of slots starts from the given position slotFrom and activates
+   * all the slots up to the (slotTo - 1) position
+   *
+   * @param linkPos the position of the Link inside the links vector.
+   * @param core the core index on the object Link. Type int, greater than or
+   * equal to zero.
+   * @param mode The mode index on the object Link. Type int, greater than or
+   * equal to zero.
+   * @param slotFrom the starting position of the Slots to be used/activated
+   * inside the slot vector.
+   * @param slotTo the limit before the ending position of the Slots to be
+   * used/activated inside the slot vector (activates up to the (slotTo - 1)th
+   * slot). It's value must be greater than slotFrom.
+
+   */
+  void useSlot(int linkPos, int core, int mode, int slotFrom, int slotTo);
   /**
    * @brief The unuseSlot method deactivates a single Slot of a given position
    * inside a Link of a given position inside the Network.
@@ -194,6 +231,20 @@ class Network {
    * inside the slot vector.
    */
   void unuseSlot(int linkPos, int slotPos);
+  /**
+   * @brief The unuseSlot method deactivates a single Slot position of the
+   * slots vector of a given core and mode inside a Link of a given position
+   * inside the Network.
+   *
+   * @param linkPos the position of the Link inside the links vector.
+   * @param core the core index on the object Link. Type int, greater than or
+   * equal to zero.
+   * @param mode The mode index on the object Link. Type int, greater than or
+   * equal to zero.
+   * @param slotPos the position of the single Slot to be unused/deactivated
+   * inside the slot vector.
+   */
+  void unuseSlot(int linkPos, int core, int mode, int slotPos);
   /**
    * @brief The unuseSlot method deactivates a range of slots inside a Link of a
    * given position inside the Network.
@@ -209,6 +260,25 @@ class Network {
    * 1)th slot). It's value must be greater than slotFrom.
    */
   void unuseSlot(int linkPos, int slotFrom, int slotTo);
+  /**
+   * @brief The unuseSlot method deactivates a range of slots in the slots vector
+   * of a given core and mode inside a Link of a given position inside the Network.
+   *
+   * The range of slots starts from the given position slotFrom and deactivates
+   * all the slots up to the (slotTo - 1) position
+   *
+   * @param linkPos the position of the Link inside the links vector.
+   * @param core the core index on the object Link. Type int, greater than or
+   * equal to zero.
+   * @param mode The mode index on the object Link. Type int, greater than or
+   * equal to zero.
+   * @param slotFrom the starting position of the Slots to be unused/deactivated
+   * inside the slot vector.
+   * @param slotTo the limit before the ending position of the Slots to be
+   * unused/deactivated inside the slot vector (deactivates up to the (slotTo -
+   * 1)th slot). It's value must be greater than slotFrom.
+   */
+  void unuseSlot(int linkPos, int core, int mode, int slotFrom, int slotTo);
 
   //   int distanceClass(int src, int dst);
 
@@ -242,6 +312,24 @@ class Network {
    */
   bool isSlotUsed(int linkPos, int slotPos);
   /**
+   * @brief The isSlotUsed method determines whether the slot of the specified
+   * core and mode of a Link is already being used or not.
+   *
+   * @param linkPos the position of the specified Link to check it's Slot inside
+   * the links vector.
+   * @param core the core index of the specified Link to check it's Slot inside
+   * the links vector.
+   * @param mode the mode index of the specified Link to check it's Slot inside
+   * the links vector.
+   * @param slotPos the position of the specified Slot to check inside the slots
+   * vector (inside the specified Link).
+   *
+   * @return bool The condition of the specified Slot. If it's active it returns
+   * true, otherwise it returns false.
+   *
+   */
+  bool isSlotUsed(int linkPos, int core, int mode, int slotPos);
+  /**
    * @brief The isSlotUsed method determines whether a range of Slots in the
    * specified Link are already being used or not.
    *
@@ -259,6 +347,28 @@ class Network {
    * false.
    */
   bool isSlotUsed(int linkPos, int slotFrom, int slotTo);
+  /**
+   * @brief The isSlotUsed method determines whether a range of Slots of the
+   * specified core and mode of a Link are already being used or not.
+   *
+   * @param linkPos the position of the specified Link to check it's Slot inside
+   * the links vector.
+   * @param core the core index of the specified Link to check it's Slot inside
+   * the links vector.
+   * @param mode the mode index of the specified Link to check it's Slot inside
+   * the links vector.
+   * @param slotFrom the starting position of the Slots to be checked if they
+   * are being used inside the slot vector.
+   * @param slotTo the limit before the ending position of the Slots to be
+   * checked if they are being used inside the slot vector (checks up to the
+   * (slotTo - 1)th slot). It's value must be greater than slotFrom.
+   *
+   * @return bool The condition of the specified range of Slots. If it finds at
+   * least one Slot activated/used then the entire desired range of Slots is
+   * considered used and returns true, otherwise they are all unused returns
+   * false.
+   */
+  bool isSlotUsed(int linkPos, int core, int mode, int slotFrom, int slotTo);
   /**
    * @brief The averageNeighborhood method obtains the Nodal average metric of
    * the Network.
@@ -293,6 +403,8 @@ class Network {
   int nodeCounter;
 
   void validateSlotFromTo(int linkPos, int slotFrom, int slotTo);
+
+  void validateSlotFromTo(int linkPos, int core, int mode, int slotFrom, int slotTo);
 };
 
 #endif
