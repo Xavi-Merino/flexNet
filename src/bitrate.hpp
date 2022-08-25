@@ -96,6 +96,13 @@ class BitRate {
   std::string getBitRateStr();
 
   /**
+   * @brief Gets the number of modulations available in the current object
+   *
+   * @return (int): The number of modulations in the current BitRate object.
+   */
+  int getNumberOfModulations();
+
+  /**
    * @brief Gets the bit rate magnitude (quantity) in numerical (double) format,
    * i.e. 10.0 (Gbps).
    *
