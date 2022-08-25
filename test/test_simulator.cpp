@@ -290,3 +290,26 @@ TEST_CASE("Get paths") {
   CHECK_NOTHROW(s.getPaths());
   CHECK_NOTHROW(s.getBitRates());
 }
+
+TEST_CASE("Network type SDM") {
+  Simulator s1 = Simulator(std::string("../networks/NSFNet.json"),
+                           std::string("../networks/NSFNet_routes.json"),
+                           std::string("../bitrate/bitrate.json"));
+  USE_ALLOC_FUNCTION(ExactFit, s1);
+  s1.setGoalConnections(1e2);
+  CHECK(s1.getNetworkType() == 1);
+  CHECK_NOTHROW(s1.setNetworkType(SDM));
+  CHECK(s1.getNetworkType() == 2);
+  s1.init();
+  CHECK_THROWS(s1.setNetworkType(1));
+  s1.run();
+
+  Simulator s2 = Simulator(std::string("../networks/SDMnet.json"),
+                           std::string("../networks/SDMnet_routes.json"),
+                           std::string("../bitrate/bitrate.json"),
+                           SDM);
+  USE_ALLOC_FUNCTION(ExactFit, s2);
+  s2.setGoalConnections(1e2);
+  s2.init();
+  CHECK(s2.getNetworkType() == 2);
+}
