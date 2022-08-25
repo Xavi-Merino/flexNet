@@ -293,7 +293,7 @@ int Simulator::eventRoutine(void) {
     this->bitRate = bitRateVariable.getNextIntValue();
     this->rtnAllocation = this->controller->assignConnection(
         this->src, this->dst, this->bitRates[this->bitRate],
-        this->currentEvent.getIdConnection());
+        this->currentEvent.getIdConnection(), this->clock);
     if (this->rtnAllocation == ALLOCATED) {
       nextEventTime = this->clock + this->departVariable.getNextValue();
       for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
@@ -308,7 +308,8 @@ int Simulator::eventRoutine(void) {
       this->allocatedConnections++;
     }
   } else if (this->currentEvent.getType() == DEPARTURE) {
-    this->controller->unassignConnection(this->currentEvent.getIdConnection());
+    (this->controller->*(this->controller->unassignConnection))(
+        this->currentEvent.getIdConnection(), this->clock);
   }
   this->events.pop_front();
   return this->rtnAllocation;
