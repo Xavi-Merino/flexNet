@@ -26,10 +26,10 @@ Simulator::Simulator(void) {
   this->allocatedConnections = 0;
 }
 
-Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
+Simulator::Simulator(std::string networkFilename, std::string pathFilename, int networkType) {
   this->defaultValues();
   this->controller = new Controller();
-  this->controller->setNetwork(new Network(networkFilename));
+  this->controller->setNetwork(new Network(networkFilename, networkType));
   this->controller->setPaths(pathFilename);
   this->events = std::list<Event>();
   this->bitRatesDefault = std::vector<BitRate>();
@@ -52,10 +52,10 @@ Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
 }
 
 Simulator::Simulator(std::string networkFilename, std::string pathFilename,
-                     std::string bitrateFilename) {
+                     std::string bitrateFilename, int networkType) {
   this->defaultValues();
   this->controller = new Controller();
-  this->controller->setNetwork(new Network(networkFilename));
+  this->controller->setNetwork(new Network(networkFilename, networkType));
   this->controller->setPaths(pathFilename);
   this->events = std::list<Event>();
   this->bitRatesDefault = BitRate::readBitRateFile(bitrateFilename);
@@ -165,6 +165,16 @@ void Simulator::setConfidence(double c) {
   }
   this->confidence = c;
 }
+
+void Simulator::setNetworkType(int networkType) { 
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set 'networkType' parameter AFTER calling init simulator "
+        "method.");
+  }
+  this->controller->getNetwork()->setNetworkType(networkType);
+}
+// Returns the int that represents the network type of the object
 
 void Simulator::defaultValues() {
   this->initReady = false;
@@ -345,6 +355,8 @@ double Simulator::getBlockingProbability(void) {
 double Simulator::getAllocatedProbability(void) {
   return this->allocatedConnections / this->numberOfConnections;
 }
+
+int Simulator::getNetworkType() { return this->controller->getNetwork()->getNetworkType(); }
 
 double Simulator::waldCI() {
   double np = this->getAllocatedProbability();

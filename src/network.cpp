@@ -6,7 +6,7 @@
 #include <set>
 #include <unordered_map>
 
-Network::Network(void) {
+Network::Network(void) : networkType(1)  {
   this->linkCounter = 0;
   this->nodeCounter = 0;
 
@@ -21,7 +21,20 @@ Network::Network(void) {
   this->nodesOut.push_back(0);
 }
 
-Network::Network(std::string filename) {
+Network::Network(std::string filename, int networkType) : networkType(networkType) {
+  switch (networkType) {
+    case EON:
+      readEON(filename);
+      break;
+    case SDM:
+      readSDM(filename);
+      break;
+    default:
+      readEON(filename);
+  }
+}
+
+void Network::readEON(std::string filename) {
   this->linkCounter = 0;
   this->nodeCounter = 0;
 
@@ -75,7 +88,69 @@ Network::Network(std::string filename) {
   }
 }
 
-Network::Network(const Network &net) {
+void Network::readSDM(std::string filename) {
+  this->linkCounter = 0;
+  this->nodeCounter = 0;
+
+  this->nodes = std::vector<Node *>();
+  this->links = std::vector<Link *>();
+  this->linksIn = std::vector<Link *>();
+  this->linksOut = std::vector<Link *>();
+  this->nodesIn = std::vector<int>();
+  this->nodesOut = std::vector<int>();
+
+  this->nodesIn.push_back(0);
+  this->nodesOut.push_back(0);
+
+  // open JSON file
+  std::ifstream file(filename);
+  nlohmann::json NSFnet;
+  file >> NSFnet;
+
+  // number of nodes
+  int numberOfNodes = NSFnet["nodes"].size();
+
+  // number of links
+  int numberOfLinks = NSFnet["links"].size();
+
+  // adding nodes to the network
+  for (int i = 0; i < numberOfNodes; i++) {
+    int id;
+    id = NSFnet["nodes"][i]["id"];
+    Node *node = new Node(id);
+    this->addNode(node);
+  }
+
+  // adding links to the network
+  for (int i = 0; i < numberOfLinks; i++) {
+    int id;
+    id = NSFnet["links"][i]["id"];
+    float length;
+    length = NSFnet["links"][i]["length"];
+    int number_of_cores;
+    number_of_cores = NSFnet["links"][i]["number_of_cores"];
+    int number_of_modes;
+    number_of_modes = NSFnet["links"][i]["number_of_modes"];
+    Link *link = new Link(id, length, 1, number_of_cores, number_of_modes);
+    float slots;
+    for (int j = 0; j < number_of_cores; j++) {
+      for (int k = 0; k < number_of_modes; k++) {
+        slots = NSFnet["links"][i]["slots"][j][k];
+        link->setSlots(slots, j, k);
+      }      
+    }
+    this->addLink(link);
+
+    // connecting nodes
+    int src, dst;
+    src = NSFnet["links"][i]["src"];
+    id = NSFnet["links"][i]["id"];
+    dst = NSFnet["links"][i]["dst"];
+    this->connect(src, id, dst);
+  }
+}
+
+Network::Network(const Network &net, int networkType) : networkType(networkType) {
   this->linkCounter = net.linkCounter;
   this->nodeCounter = net.nodeCounter;
   this->nodes = std::vector<Node *>(net.nodes.size());
@@ -117,6 +192,12 @@ Link *Network::getLink(int linkPos) {
   return this->links.at(linkPos);
 }
 // Returns the Link pointer at a "linkPos" index inside Links vector.
+
+int Network::getNetworkType() { return this->networkType; }
+// Returns the int that represents the network type of the object
+
+void Network::setNetworkType(int networkType) { this->networkType = networkType; }
+// Returns the int that represents the network type of the object
 
 void Network::addNode(Node *node) {
   if (node->getId() != this->nodeCounter) {
