@@ -15,11 +15,10 @@ BEGIN_ALLOC_FUNCTION(FirstFit) {
   int currentNumberSlots;
   int currentSlotIndex;
   std::vector<bool> totalSlots;
-  for (int i = 0; i < NUMBER_OF_ROUTES;
-       i++) {  // this loops through the routes between the source and
-               // destination node
-    totalSlots = std::vector<bool>(LINK_IN_ROUTE(0, 0)->getSlots(),
-                                   false);  // We reset slots for each route
+  for (int i = 0; i < NUMBER_OF_ROUTES; i++) {
+    // this loops through the routes between the
+    // source and destination node
+    totalSlots = std::vector<bool>(LINK_IN_ROUTE(0, 0)->getSlots(), false);
     for (int j = 0; j < NUMBER_OF_LINKS(i);
          j++) {  // this loops through the links that the current route contains
       for (int k = 0; k < LINK_IN_ROUTE(i, j)->getSlots();

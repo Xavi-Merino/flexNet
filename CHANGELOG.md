@@ -5,14 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.0] - 2021-12-22
+## [0.6.0] - 2022-XX-XX
+
 ### ADDED
-- A callback function after each disconnection.
+
+- Added support for SDM: 
+  - Added support for multi-core and multi-mode for Link object
+  - Added Test cases in test_link.cpp for the corresponding methods of multi-core/mode Link object.
+  - Added support for multi-core and multi-mode for Network object.
+  - Added Test cases in test_network.cpp for the corresponding methods of multi-core/mode Network object.
+  - Added member class 'networkType' in order to know what type of network is being used and work acordingly.
+  - Test cases in test_simulator.cpp for each network type creation and also for setters and getters of 'networkType' variable.
+- Added getters for Simulator class:
+  - getBitRates() gets the BitRates vector attributes of the simulator object.
+  - getPaths() gets the paths for every pair of nodes.
+  - Added tests.
+- Added getters for BitRate class:
+  - getNumberOfModulations() gets the number of modulations available in the BitRate object.
+  - Added tests.
+
+## [0.5.3] - 2022-05-19
+
+### FIXED
+ 
+- Changed the Agresti-Coull confidence interval's previously hardcoded solution only working for 95% confidence.
+
+## [0.5.2] - 2022-03-21
 
 ### FIXED
 
-- Example 001 fixed. Reset slots in each route.
-  
+- Changed the path of .json files (NSF Network and its routes) to the proper ones inside the second example's main file.
+
+## [0.5.1] - 2022-03-15
+
+### FIXED
+
+- There was a typo in JSON network files, and the related class: lenght -> length
+- Changing vector initialization error in examples. 
+
 ## [0.5.0] - 2021-12-22
 
 ### ADDED
@@ -125,4 +155,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.4.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.3.0...v0.4.0
 [0.4.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.0...v0.4.1
 [0.5.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.1...v0.5.0
-[0.5.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.0...v0.6.0
+[0.5.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.0...v0.5.1
+[0.5.2]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.1...v0.5.2

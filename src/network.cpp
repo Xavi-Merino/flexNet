@@ -6,7 +6,7 @@
 #include <set>
 #include <unordered_map>
 
-Network::Network(void) {
+Network::Network(void) : networkType(1)  {
   this->linkCounter = 0;
   this->nodeCounter = 0;
 
@@ -21,7 +21,20 @@ Network::Network(void) {
   this->nodesOut.push_back(0);
 }
 
-Network::Network(std::string filename) {
+Network::Network(std::string filename, int networkType) : networkType(networkType) {
+  switch (networkType) {
+    case EON:
+      readEON(filename);
+      break;
+    case SDM:
+      readSDM(filename);
+      break;
+    default:
+      readEON(filename);
+  }
+}
+
+void Network::readEON(std::string filename) {
   this->linkCounter = 0;
   this->nodeCounter = 0;
 
@@ -75,7 +88,69 @@ Network::Network(std::string filename) {
   }
 }
 
-Network::Network(const Network &net) {
+void Network::readSDM(std::string filename) {
+  this->linkCounter = 0;
+  this->nodeCounter = 0;
+
+  this->nodes = std::vector<Node *>();
+  this->links = std::vector<Link *>();
+  this->linksIn = std::vector<Link *>();
+  this->linksOut = std::vector<Link *>();
+  this->nodesIn = std::vector<int>();
+  this->nodesOut = std::vector<int>();
+
+  this->nodesIn.push_back(0);
+  this->nodesOut.push_back(0);
+
+  // open JSON file
+  std::ifstream file(filename);
+  nlohmann::json NSFnet;
+  file >> NSFnet;
+
+  // number of nodes
+  int numberOfNodes = NSFnet["nodes"].size();
+
+  // number of links
+  int numberOfLinks = NSFnet["links"].size();
+
+  // adding nodes to the network
+  for (int i = 0; i < numberOfNodes; i++) {
+    int id;
+    id = NSFnet["nodes"][i]["id"];
+    Node *node = new Node(id);
+    this->addNode(node);
+  }
+
+  // adding links to the network
+  for (int i = 0; i < numberOfLinks; i++) {
+    int id;
+    id = NSFnet["links"][i]["id"];
+    float length;
+    length = NSFnet["links"][i]["length"];
+    int number_of_cores;
+    number_of_cores = NSFnet["links"][i]["number_of_cores"];
+    int number_of_modes;
+    number_of_modes = NSFnet["links"][i]["number_of_modes"];
+    Link *link = new Link(id, length, 1, number_of_cores, number_of_modes);
+    float slots;
+    for (int j = 0; j < number_of_cores; j++) {
+      for (int k = 0; k < number_of_modes; k++) {
+        slots = NSFnet["links"][i]["slots"][j][k];
+        link->setSlots(slots, j, k);
+      }      
+    }
+    this->addLink(link);
+
+    // connecting nodes
+    int src, dst;
+    src = NSFnet["links"][i]["src"];
+    id = NSFnet["links"][i]["id"];
+    dst = NSFnet["links"][i]["dst"];
+    this->connect(src, id, dst);
+  }
+}
+
+Network::Network(const Network &net, int networkType) : networkType(networkType) {
   this->linkCounter = net.linkCounter;
   this->nodeCounter = net.nodeCounter;
   this->nodes = std::vector<Node *>(net.nodes.size());
@@ -117,6 +192,12 @@ Link *Network::getLink(int linkPos) {
   return this->links.at(linkPos);
 }
 // Returns the Link pointer at a "linkPos" index inside Links vector.
+
+int Network::getNetworkType() { return this->networkType; }
+// Returns the int that represents the network type of the object
+
+void Network::setNetworkType(int networkType) { this->networkType = networkType; }
+// Returns the int that represents the network type of the object
 
 void Network::addNode(Node *node) {
   if (node->getId() != this->nodeCounter) {
@@ -195,11 +276,25 @@ void Network::useSlot(int linkPos, int slotPos) {
   this->links[linkPos]->setSlot(slotPos, true);
 }
 
+void Network::useSlot(int linkPos, int core, int mode, int slotPos) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  this->links[linkPos]->setSlot(core, mode, slotPos, true);
+}
+
 void Network::useSlot(int linkPos, int slotFrom, int slotTo) {
   this->validateSlotFromTo(linkPos, slotFrom, slotTo);
 
   for (int i = slotFrom; i < slotTo; i++)
     this->links[linkPos]->setSlot(i, true);
+}
+
+void Network::useSlot(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+  this->validateSlotFromTo(linkPos, core, mode, slotFrom, slotTo);
+
+  for (int i = slotFrom; i < slotTo; i++)
+    this->links[linkPos]->setSlot(core, mode, i, true);
 }
 
 void Network::unuseSlot(int linkPos, int slotPos) {
@@ -209,11 +304,25 @@ void Network::unuseSlot(int linkPos, int slotPos) {
   this->links[linkPos]->setSlot(slotPos, false);
 }
 
+void Network::unuseSlot(int linkPos, int core, int mode, int slotPos) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  this->links[linkPos]->setSlot(core, mode, slotPos, false);
+}
+
 void Network::unuseSlot(int linkPos, int slotFrom, int slotTo) {
   this->validateSlotFromTo(linkPos, slotFrom, slotTo);
 
   for (int i = slotFrom; i < slotTo; i++)
     this->links[linkPos]->setSlot(i, false);
+}
+
+void Network::unuseSlot(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+  this->validateSlotFromTo(linkPos, core, mode, slotFrom, slotTo);
+
+  for (int i = slotFrom; i < slotTo; i++)
+    this->links[linkPos]->setSlot(core, mode, i, false);
 }
 
 int Network::getNumberOfLinks() { return this->linkCounter; }
@@ -230,6 +339,16 @@ bool Network::isSlotUsed(int linkPos, int slotPos) {
   return this->links[linkPos]->getSlot(slotPos);
 }
 
+bool Network::isSlotUsed(int linkPos, int core, int mode, int slotPos) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+
+  if (slotPos < 0 ||
+      slotPos >= static_cast<int>(this->links[linkPos]->getSlots(core, mode)))
+    throw std::runtime_error("slot position out of bounds.");
+  return this->links[linkPos]->getSlot(core, mode, slotPos);
+}
+
 bool Network::isSlotUsed(int linkPos, int slotFrom, int slotTo) {
   this->validateSlotFromTo(linkPos, slotFrom, slotTo);
 
@@ -237,6 +356,21 @@ bool Network::isSlotUsed(int linkPos, int slotFrom, int slotTo) {
   for (int i = slotFrom; i < slotTo; i++) {
     // If it finds a single used slot...
     if (this->links[linkPos]->getSlot(i)) {
+      //...then the entire slot range is considered "used".
+      return true;
+    }
+  }
+  // Otherwise, the entire slot range is free to allocate.
+  return false;
+}
+
+bool Network::isSlotUsed(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+  this->validateSlotFromTo(linkPos, core, mode, slotFrom, slotTo);
+
+  // Loop through all the Slots in range
+  for (int i = slotFrom; i < slotTo; i++) {
+    // If it finds a single used slot...
+    if (this->links[linkPos]->getSlot(core, mode, i)) {
       //...then the entire slot range is considered "used".
       return true;
     }
@@ -282,6 +416,23 @@ void Network::validateSlotFromTo(int linkPos, int slotFrom, int slotTo) {
     throw std::runtime_error("slot position out of bounds.");
   if (slotTo < 0 ||
       slotTo >= static_cast<int>(this->links[linkPos]->getSlots()))
+    throw std::runtime_error("slot position out of bounds.");
+  if (slotFrom > slotTo)
+    throw std::runtime_error(
+        "Initial slot position must be lower than the final slot position.");
+
+  if (slotFrom == slotTo)
+    throw std::runtime_error("Slot from and slot To cannot be equals.");
+}
+
+void Network::validateSlotFromTo(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+  if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
+    throw std::runtime_error("Link position out of bounds.");
+  if (slotFrom < 0 ||
+      slotFrom >= static_cast<int>(this->links[linkPos]->getSlots(core, mode)))
+    throw std::runtime_error("slot position out of bounds.");
+  if (slotTo < 0 ||
+      slotTo >= static_cast<int>(this->links[linkPos]->getSlots(core, mode)))
     throw std::runtime_error("slot position out of bounds.");
   if (slotFrom > slotTo)
     throw std::runtime_error(
