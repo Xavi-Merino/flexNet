@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added support for multi-core and multi-mode for Link object.
 - Test cases in test_link.cpp for the corresponding methods of multi-core/mode Link object.
+- Added support for multi-core and multi-mode for Network object.
+- Test cases in test_network.cpp for the corresponding methods of multi-core/mode Network object.
 
 ## [0.5.3] - 2022-05-19
 
