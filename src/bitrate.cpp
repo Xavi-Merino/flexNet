@@ -87,3 +87,5 @@ std::vector<BitRate> BitRate::readBitRateFile(std::string fileName) {
 std::string BitRate::getBitRateStr() { return this->bitRateStr; }
 
 double BitRate::getBitRate() { return this->bitRate; }
+
+int BitRate::getNumberOfModulations() { return this->modulation.size(); }
