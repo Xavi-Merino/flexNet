@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test cases in test_link.cpp for the corresponding methods of multi-core/mode Link object.
 - Added support for multi-core and multi-mode for Network object.
 - Test cases in test_network.cpp for the corresponding methods of multi-core/mode Network object.
+- Added member class 'networkType' in order to know what type of network is being used and work acordingly.
+- Test cases for Simulator and Network objects that checks each network type creation and also for setters and getters of 'networkType' variable.
 
 ## [0.5.3] - 2022-05-19
 

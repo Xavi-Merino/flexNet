@@ -315,3 +315,11 @@ TEST_CASE("Is Slot/s Used Checking Errors (multi-core/mode Network)") {
   // Check Throw Slots Positions Can't Be Equal
   CHECK_THROWS(net.isSlotUsed(0, 0, 1, 190, 190));
 }
+
+TEST_CASE("Network type") {
+  Network n1 = Network();
+  CHECK(n1.getNetworkType() == 1);
+  CHECK_NOTHROW(n1.setNetworkType(2));
+  CHECK(n1.getNetworkType() == 2);
+
+};
