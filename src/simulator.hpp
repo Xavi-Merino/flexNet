@@ -30,15 +30,6 @@
 #define NUMBER_OF_LINKS(route) (*this->path)[src][dst][route].size()
 #define ALLOC_SLOTS(link, from, to) con.addLink(link, from, from + to);
 
-#define BEGIN_UNALLOC_CALLBACK_FUNCTION \
-  void _f_unallocate_function(Connection c, double t, Network *n)
-#define END_UNALLOC_CALLBACK_FUNCTION  // end function
-#define USE_UNALLOC_FUNCTION(simObject) \
-  simObject.setUnassignCallback(_f_unallocate_function);
-#define CONNECTION c
-#define TIME_DISCONNECTION t
-#define NETWORK n
-
 #include <chrono>
 #include <iomanip>
 #include <list>
@@ -211,9 +202,9 @@ class Simulator {
    * @brief Wald Confidence Interval
    * The most basic confidence interval.
    *
-   * \f[
-          \pm z \cdot \sqrt{\frac{\hat{p} \cdot
-   (1-\hat{p})}{n}} \f]
+   * \f{eqnarray*}{
+          \pm z \cdot \sqrt{\frac{p^\^ \cdot (1-p^\^)}{n}}
+     \f}
    *
    * @return double The Wald confidence interval.
    */
@@ -222,14 +213,14 @@ class Simulator {
   /**
    * @brief Agresti-Coull Confidence Interval
    *
-   * \f[
-          \pm z \cdot \sqrt{\frac{\tilde{p} \cdot (1-\tilde{p})}{n}}
-     \f]
+   * \f{eqnarray*}{
+          \pm z \cdot \sqrt{\frac{p^~ \cdot (1-p^~)}{n}}
+     \f}
    *
    * where
    *
    * \f{eqnarray*}{
-          \tilde{p} = \frac{X+2}{n+4}
+          p^~ = \frac{X+2}{n+4}
      \f}
    *
    *
@@ -241,8 +232,7 @@ class Simulator {
    * @brief Wilson Confidence Interval
    *
    * \f{eqnarray*}{
-          \pm  \frac{\sqrt{\frac{\hat{p} \cdot (1-\hat{p})}{n} +
-   \frac{z^2}{4n^2}}}{1
+          \pm  \frac{\sqrt{\frac{p^\^ \cdot (1-p^\^)}{n} + \frac{z^2}{4n^2}}}{1
    + \frac{z^2}{n}} \f}
    *
    *
