@@ -273,3 +273,20 @@ TEST_CASE("Check decreasing Confidence Interval (Wilson, 0.95)") {
   CHECK(CI3 < CI2);
   CHECK(CI2 < CI1);
 }
+
+TEST_CASE("Get bitrates") {
+  Simulator s = Simulator();
+  std::vector<BitRate> netBitRates = std::vector<BitRate>();
+  netBitRates = BitRate::readBitRateFile("../bitrate/bitrate.json");
+  CHECK_NOTHROW(s.getBitRates());
+
+}
+
+TEST_CASE("Get paths") {
+  Simulator s = Simulator(std::string("../networks/NSFNet.json"),
+                          std::string("../networks/NSFNet_routes.json"),
+                          std::string("../bitrate/bitrate.json"));
+                          
+  CHECK_NOTHROW(s.getPaths());
+  CHECK_NOTHROW(s.getBitRates());
+}
