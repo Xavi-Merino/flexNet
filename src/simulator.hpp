@@ -265,6 +265,10 @@ class Simulator {
    */
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
 
+  void setUnassignCallback(void (*callbackFunction)(Connection, double,
+                                                    Network *));
+
+
  private:
   double clock;
   std::list<Event> events;

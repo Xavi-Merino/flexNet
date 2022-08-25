@@ -429,6 +429,11 @@ void Simulator::initZScoreEven(void) {
   this->zScoreEven = zEven;
 }
 
+void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
+                                                             Network *)) {
+  this->controller->setUnassignCallback(callbackFunction);
+}
+
 std::vector<BitRate> Simulator::getBitRates(void){ return this->bitRates; }
 
 std::vector<std::vector<std::vector<std::vector<Link *>>>> *Simulator::getPaths() { return this->controller->getPaths(); };
