@@ -36,7 +36,6 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
   int currentSlotIndex;
   int *band_slot_indexes = NULL;
   int bitRateInt = bitRates_map[REQ_BITRATE];
-  bitrate_count_total[bitRateInt] += 1;
   int numberOfSlots;
 
   std::vector<AuxRoute *> *pathsRBMSA_reqBitRate = &pathsOffline[bitRateInt][SRC][DST];
@@ -87,6 +86,7 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
           ALLOC_SLOTS((*pathsRBMSA_reqBitRate)[r]->getLinks()[l]->getId(), currentSlotIndex, numberOfSlots)
         }
         if (band_slot_indexes != NULL) delete(band_slot_indexes);
+        bitrate_count_total[bitRateInt] += 1;
         return ALLOCATED;
       }      
     }
@@ -94,6 +94,7 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
   bitrate_count_blocked[bitRateInt] += 1;
   if (band_slot_indexes != NULL) delete(band_slot_indexes);
   if (buffer.front().id != con.getId() && buffer_state){
+    bitrate_count_total[bitRateInt] += 1;
     buffer.push_back(buffer_element(SRC, DST, con.getId(), con.getBitrate()));
     pushed++;
   }
