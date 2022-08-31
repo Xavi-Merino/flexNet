@@ -31,6 +31,14 @@
  * vector filled with information from a given JSON file.
  */
 class BitRate {
+
+  /**
+   * @brief Copy construct that initializes a new bitRate object using another
+   * object of the same class.
+   *
+   * @param bitRate (BitRate): Object to copy.
+   */
+  BitRate(const BitRate &bitRate);
  public:
   /**
    * @brief Construct a new bitRate object using the given double for setting

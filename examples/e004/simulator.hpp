@@ -27632,6 +27632,7 @@ class Connection {
   std::vector<std::vector<int> > getSlots(void);
   double getTimeConnection(void);
   BitRate *getBitrate(void);
+  long long getId(void);
 
  private:
   long long id;
@@ -27677,6 +27678,7 @@ std::vector<std::vector<int> > Connection::getSlots(void) {
 
 double Connection::getTimeConnection(void) { return this->timeConnection; }
 BitRate *Connection::getBitrate(void) { return this->bitRate; }
+long long Connection::getId(void) { return this->id; }
 #ifndef __ALLOCATOR_H__
 #define __ALLOCATOR_H__
 #include <string>
@@ -28598,6 +28600,8 @@ class Simulator {
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                     Network *));
 
+  Controller *getController();
+
 
  private:
   double clock;
@@ -29111,5 +29115,7 @@ void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
 
 std::vector<BitRate> Simulator::getBitRates(void){ return this->bitRates; }
 
-std::vector<std::vector<std::vector<std::vector<Link *>>>> *Simulator::getPaths() { return this->controller->getPaths(); };
+std::vector<std::vector<std::vector<std::vector<Link *>>>> *Simulator::getPaths() { return this->controller->getPaths(); }
+
+Controller *Simulator::getController() {return this->controller; }
 

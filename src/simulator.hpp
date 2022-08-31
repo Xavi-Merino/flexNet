@@ -268,6 +268,8 @@ class Simulator {
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                     Network *));
 
+  Controller *getController();
+
 
  private:
   double clock;

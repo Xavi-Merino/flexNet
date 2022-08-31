@@ -1,67 +1,252 @@
-#include "simulator.hpp"
+#include "offline_approach.cpp"
 
-BEGIN_ALLOC_FUNCTION(ExactFit) {
-  int numberOfSlots = REQ_SLOTS(0);
+// ############################## Global Variables #################################
+// Queue for buffer
+std::deque<buffer_element> buffer;
+
+// Vector that stores routes in order defined by the user in offlineApproachOrder()
+std::vector<std::vector<std::vector<std::vector<AuxRoute *>>>> pathsOffline;
+
+// BBP global variables
+double bitrate_count_total[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
+double bitrate_count_blocked[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
+
+// Number of connections popped from buffer
+int poped = 0;
+
+// Number of connections pushed to buffer
+int pushed = 0;
+
+// Buffer state
+bool buffer_state = true;
+
+// Weight C+L+S+E:
+// double mean_weight_bitrate[5] = {1.0, 1.83, 3.5, 13.33, 32.83};
+// Weight Only C:
+double mean_weight_bitrate[5] = {1.0, 1.25, 3.0, 9.5, 23};
+
+// Controller
+Controller *buffer_controller;
+// #################################################################################
+
+// Allocation function
+BEGIN_ALLOC_FUNCTION(FirstFits) {
+
   int currentNumberSlots;
   int currentSlotIndex;
-  int firstIndex;
+  int *band_slot_indexes = NULL;
+  int bitRateInt = bitRates_map[REQ_BITRATE];
+  bitrate_count_total[bitRateInt] += 1;
+  int numberOfSlots;
+
+  std::vector<AuxRoute *> *pathsRBMSA_reqBitRate = &pathsOffline[bitRateInt][SRC][DST];
   std::vector<bool> totalSlots;
-  for (int i = 0; i < NUMBER_OF_ROUTES; i++) {
-    totalSlots = std::vector<bool>(LINK_IN_ROUTE(0, 0)->getSlots(), false);
-    firstIndex = -1;
-    for (int j = 0; j < NUMBER_OF_LINKS(i); j++) {
-      for (int k = 0; k < LINK_IN_ROUTE(i, j)->getSlots(); k++) {
-        totalSlots[k] = totalSlots[k] | LINK_IN_ROUTE(i, j)->getSlot(k);
+
+  for (int r = 0; r < (*pathsRBMSA_reqBitRate).size();
+      r++){ // <- For route r between SRC and DST
+    // Number of slots that this route requires:
+    numberOfSlots = (*pathsRBMSA_reqBitRate)[r]->getSlots();
+    // Boolean vector of size of the first link of the route:
+    totalSlots = std::vector<bool>((*pathsRBMSA_reqBitRate)[r]->getLinks()[0]->getSlots(), false);
+
+    // This function sets the 'band_slot_indexes' array with the values of the indices that correspond to the current
+    // band in use by the route r:
+    // i.e. band_slot_indexes[0] =  index value of the first slot of the band
+    //      band_slot_indexes[1] =  index value of the last slot of the band
+    //      band_slot_indexes[3] =  total band slot capacity
+    if (band_slot_indexes != NULL) delete(band_slot_indexes);
+    bandSliceParameters((*pathsRBMSA_reqBitRate)[r]->getLinks()[0]->getSlots(),
+                        (*pathsRBMSA_reqBitRate)[r]->getBandInt(),
+                        &band_slot_indexes);
+
+    for (int l = 0; l < (*pathsRBMSA_reqBitRate)[r]->getLinks().size();
+        l++){ // <- For link l in route r
+      for (int s = band_slot_indexes[0]; s <= band_slot_indexes[1];
+          s++){ // <- For each slot s in the current band, of the link l
+        
+        // We verify the status of the slot s in every link l of the route r
+        totalSlots[s] = totalSlots[s] | (*pathsRBMSA_reqBitRate)[r]->getLinks()[l]->getSlot(s);
       }
     }
+
+    // Number of consecutive free slots:
     currentNumberSlots = 0;
-    currentSlotIndex = 0;
-    for (int j = 0; j < totalSlots.size(); j++) {
-      if (totalSlots[j] == false) {
-        currentNumberSlots++;
-      } else {
-        if (currentNumberSlots == numberOfSlots) {
-          for (int j = 0; j < NUMBER_OF_LINKS(i); j++) {
-            ALLOC_SLOTS(LINK_IN_ROUTE_ID(i, j), currentSlotIndex, numberOfSlots)
-          }
-          return ALLOCATED;
-        }
+    // Current index in 'totalSlots' vector (we set band_slot_indexes[0] as begining)
+    currentSlotIndex = band_slot_indexes[0];
+    for (int s = band_slot_indexes[0]; s <= band_slot_indexes[1];
+        s++){
+      if (totalSlots[s] == false) currentNumberSlots++;
+      else {
         currentNumberSlots = 0;
-        currentSlotIndex = j + 1;
-      }
-      if (firstIndex == -1 && currentNumberSlots > numberOfSlots) {
-        firstIndex = currentSlotIndex;
-      }
+        currentSlotIndex = s + 1;
     }
-    if (firstIndex != -1) {
-      for (int j = 0; j < NUMBER_OF_LINKS(i); j++) {
-        ALLOC_SLOTS(LINK_IN_ROUTE_ID(i, j), firstIndex, numberOfSlots)
-      }
-      return ALLOCATED;
+
+      if (currentNumberSlots == numberOfSlots) {
+        for (int l = 0; l < (*pathsRBMSA_reqBitRate)[r]->getLinks().size();
+            l++){
+          ALLOC_SLOTS((*pathsRBMSA_reqBitRate)[r]->getLinks()[l]->getId(), currentSlotIndex, numberOfSlots)
+        }
+        if (band_slot_indexes != NULL) delete(band_slot_indexes);
+        return ALLOCATED;
+      }      
     }
+  }
+  bitrate_count_blocked[bitRateInt] += 1;
+  if (band_slot_indexes != NULL) delete(band_slot_indexes);
+  if (buffer.front().id != con.getId() && buffer_state){
+    buffer.push_back(buffer_element(SRC, DST, con.getId(), con.getBitrate()));
+    pushed++;
   }
   return NOT_ALLOCATED;
 }
 END_ALLOC_FUNCTION
 
+// Unalloc callback function
 BEGIN_UNALLOC_CALLBACK_FUNCTION {
-  // c variable de clase conexion
-  // t: Tiempo en el cual se hace la desconexión. Es de tipo double
-  // n: Red. Esta variable puede servirte para ver el estado de los enlaces ANTES de desasignar, entre otras cosas.
-  int src, dst;
-  src = n->getLink(c.getLinks()[0])->getSrc();
-  dst = n->getLink(c.getLinks()[c.getLinks().size() - 1])->getDst();
-  //clinks = n->getNumberOfLinks();
+  if (buffer.size() > 0){
+    buffer_element front_queue = buffer.front();
+    if (buffer_controller->assignConnection(front_queue.src, front_queue.dst, *(front_queue.bitRate), front_queue.id, t) == ALLOCATED){
+      buffer.pop_front();
+      poped++;
+      // std::cout << "Allocated!\n";   
+    }
+  }
 }
 END_UNALLOC_CALLBACK_FUNCTION
 
-int main(int argc, char* argv[]) {
-  Simulator sim =
-      Simulator(std::string("NSFNet.json"), std::string("routes.json"),
-                std::string("bitrates.json"));
-  USE_ALLOC_FUNCTION(ExactFit, sim);
-  sim.init();
-  sim.run();
 
+
+int main(int argc, char* argv[]) {
+
+  // Traffic load to use:
+  double  run[10] = {447.2, 894.4, 1341.6, 1788.8, 2236, 2683.2, 3130.4, 3577.6, 4024.8, 4472};
+
+  // Run by order type (R: route, M: modulation, B: band)
+  for (int o = 3; o < 4; o++){
+
+    // Inform to console order type running
+    switch (o)
+    {
+    case 0:
+        std::cout << "RMB:\n";
+        break;
+    case 1:
+        std::cout << "BMR:\n";
+        break;
+    case 2:
+        std::cout << "BRM:\n";
+        break;
+    case 3:
+        std::cout << "RBM:\n";
+        break;
+    case 4:
+        std::cout << "MRB:\n";
+        break;
+    case 5:
+        std::cout << "By resource RBM:\n";
+        break;
+    case 6:
+        std::cout << "MBR:\n";
+        break;
+    case 7:
+        std::cout << "By resource RMB:\n";
+        break;
+    }
+
+    // Buffer state to console 
+    if (buffer_state) std::cout << "Buffer:\t\t    ON\n";
+    else std::cout << "Buffer:\t\t    OFF\n";
+
+    // Run by traffic load
+    for (int i = 0; i < 10; i++){
+
+      // Set seed
+      // int Seed = 420;
+
+      // simulator object:
+      Simulator sim =
+          Simulator(std::string("NSFNet.json"),                    // Network nodes and links
+                    std::string("routes.json"),                    // Network Routes
+                    std::string("bitrate_iroBand_CLSE.json"));     // BitRates and bands (eg. BPSK/C)
+
+
+      // Assign allocation function
+      USE_ALLOC_FUNCTION(FirstFits, sim);
+
+      // Assing unalloc function if buffer is activated
+      if (buffer_state)
+        USE_UNALLOC_FUNCTION(sim);
+
+      sim.setGoalConnections(1e6);
+      sim.setLambda(run[i]);
+
+      // Seeds
+      // sim.setSeedArrive(Seed);
+      // sim.setSeedDeparture(Seed);
+      // sim.setSeedBitRate(Seed);
+
+      sim.setMu(1);
+      sim.init();
+
+      // offline order by:
+      pathsOffline = offlineApproachOrder(sim.getBitRates(), sim.getPaths(), o);
+
+      // Export as CSV
+      // offlineApproachCSV(pathsOffline, o);
+
+      // set controller
+      buffer_controller = sim.getController();
+
+      // Run simulation
+      sim.run();
+
+      // BBP calculation and output to txt
+      std::fstream output;
+      output.open("output.txt", std::ios::out | std::ios::app);
+      double BBP_results;
+
+        // different calculations depending if buffer is activated
+      switch (buffer_state){
+        case false:
+          BBP_results = bandwidthBlockingProbability(bitrate_count_total, bitrate_count_blocked, mean_weight_bitrate);
+          std::cout << "\n BBP: " << BBP_results << " BP: " << sim.getBlockingProbability() << "\n\n";
+          if (sim.getBlockingProbability() == 9.99999e-07)
+            output << "N/Buffer orden: " << o << ", earlang: " << i << ", BBP: " << BBP_results << ", general blocking: 0" << '\n';
+          else
+            output << "N/Buffer orden: " << o << ", earlang: " << i << ", BBP: " << BBP_results << ", general blocking: " << sim.getBlockingProbability() << '\n';
+          break;
+        case true:
+          if (buffer.size() == 0) {
+            std::cout << "No elements in buffer!\n";
+            output << "orden: " << o << ", earlang: " << i << ", BBP: 0, general blocking: 0" << '\n';
+            break;
+          }
+          BBP_results = bandwidthBlockingProbabilityWBuffer(bitrate_count_total, buffer, mean_weight_bitrate);
+          std::cout << "\n BBP: " << BBP_results << " BP: " << (buffer.size()/(1e6)) << "\n\n";
+          output << "W/Buffer orden: " << o << ", earlang: " << i << ", BBP: " << BBP_results << ", general blocking: " << (buffer.size()/(1e6)) << ", buffer size: " << buffer.size() << ", reallocated: " << poped << '\n';
+          break;
+      }
+
+      std::cout << buffer.size() << ',' << pushed << ',' << poped << '\n';
+
+
+      // ############################## Clean UP variables #################################
+
+      // Free memory offline vector paths
+      offlineApproachFree(pathsOffline);
+
+      // Clear buffer
+      buffer.clear();
+
+      // Reset global variables for BBP calculation
+      for (int b = 0; b < 5; b++){
+        bitrate_count_total[b] = 0.0;
+        bitrate_count_blocked[b] = 0.0;
+      }
+
+      // ####################################################################################
+    }
+  }
   return 0;
 }
+

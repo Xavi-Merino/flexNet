@@ -48,6 +48,7 @@ class Connection {
   std::vector<std::vector<int> > getSlots(void);
   double getTimeConnection(void);
   BitRate *getBitrate(void);
+  long long getId(void);
 
  private:
   long long id;

@@ -1,0 +1,16 @@
+orden: 3, earlang: 0, BBP: 0.0196981, general blocking: 0.00647299
+orden: 3, earlang: 1, BBP: 0.243887, general blocking: 0.0834099
+orden: 3, earlang: 2, BBP: 0.393965, general blocking: 0.144857
+orden: 3, earlang: 3, BBP: 0.491055, general blocking: 0.19203
+orden: 3, earlang: 4, BBP: 0.563443, general blocking: 0.229989
+orden: 3, earlang: 5, BBP: 0.620308, general blocking: 0.261996
+orden: 3, earlang: 6, BBP: 0.666088, general blocking: 0.28981
+orden: 3, earlang: 7, BBP: 0.702812, general blocking: 0.314727
+orden: 3, earlang: 8, BBP: 0.732514, general blocking: 0.337712
+orden: 3, earlang: 9, BBP: 0.756606, general blocking: 0.357782
+W/Buffer orden: 3, earlang: 0, BBP: 0.0843396, general blocking: 0.117311
+W/Buffer orden: 3, earlang: 1, BBP: 0.126492, general blocking: 0.166384
+W/Buffer orden: 3, earlang: 2, BBP: 0.139348, general blocking: 0.180205
+N/Buffer orden: 3, earlang: 0, BBP: 0.168329, general blocking: 0.0555509
+N/Buffer orden: 3, earlang: 1, BBP: 0.351972, general blocking: 0.123426
+N/Buffer orden: 3, earlang: 2, BBP: 0.4469, general blocking: 0.173604

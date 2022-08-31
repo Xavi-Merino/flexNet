@@ -436,4 +436,6 @@ void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
 
 std::vector<BitRate> Simulator::getBitRates(void){ return this->bitRates; }
 
-std::vector<std::vector<std::vector<std::vector<Link *>>>> *Simulator::getPaths() { return this->controller->getPaths(); };
+std::vector<std::vector<std::vector<std::vector<Link *>>>> *Simulator::getPaths() { return this->controller->getPaths(); }
+
+Controller *Simulator::getController() {return this->controller; }
