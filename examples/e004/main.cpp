@@ -18,7 +18,7 @@ int poped = 0;
 int pushed = 0;
 
 // Buffer state
-bool buffer_state = true;
+bool buffer_state = false;
 
 // Weight C+L+S+E:
 // double mean_weight_bitrate[5] = {1.0, 1.83, 3.5, 13.33, 32.83};
@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < 10; i++){
 
       // Set seed
-      // int Seed = 420;
+      //int Seed = 420;
 
       // simulator object:
       Simulator sim =
@@ -181,9 +181,9 @@ int main(int argc, char* argv[]) {
       sim.setLambda(run[i]);
 
       // Seeds
-      // sim.setSeedArrive(Seed);
-      // sim.setSeedDeparture(Seed);
-      // sim.setSeedBitRate(Seed);
+      //sim.setSeedArrive(Seed);
+      //sim.setSeedDeparture(Seed);
+      //sim.setSeedBitRate(Seed);
 
       sim.setMu(1);
       sim.init();
@@ -235,8 +235,10 @@ int main(int argc, char* argv[]) {
       // Free memory offline vector paths
       offlineApproachFree(pathsOffline);
 
-      // Clear buffer
+      // Clear buffer and related variables
       buffer.clear();
+      poped = 0;
+      pushed = 0;
 
       // Reset global variables for BBP calculation
       for (int b = 0; b < 5; b++){
