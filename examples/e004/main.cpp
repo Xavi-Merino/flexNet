@@ -18,7 +18,8 @@ int poped = 0;
 int pushed = 0;
 
 // Buffer state
-bool buffer_state = false;
+bool buffer_state = true;
+bool allocating_from_buffer = false;
 
 // Weight C+L+S+E:
 // double mean_weight_bitrate[5] = {1.0, 1.83, 3.5, 13.33, 32.83};
@@ -37,6 +38,8 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
   int *band_slot_indexes = NULL;
   int bitRateInt = bitRates_map[REQ_BITRATE];
   int numberOfSlots;
+
+  if (!allocating_from_buffer) bitrate_count_total[bitRateInt] += 1;
 
   std::vector<AuxRoute *> *pathsRBMSA_reqBitRate = &pathsOffline[bitRateInt][SRC][DST];
   std::vector<bool> totalSlots;
@@ -86,15 +89,13 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
           ALLOC_SLOTS((*pathsRBMSA_reqBitRate)[r]->getLinks()[l]->getId(), currentSlotIndex, numberOfSlots)
         }
         if (band_slot_indexes != NULL) delete(band_slot_indexes);
-        bitrate_count_total[bitRateInt] += 1;
         return ALLOCATED;
       }      
     }
   }
   bitrate_count_blocked[bitRateInt] += 1;
   if (band_slot_indexes != NULL) delete(band_slot_indexes);
-  if (buffer.front().id != con.getId() && buffer_state){
-    bitrate_count_total[bitRateInt] += 1;
+  if (!allocating_from_buffer){
     buffer.push_back(buffer_element(SRC, DST, con.getId(), con.getBitrate()));
     pushed++;
   }
@@ -106,11 +107,13 @@ END_ALLOC_FUNCTION
 BEGIN_UNALLOC_CALLBACK_FUNCTION {
   if (buffer.size() > 0){
     buffer_element front_queue = buffer.front();
+    allocating_from_buffer = true;
     if (buffer_controller->assignConnection(front_queue.src, front_queue.dst, *(front_queue.bitRate), front_queue.id, t) == ALLOCATED){
       buffer.pop_front();
       poped++;
       // std::cout << "Allocated!\n";   
     }
+    allocating_from_buffer = false;
   }
 }
 END_UNALLOC_CALLBACK_FUNCTION

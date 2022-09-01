@@ -1,0 +1,1 @@
+SEED 420 N/Buffer orden: 3, earlang: 0, BBP: 0.0196981, general blocking: 0.00647299
