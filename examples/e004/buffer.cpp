@@ -20,4 +20,4 @@ class buffer_element {
 };
 
   
-buffer_element::~buffer_element() {}
+buffer_element::~buffer_element(){}

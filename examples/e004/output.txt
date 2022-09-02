@@ -1,1 +1,57 @@
 SEED 420 N/Buffer orden: 3, earlang: 0, BBP: 0.0196981, general blocking: 0.00647299
+NO SEED N/Buffer orden: 3, earlang: 0, BBP: 0.168329, general blocking: 0.0555509
+SEED 420 N/Buffer orden: 3, earlang: 1, BBP: 0.243887, general blocking: 0.0834099
+NO SEED N/Buffer orden: 3, earlang: 1, BBP: 0.351972, general blocking: 0.123426
+SEED 420 W/Buffer orden: 3, earlang: 0, BBP: 0.310806, general blocking: 0.117311, buffer size: 117311, reallocated: 71
+SEED 420 N/Buffer orden: 3, earlang: 2, BBP: 0.393965, general blocking: 0.144857
+NO SEED W/Buffer orden: 3, earlang: 0, BBP: 0.417309, general blocking: 0.158616, buffer size: 158616, reallocated: 43
+NO SEED N/Buffer orden: 3, earlang: 2, BBP: 0.4469, general blocking: 0.173604
+SEED 420 N/Buffer orden: 3, earlang: 3, BBP: 0.491055, general blocking: 0.19203
+NO SEED N/Buffer orden: 3, earlang: 3, BBP: 0.519912, general blocking: 0.213639
+SEED 420 W/Buffer orden: 3, earlang: 1, BBP: 0.430732, general blocking: 0.166384, buffer size: 166384, reallocated: 71
+SEED 420 N/Buffer orden: 3, earlang: 4, BBP: 0.563443, general blocking: 0.229989
+NO SEED N/Buffer orden: 3, earlang: 4, BBP: 0.5751, general blocking: 0.250122
+NO SEED W/Buffer orden: 3, earlang: 1, BBP: 0.459975, general blocking: 0.179197, buffer size: 179197, reallocated: 40
+SEED 420 N/Buffer orden: 3, earlang: 5, BBP: 0.620308, general blocking: 0.261996
+NO SEED N/Buffer orden: 3, earlang: 5, BBP: 0.61821, general blocking: 0.285279
+SEED 420 W/Buffer orden: 3, earlang: 2, BBP: 0.462469, general blocking: 0.180205, buffer size: 180205, reallocated: 42
+SEED 420 N/Buffer orden: 3, earlang: 6, BBP: 0.666088, general blocking: 0.28981
+NO SEED W/Buffer orden: 3, earlang: 2, BBP: 0.517812, general blocking: 0.212221, buffer size: 212221, reallocated: 36
+NO SEED N/Buffer orden: 3, earlang: 6, BBP: 0.652935, general blocking: 0.315401
+SEED 420 N/Buffer orden: 3, earlang: 7, BBP: 0.702812, general blocking: 0.314727
+SEED 420 W/Buffer orden: 3, earlang: 3, BBP: 0.52435, general blocking: 0.211163, buffer size: 211163, reallocated: 41
+NO SEED W/Buffer orden: 3, earlang: 3, BBP: 0.57102, general blocking: 0.241162, buffer size: 241162, reallocated: 33
+SEED 420 N/Buffer orden: 3, earlang: 8, BBP: 0.732514, general blocking: 0.337712
+SEED 420 W/Buffer orden: 3, earlang: 4, BBP: 0.575862, general blocking: 0.237419, buffer size: 237419, reallocated: 26
+SEED 420 N/Buffer orden: 3, earlang: 9, BBP: 0.756606, general blocking: 0.357782
+NO SEED W/Buffer orden: 3, earlang: 4, BBP: 0.592249, general blocking: 0.25893, buffer size: 258930, reallocated: 16
+SEED 420 W/Buffer orden: 3, earlang: 5, BBP: 0.624132, general blocking: 0.264171, buffer size: 264171, reallocated: 5
+NO SEED W/Buffer orden: 3, earlang: 5, BBP: 0.636381, general blocking: 0.294592, buffer size: 294592, reallocated: 19
+SEED 420 W/Buffer orden: 3, earlang: 6, BBP: 0.668979, general blocking: 0.292258, buffer size: 292258, reallocated: 5
+NO SEED W/Buffer orden: 3, earlang: 6, BBP: 0.667498, general blocking: 0.323165, buffer size: 323165, reallocated: 16
+SEED 420 W/Buffer orden: 3, earlang: 7, BBP: 0.704791, general blocking: 0.317164, buffer size: 317164, reallocated: 5
+NO SEED W/Buffer orden: 3, earlang: 7, BBP: 0.687849, general blocking: 0.343994, buffer size: 343994, reallocated: 7
+SEED 420 W/Buffer orden: 3, earlang: 8, BBP: 0.734274, general blocking: 0.338769, buffer size: 338769, reallocated: 2
+SEED 420 W/Buffer orden: 3, earlang: 9, BBP: 0.757425, general blocking: 0.358704, buffer size: 358704, reallocated: 2
+NO SEED W/Buffer orden: 3, earlang: 8, BBP: 0.711303, general blocking: 0.365935, buffer size: 365935, reallocated: 6
+NO SEED W/Buffer orden: 3, earlang: 9, BBP: 0.728214, general blocking: 0.380104, buffer size: 380104, reallocated: 4
+
+________________________________________________________________________________________________________________________________
+
+W/Buffer orden: 3, earlang: 0, BBP: 0, general blocking: 9.99999e-07, buffer size: 0, reallocated: 0
+N/Buffer orden: 3, earlang: 0, BBP: 0, general blocking: 9.99999e-07
+W/Buffer orden: 3, earlang: 1, BBP: 0, general blocking: 9.99999e-07, buffer size: 0, reallocated: 0
+N/Buffer orden: 3, earlang: 1, BBP: 0, general blocking: 9.99999e-07
+W/Buffer orden: 3, earlang: 2, BBP: 0, general blocking: 9.99999e-07, buffer size: 0, reallocated: 0
+N/Buffer orden: 3, earlang: 2, BBP: 0, general blocking: 9.99999e-07
+N/Buffer orden: 3, earlang: 3, BBP: 0.000173992, general blocking: 5.79999e-05
+N/Buffer orden: 3, earlang: 4, BBP: 0.00462704, general blocking: 0.001518
+N/Buffer orden: 3, earlang: 5, BBP: 0.0257417, general blocking: 0.00844399
+N/Buffer orden: 3, earlang: 6, BBP: 0.0630064, general blocking: 0.020699
+N/Buffer orden: 3, earlang: 7, BBP: 0.101608, general blocking: 0.033396
+W/Buffer orden: 3, earlang: 3, BBP: 0.313284, general blocking: 0.11114, buffer size: 111140, reallocated: 42, Average try per allocated element: 162.19
+N/Buffer orden: 3, earlang: 8, BBP: 0.137476, general blocking: 0.045293
+N/Buffer orden: 3, earlang: 9, BBP: 0.168329, general blocking: 0.0555509
+W/Buffer orden: 3, earlang: 4, BBP: 0.331722, general blocking: 0.115474, buffer size: 115474, reallocated: 45, Average try per allocated element: 2589.73
+
+W/Buffer orden: 3, earlang: 3, BBP: 0.313284, general blocking: 0.11114, buffer size: 111140, reallocated: 42, Average try per allocated element: 162.19

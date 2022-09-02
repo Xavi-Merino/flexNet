@@ -113,7 +113,13 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
   }
   // If the present connection IS coming from buffer, add another try
   else {
-    current_tries++;
+    if (current_tries > 50){
+      buffer.push_back(buffer_element(SRC, DST, con.getId(), con.getBitrate()));
+      delete(buffer.front().bitRate);
+      buffer.pop_front();
+      current_tries = 0;
+    }
+    else current_tries++;
   }
   return NOT_ALLOCATED;
 }
@@ -122,13 +128,13 @@ END_ALLOC_FUNCTION
 // Unalloc callback function
 BEGIN_UNALLOC_CALLBACK_FUNCTION {
   if (buffer.size() > 0){
-    buffer_element *front_queue = &buffer.front();
+    buffer_element front_queue = buffer.front();
 
     // Let the alloc function know we are allocating from buffer
     allocating_from_buffer = true;
 
     // try to alloc
-    if (buffer_controller->assignConnection(front_queue->src, front_queue->dst, *(front_queue->bitRate), front_queue->id, t) == ALLOCATED){
+    if (buffer_controller->assignConnection(front_queue.src, front_queue.dst, *(front_queue.bitRate), front_queue.id, t) == ALLOCATED){
 
       // We keep track of how many times was tried to be allocated and reset counter
       tried_times.push_back(current_tries);
@@ -154,7 +160,7 @@ END_UNALLOC_CALLBACK_FUNCTION
 int main(int argc, char* argv[]) {
 
   // Traffic load to use:
-  double  run[10] = {44.72, 89.44, 134.16, 178.88, 223.6, 268.32, 313.04, 357.76, 402.48, 447.2};
+  double  run[10] = {447.2, 894.4, 1341.6, 1788.8, 2236, 2683.2, 3130.4, 3577.6, 4024.8, 4472};
 
   // Run by order type (R: route, M: modulation, B: band)
   for (int o = 3; o < 4; o++){
@@ -193,10 +199,10 @@ int main(int argc, char* argv[]) {
     else std::cout << "Buffer:\t\t    OFF\n";
 
     // Run by traffic load
-    for (int i = 3; i < 10; i++){
+    for (int i = 0; i < 10; i++){
 
       // Set seed
-      //int Seed = 420;
+      int Seed = 420;
 
       // simulator object:
       Simulator sim =
@@ -216,9 +222,9 @@ int main(int argc, char* argv[]) {
       sim.setLambda(run[i]);
 
       // Seeds
-      //sim.setSeedArrive(Seed);
-      //sim.setSeedDeparture(Seed);
-      //sim.setSeedBitRate(Seed);
+      sim.setSeedArrive(Seed);
+      sim.setSeedDeparture(Seed);
+      sim.setSeedBitRate(Seed);
 
       sim.setMu(1);
       sim.init();
@@ -237,7 +243,7 @@ int main(int argc, char* argv[]) {
 
       // BBP calculation and output to txt
       std::fstream output;
-      output.open("output.txt", std::ios::out | std::ios::app);
+      output.open("outputV3.txt", std::ios::out | std::ios::app);
       double BBP_results;
 
         // different BBP formula depending if buffer is activated
@@ -250,34 +256,28 @@ int main(int argc, char* argv[]) {
           // output to console:
           std::cout << "\n BBP: " << BBP_results << " BP: " << sim.getBlockingProbability() << "\n\n";
           // output info to txt:
-          output << "N/Buffer orden: " << o 
-                 << ", earlang: " << i 
-                 << ", BBP: " << BBP_results 
-                 << ", general blocking: " << sim.getBlockingProbability() 
-                 << '\n';
+          if (sim.getBlockingProbability() == 9.99999e-07)
+            output << "N/Buffer orden: " << o << ", earlang: " << i << ", BBP: " << BBP_results << ", general blocking: 0" << '\n';
+          else
+            output << "N/Buffer orden: " << o << ", earlang: " << i << ", BBP: " << BBP_results << ", general blocking: " << sim.getBlockingProbability() << '\n';
           break;
 
         // if buffer ON
         case true:
           if (buffer.size() == 0) {
             std::cout << "No elements in buffer! :P\n";
-            output << "W/Buffer orden: " << o 
-                   << ", earlang: " << i 
-                   << ", BBP: 0, general blocking: " << sim.getBlockingProbability() 
-                   <<", buffer size: " << buffer.size() 
-                   << ", reallocated: " << poped 
-                   << '\n';
+            output << "orden: " << o << ", earlang: " << i << ", BBP: 0, general blocking: 0, buffer size: " << buffer.size() << ", reallocated: " << poped << '\n';
             break;
           }
           // calculate average number of try
           float mean = 0;
-          for (int t = 0; t < tried_times.size(); t++) mean += float(tried_times[t]);
-          mean = mean/float(poped);
+          for (int t = 0; t < tried_times.size(); t++) mean += tried_times[t];
+          mean = mean/poped;
           // calculate BBP:
           BBP_results = bandwidthBlockingProbabilityWBuffer(bitrate_count_total, buffer, mean_weight_bitrate);
           // output info to txt and console:
           std::cout << "\n BBP: " << BBP_results << " BP: " << (buffer.size()/(1e6)) << "\n\n";
-          output << "W/Buffer orden: " << o 
+          output << "SEED 420 W/Buffer 3.0 orden: " << o 
                  << ", earlang: " << i << ", BBP: " << BBP_results 
                  << ", general blocking: " << (buffer.size()/(1e6)) 
                  << ", buffer size: " << buffer.size() 
@@ -290,13 +290,13 @@ int main(int argc, char* argv[]) {
       std::cout << buffer.size() << ',' << pushed << ',' << poped << '\n';
 
       // ############################## DEBUG #################################
-/*
+
       std::cout << "Tried times in ";
       for (int t = 0; t < tried_times.size(); t++){
       std::cout << t << ": " << tried_times[t] << ", ";  
       }
       std::cout << "\n";
-*/
+
       // ############################## Clean UP variables #################################
 
       // Free memory offline vector paths
