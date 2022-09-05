@@ -2,7 +2,7 @@
 
 // ############################## Global Variables #################################
 // Queue for buffer
-std::deque<buffer_element> buffer;
+Buffer buffer;
 
 // Vector that stores routes in order defined by the user in offlineApproachOrder()
 std::vector<std::vector<std::vector<std::vector<AuxRoute *>>>> pathsOffline;
@@ -10,17 +10,6 @@ std::vector<std::vector<std::vector<std::vector<AuxRoute *>>>> pathsOffline;
 // BBP global variables
 double bitrate_count_total[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 double bitrate_count_blocked[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
-
-// Number of connections popped from buffer (allocated succesfully)
-int poped = 0;
-
-// Number of connections pushed to buffer
-int pushed = 0;
-
-// Number of times a connection was tried to be allocated from buffer
-std::deque<int> tried_times;
-int current_attempts = 0;
-float total_attempts;
 
 // Buffer state
 bool buffer_state = true;
@@ -39,6 +28,12 @@ Simulator sim;
 
 // Allocation function
 BEGIN_ALLOC_FUNCTION(FirstFits) {
+
+  // Calculate avg buffer size
+  if (buffer_state){
+    buffer.mean_size_time += buffer.size()*(con.getTimeConnection() -  buffer.last_time);
+    buffer.last_time = con.getTimeConnection();
+  }
 
   int currentNumberSlots;
   int currentSlotIndex;
@@ -111,21 +106,18 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
 
   if (buffer_state){
     // If not allocated add to back of buffer
-    buffer.push_back(buffer_element(SRC, DST, con.getId(), con.getBitrate()));
+    buffer.addElement(buffer_element(SRC, DST, con.getId(), con.getBitrate(), con.getTimeConnection()));
 
-    // If the present connection IS coming from buffer, we poped it because was added to back
+    // If the present connection IS coming from buffer, we poped it because was added to back and add to attempts counter
     if (allocating_from_buffer){
+      buffer.back().setAttempts(buffer.front().getAttempts() + 1);
       delete(buffer.front().bitRate);
       buffer.pop_front();
-      int temp = tried_times.front() + 1;
-      tried_times.push_back(temp);
-      tried_times.pop_front();
     }
     // If the present connection isn't coming from buffer, add another try
     else {
-      current_attempts++;
-      tried_times.push_back(current_attempts);
-      pushed++;
+      buffer.back().setAttempts(1);
+      buffer.pushed++;
     }
   }
 
@@ -136,28 +128,29 @@ END_ALLOC_FUNCTION
 // Unalloc callback function
 BEGIN_UNALLOC_CALLBACK_FUNCTION {
   if (buffer.size() > 0){
-    buffer_element *front_queue = &buffer.front();
+    buffer_element front_queue = buffer.front();
 
     // Let the alloc function know we are allocating from buffer
     allocating_from_buffer = true;
 
     // try to alloc
-    if (buffer_controller->assignConnection(front_queue->src, front_queue->dst, *(front_queue->bitRate), front_queue->id, t) == ALLOCATED){
+    if (buffer_controller->assignConnection(front_queue.src, front_queue.dst, *(front_queue.bitRate), front_queue.id, t) == ALLOCATED){
       
       // Add departure to event routine
-      sim.addDepartureEvent(front_queue->id);
+      sim.addDepartureEvent(front_queue.id);
 
-      // We keep track of how many times was tried to be allocated and reset counter
-      total_attempts += tried_times.front();
-      tried_times.pop_front();
-      current_attempts = 0;
+      // Time the connection was in queue
+      buffer.mean_service_time += t - front_queue.time_arrival;
+
+      // We keep track of how many times was tried to be allocated
+      buffer.mean_attempts += buffer.front().getAttempts();
 
       // Element allocated so we poped it and delete() members
       delete(buffer.front().bitRate);
       buffer.pop_front();
 
       // Keep count of how many connections where allocated from the buffer
-      poped++;
+      buffer.poped++;
       // std::cout << "Allocated!\n";   
     }
 
@@ -174,7 +167,7 @@ int main(int argc, char* argv[]) {
   // Traffic load to use:
   double  run[10] = {44.72, 89.44, 134.16, 178.88, 223.6, 268.32, 313.04, 357.76, 402.48, 447.2};
   int times_goal = 50;
-  int times_current = 10;
+  int times_current = 1;
 
   // Run by order type (R: route, M: modulation, B: band)
   for (int o = 3; o < 4; o++){
@@ -243,20 +236,15 @@ int main(int argc, char* argv[]) {
 
       // BBP calculation and output to txt
       std::fstream output;
-      output.open("./out/outputV2.0-RBM.txt", std::ios::out | std::ios::app);
+      output.open("./out/outputV2.0-WBuffer-1e6.txt", std::ios::out | std::ios::app);
       double BBP_results;
 
-        // attempts calculation
-      for (int a = 0; a < tried_times.size(); a++){
-        total_attempts += tried_times[a];
-      }
-      float mean = total_attempts/(poped+tried_times.size());
-
         // different BBP formula depending if buffer is activated
-      if (buffer_state) BBP_results = bandwidthBlockingProbabilityWBuffer(bitrate_count_total, buffer, mean_weight_bitrate);
+      if (buffer_state) BBP_results = bandwidthBlockingProbabilityWBuffer(bitrate_count_total, buffer.elements, mean_weight_bitrate);
       else BBP_results = bandwidthBlockingProbability(bitrate_count_total, bitrate_count_blocked, mean_weight_bitrate);
+
       resultsToFile(buffer_state, output, BBP_results, sim.getBlockingProbability(),
-                    o, times_current, poped, buffer, mean, bitrate_count_blocked);
+                    o, times_current, bitrate_count_blocked, buffer);
 
       // ############################## DEBUG #################################
 /*
@@ -277,12 +265,13 @@ int main(int argc, char* argv[]) {
       offlineApproachFree(pathsOffline);
 
       // Clear buffer and related variables
-      for (int be = 0; be < buffer.size(); be++) delete(buffer[be].bitRate);
+      for (int be = 0; be < buffer.size(); be++) delete(buffer.elements[be].bitRate);
       buffer.clear();
-      poped = 0;
-      tried_times.clear();
-      current_attempts = 0;
-      total_attempts = 0;
+      buffer.poped = 0;
+      buffer.last_time = 0;
+      buffer.mean_service_time = 0;
+      buffer.mean_size_time = 0;
+      buffer.mean_attempts = 0;
 
       // Reset global variables for BBP calculation
       for (int b = 0; b < 5; b++){

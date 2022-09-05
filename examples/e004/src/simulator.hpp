@@ -26393,7 +26393,17 @@ double ExpVariable::getNextValue() {
  * vector filled with information from a given JSON file.
  */
 class BitRate {
+
  public:
+
+  /**
+   * @brief Copy construct that initializes a new bitRate object using another
+   * object of the same class.
+   *
+   * @param bitRate (BitRate): Object to copy.
+   */
+  BitRate(const BitRate &bitRate);
+
   /**
    * @brief Construct a new bitRate object using the given double for setting
    * the object's bit rate magnitude and it's respective string.
@@ -26554,6 +26564,14 @@ reach and slots demand.
 BitRate::BitRate(double bitRate) {
   this->bitRate = bitRate;
   this->bitRateStr = std::to_string(bitRate);
+}
+
+BitRate::BitRate(const BitRate &bitRate){
+  this->bitRate = bitRate.bitRate;
+  this->bitRateStr = bitRate.bitRateStr;
+  this->modulation = bitRate.modulation;
+  this->reach = bitRate.reach;
+  this->slots = bitRate.slots;
 }
 
 BitRate::~BitRate() {}
@@ -28602,8 +28620,7 @@ class Simulator {
 
   Controller *getController();
 
-void addDepartureEvent(long long idConnection);
-
+  void addDepartureEvent(long long idConnection);
 
  private:
   double clock;
@@ -29026,18 +29043,18 @@ void Simulator::run(void) {
   }
 }
 
-  void Simulator::addDepartureEvent(long long idConnection){
-    double nextEventTime = this->clock + this->departVariable.getNextValue();
-    for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
-          pos != this->events.rend(); pos++) {
-      if ((pos)->getTime() < nextEventTime) {
-        this->events.insert((pos).base(),
-                            Event(DEPARTURE, nextEventTime,
-                                  idConnection));
-        break;
-      }
+void Simulator::addDepartureEvent(long long idConnection){
+  double nextEventTime = this->clock + this->departVariable.getNextValue();
+  for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
+        pos != this->events.rend(); pos++) {
+    if ((pos)->getTime() < nextEventTime) {
+      this->events.insert((pos).base(),
+                          Event(DEPARTURE, nextEventTime,
+                                idConnection));
+      break;
     }
   }
+}
 
 unsigned int Simulator::getTimeDuration(void) {
   return static_cast<unsigned int>(this->timeDuration.count());

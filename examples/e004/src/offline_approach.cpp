@@ -285,9 +285,12 @@ double bandwidthBlockingProbabilityWBufferV3(double bitrate_count_total[5],
 
 // Result to TXT
 void resultsToFile(bool buffer_state, std::fstream &output, double BBP, double BP,
-                   int order, int earlang, int poped, std::deque<buffer_element> buffer, 
-                   float tried_times, double bitrate_count_blocked[5])
+                   int order, int earlang, double bitrate_count_blocked[5], Buffer buffer)
 {
+    double avgAttempts = buffer.mean_attempts/buffer.poped;
+    double avgService = buffer.mean_service_time/buffer.poped;
+    double avgSize = buffer.mean_size_time/buffer.last_time;
+
     switch (buffer_state){
         case false:
             // output info to txt:
@@ -305,8 +308,10 @@ void resultsToFile(bool buffer_state, std::fstream &output, double BBP, double B
                     << ", general blocking: " << (buffer.size()/(1e6)) 
                     << ", general blocking (original): " << BP
                     << ", buffer size: " << buffer.size() 
-                    << ", reallocated: " << poped 
-                    << ", Average try per allocated element: " << tried_times 
+                    << ", reallocated: " << buffer.poped 
+                    << ", Average try per allocated element: " << avgAttempts
+                    << ", Average service time: " << avgService
+                    << ", Average buffer size: " << avgSize
                     << '\n';
             break;
         }
