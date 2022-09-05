@@ -3,6 +3,7 @@
 #include <deque>
 
 class buffer_element {
+
   public:
     buffer_element(int src, int dst, long long id, BitRate *bitRate){
       this->src = src;
@@ -17,6 +18,16 @@ class buffer_element {
     int dst;
     long long id;
     BitRate *bitRate;
+
+    bool operator>(const buffer_element &e) const
+    {
+      return bitRate->getBitRate() > e.bitRate->getBitRate();
+    }
+
+    bool operator<(const buffer_element &e) const
+    {
+      return bitRate->getBitRate() < e.bitRate->getBitRate();
+    }
 };
 
   

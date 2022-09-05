@@ -1,0 +1,17 @@
+W/Buffer orden: 3, earlang: 1, BBP: 0, general blocking: 0, general blocking (original): 9.99999e-07, buffer size: 0, reallocated: 0, Average try per allocated element: -nan
+W/Buffer orden: 3, earlang: 2, BBP: 0, general blocking: 0, general blocking (original): 9.99999e-07, buffer size: 0, reallocated: 0, Average try per allocated element: -nan
+W/Buffer orden: 3, earlang: 3, BBP: 0, general blocking: 0, general blocking (original): 9.99999e-07, buffer size: 0, reallocated: 0, Average try per allocated element: -nan
+W/Buffer orden: 3, earlang: 4, BBP: 0, general blocking: 0, general blocking (original): 4.9e-05, buffer size: 0, reallocated: 48, Average try per allocated element: 10.3958
+W/Buffer orden: 3, earlang: 5, BBP: 0, general blocking: 0, general blocking (original): 0.002422, buffer size: 0, reallocated: 2421, Average try per allocated element: 10.1049
+W/Buffer orden: 3, earlang: 6, BBP: 0, general blocking: 0, general blocking (original): 0.027507, buffer size: 0, reallocated: 27506, Average try per allocated element: 11.8096
+W/Buffer orden: 3, earlang: 7, BBP: 0.00742977, general blocking: 0.004868, general blocking (original): 0.0732679, buffer size: 4868, reallocated: 68399, Average try per allocated element: 13.5136
+W/Buffer orden: 3, earlang: 8, BBP: 0.0398808, general blocking: 0.026129, general blocking (original): 0.0775519, buffer size: 26129, reallocated: 53856, Average try per allocated element: 17.122
+W/Buffer orden: 3, earlang: 9, BBP: 0.0799326, general blocking: 0.052372, general blocking (original): 0.0818309, buffer size: 52372, reallocated: 42522, Average try per allocated element: 21.584
+W/Buffer orden: 3, earlang: 10, BBP: 0.118791, general blocking: 0.077831, general blocking (original): 0.0859649, buffer size: 77831, reallocated: 34319, Average try per allocated element: 26.6207
+W/Buffer orden: 3, earlang: 11, BBP: 0.155024, general blocking: 0.101572, general blocking (original): 0.0901159, buffer size: 101572, reallocated: 27458, Average try per allocated element: 33.121
+W/Buffer orden: 3, earlang: 12, BBP: 0.188156, general blocking: 0.12328, general blocking (original): 0.0946009, buffer size: 123280, reallocated: 22106, Average try per allocated element: 40.9362
+W/Buffer orden: 3, earlang: 13, BBP: 0.217167, general blocking: 0.142287, general blocking (original): 0.0986659, buffer size: 142287, reallocated: 18018, Average try per allocated element: 49.9919
+W/Buffer orden: 3, earlang: 14, BBP: 0.243876, general blocking: 0.159787, general blocking (original): 0.102875, buffer size: 159787, reallocated: 14230, Average try per allocated element: 63.0059
+W/Buffer orden: 3, earlang: 15, BBP: 0.266968, general blocking: 0.174918, general blocking (original): 0.106733, buffer size: 174918, reallocated: 11707, Average try per allocated element: 76.2247
+W/Buffer orden: 3, earlang: 16, BBP: 0.288812, general blocking: 0.189229, general blocking (original): 0.11111, buffer size: 189229, reallocated: 9339, Average try per allocated element: 95.1065
+W/Buffer orden: 3, earlang: 17, BBP: 0.308976, general blocking: 0.202442, general blocking (original): 0.115326, buffer size: 202442, reallocated: 7497, Average try per allocated element: 117.886

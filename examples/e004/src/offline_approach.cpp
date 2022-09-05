@@ -258,3 +258,84 @@ double bandwidthBlockingProbabilityWBuffer(double bitrate_count_total[5],
 
     return (BBP/total_weight);
 }
+
+double bandwidthBlockingProbabilityWBufferV3(double bitrate_count_total[5], 
+                                           std::priority_queue<buffer_element> buffer,
+                                           double mean_weight_bitrate[5])
+    {
+    double BBP = 0;
+    double BP = 0;
+    double total_weight = 0;
+
+    double count_blocked[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
+
+    for (int i = 0; i < buffer.size(); i++){
+        count_blocked[bitRates_map[buffer.top().bitRate->getBitRate()]] += 1;
+        buffer.pop();
+    }
+
+    for (int b = 0; b < 5; b++){
+        BP = count_blocked[b] / bitrate_count_total[b];
+        BBP += mean_weight_bitrate[b] * BP;
+        total_weight += mean_weight_bitrate[b];
+    }
+
+    return (BBP/total_weight);
+}
+
+// Result to TXT
+void resultsToFile(bool buffer_state, std::fstream &output, double BBP, double BP,
+                   int order, int earlang, int poped, std::deque<buffer_element> buffer, 
+                   float tried_times, double bitrate_count_blocked[5])
+{
+    switch (buffer_state){
+        case false:
+            // output info to txt:
+            output << "N/Buffer orden: " << order 
+                    << ", earlang: " << earlang 
+                    << ", BBP: " << BBP 
+                    << ", general blocking: " << BP 
+                    << '\n';
+            break;
+        case true:
+            if (buffer.size() == 0) std::cout << "\nNo elements in buffer! :P\n";
+            // output info to txt:
+            output << "W/Buffer orden: " << order 
+                    << ", earlang: " << earlang << ", BBP: " << BBP 
+                    << ", general blocking: " << (buffer.size()/(1e6)) 
+                    << ", general blocking (original): " << BP
+                    << ", buffer size: " << buffer.size() 
+                    << ", reallocated: " << poped 
+                    << ", Average try per allocated element: " << tried_times 
+                    << '\n';
+            break;
+        }
+}
+
+void resultsToFileV3(bool buffer_state, std::fstream &output, double BBP, double BP,
+                   int order, int earlang, int poped, std::priority_queue<buffer_element> buffer, 
+                   float tried_times, double bitrate_count_blocked[5])
+{
+    switch (buffer_state){
+        case false:
+            // output info to txt:
+            output << "N/Buffer orden: " << order 
+                    << ", earlang: " << earlang 
+                    << ", BBP: " << BBP 
+                    << ", general blocking: " << BP 
+                    << '\n';
+            break;
+        case true:
+            if (buffer.size() == 0) std::cout << "\nNo elements in buffer! :P\n";
+            // output info to txt:
+            output << "W/Buffer orden: " << order 
+                    << ", earlang: " << earlang << ", BBP: " << BBP 
+                    << ", general blocking: " << (buffer.size()/(1e6)) 
+                    << ", general blocking (original): " << BP
+                    << ", buffer size: " << buffer.size() 
+                    << ", reallocated: " << poped 
+                    << ", Average try per allocated element: " << tried_times 
+                    << '\n';
+            break;
+        }
+}

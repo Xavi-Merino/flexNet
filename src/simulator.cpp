@@ -345,6 +345,19 @@ void Simulator::run(void) {
   }
 }
 
+void Simulator::addDepartureEvent(long long idConnection){
+  double nextEventTime = this->clock + this->departVariable.getNextValue();
+  for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
+        pos != this->events.rend(); pos++) {
+    if ((pos)->getTime() < nextEventTime) {
+      this->events.insert((pos).base(),
+                          Event(DEPARTURE, nextEventTime,
+                                idConnection));
+      break;
+    }
+  }
+}
+
 unsigned int Simulator::getTimeDuration(void) {
   return static_cast<unsigned int>(this->timeDuration.count());
 }

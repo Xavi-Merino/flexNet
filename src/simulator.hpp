@@ -270,6 +270,7 @@ class Simulator {
 
   Controller *getController();
 
+  void addDepartureEvent(long long idConnection);
 
  private:
   double clock;
