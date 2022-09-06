@@ -5,13 +5,23 @@
 class buffer_element {
 
   public:
+    friend class Buffer;
     buffer_element(int src, int dst, long long id, BitRate *bitRate, double time_arrival){
       this->src = src;
       this->dst = dst;
       this->bitRate = new BitRate(*bitRate);
       this->id = id;
       this->time_arrival = time_arrival;
-      this->current_attempts = 0;
+      this->current_attempts = 1;
+    }
+
+    buffer_element(int src, int dst, long long id, BitRate *bitRate, double time_arrival, int attempts){
+      this->src = src;
+      this->dst = dst;
+      this->bitRate = new BitRate(*bitRate);
+      this->id = id;
+      this->time_arrival = time_arrival;
+      this->current_attempts = attempts;
     }
 
     ~buffer_element() {};
@@ -21,14 +31,7 @@ class buffer_element {
     long long id;
     BitRate *bitRate;
     double time_arrival;
-
-    void setAttempts(int attempts){
-      this->current_attempts = attempts;
-    }
-
-    int getAttempts(){
-      return this->current_attempts;
-    }
+    int current_attempts;
 
     bool operator>(const buffer_element &e) const
     {
@@ -40,13 +43,10 @@ class buffer_element {
       return bitRate->getBitRate() < e.bitRate->getBitRate();
     }
 
-  private:
-    int current_attempts;
-
 };
 
 class Buffer {
-
+  friend class bufer_element;
   public:
 
     Buffer(){
@@ -74,12 +74,12 @@ class Buffer {
       this->elements.clear();
     }
 
-    buffer_element front(){
-      return this->elements.front();
+    buffer_element *front(){
+      return &(this->elements.front());
     }
 
-    buffer_element back(){
-      return this->elements.back();
+    buffer_element *back(){
+      return &(this->elements.back());
     }
 
     std::deque<buffer_element> elements;

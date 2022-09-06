@@ -106,17 +106,17 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
 
   if (buffer_state){
     // If not allocated add to back of buffer
-    buffer.addElement(buffer_element(SRC, DST, con.getId(), con.getBitrate(), con.getTimeConnection()));
+    
 
     // If the present connection IS coming from buffer, we poped it because was added to back and add to attempts counter
     if (allocating_from_buffer){
-      buffer.back().setAttempts(buffer.front().getAttempts() + 1);
-      delete(buffer.front().bitRate);
+      buffer.addElement(buffer_element(SRC, DST, con.getId(), con.getBitrate(), con.getTimeConnection(), buffer.front()->current_attempts + 1));
+      delete(buffer.front()->bitRate);
       buffer.pop_front();
     }
     // If the present connection isn't coming from buffer, add another try
     else {
-      buffer.back().setAttempts(1);
+      buffer.addElement(buffer_element(SRC, DST, con.getId(), con.getBitrate(), con.getTimeConnection(), 1));
       buffer.pushed++;
     }
   }
@@ -128,25 +128,25 @@ END_ALLOC_FUNCTION
 // Unalloc callback function
 BEGIN_UNALLOC_CALLBACK_FUNCTION {
   if (buffer.size() > 0){
-    buffer_element front_queue = buffer.front();
+    buffer_element *front_queue = buffer.front();
 
     // Let the alloc function know we are allocating from buffer
     allocating_from_buffer = true;
 
     // try to alloc
-    if (buffer_controller->assignConnection(front_queue.src, front_queue.dst, *(front_queue.bitRate), front_queue.id, t) == ALLOCATED){
+    if (buffer_controller->assignConnection(front_queue->src, front_queue->dst, *(front_queue->bitRate), front_queue->id, t) == ALLOCATED){
       
       // Add departure to event routine
-      sim.addDepartureEvent(front_queue.id);
+      sim.addDepartureEvent(front_queue->id);
 
       // Time the connection was in queue
-      buffer.mean_service_time += t - front_queue.time_arrival;
+      buffer.mean_service_time += t - front_queue->time_arrival;
 
       // We keep track of how many times was tried to be allocated
-      buffer.mean_attempts += buffer.front().getAttempts();
+      buffer.mean_attempts += buffer.front()->current_attempts;
 
       // Element allocated so we poped it and delete() members
-      delete(buffer.front().bitRate);
+      delete(buffer.front()->bitRate);
       buffer.pop_front();
 
       // Keep count of how many connections where allocated from the buffer

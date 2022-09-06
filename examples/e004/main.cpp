@@ -12,7 +12,7 @@ double bitrate_count_total[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 double bitrate_count_blocked[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 
 // Buffer state
-bool buffer_state = false;
+bool buffer_state = true;
 bool allocating_from_buffer = false;
 
 // Weight C+L+S+E:
@@ -115,7 +115,7 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
     }
     // If the present connection IS coming from buffer, add another try
     else {
-      buffer.front().setAttempts(buffer.front().getAttempts() + 1);
+      buffer.front()->current_attempts++;
     }
   }
 
@@ -126,25 +126,25 @@ END_ALLOC_FUNCTION
 // Unalloc callback function
 BEGIN_UNALLOC_CALLBACK_FUNCTION {
   if (buffer.size() > 0){
-    buffer_element front_queue = buffer.front();
+    buffer_element *front_queue = buffer.front();
 
     // Let the alloc function know we are allocating from buffer
     allocating_from_buffer = true;
 
     // try to alloc
-    if (buffer_controller->assignConnection(front_queue.src, front_queue.dst, *(front_queue.bitRate), front_queue.id, t) == ALLOCATED){
-      
+    if (buffer_controller->assignConnection(front_queue->src, front_queue->dst, *(front_queue->bitRate), front_queue->id, t) == ALLOCATED){
+
       // Add departure to event routine
-      sim.addDepartureEvent(front_queue.id);
+      sim.addDepartureEvent(front_queue->id);
 
       // Time the connection was in queue
-      buffer.mean_service_time += t - front_queue.time_arrival;
+      buffer.mean_service_time += t - front_queue->time_arrival;
 
       // We keep track of how many times was tried to be allocated
-      buffer.mean_attempts += buffer.front().getAttempts();
+      buffer.mean_attempts += buffer.front()->current_attempts;
 
       // Element allocated so we poped it and delete() members
-      delete(buffer.front().bitRate);
+      delete(buffer.front()->bitRate);
       buffer.pop_front();
 
       // Keep count of how many connections where allocated from the buffer
@@ -169,11 +169,11 @@ int main(int argc, char* argv[]) {
 
   // Earlang parameters:
   // First runs (1e6)
-  //double  run[10] = {44.72, 89.44, 134.16, 178.88, 223.6, 268.32, 313.04, 357.76, 402.48, 447.2};
+  double  run[10] = {44.72, 89.44, 134.16, 178.88, 223.6, 268.32, 313.04, 357.76, 402.48, 447.2};
   // Second runs (1e7)
-  double  run[10] = {36};
+  //double  run[10] = {36};
 
-  int times_goal = 25;
+  int times_goal = 50;
   int times_current = 1;
 
   // Run by order type (R: route, M: modulation, B: band)
@@ -225,7 +225,7 @@ int main(int argc, char* argv[]) {
       if (buffer_state)
         USE_UNALLOC_FUNCTION(sim);
 
-      sim.setGoalConnections(1e7);
+      sim.setGoalConnections(1e6);
       sim.setLambda(run[0]*times_current);
       sim.setMu(1);
       sim.init();
@@ -243,7 +243,7 @@ int main(int argc, char* argv[]) {
 
       // BBP calculation and output to txt
       std::fstream output;
-      output.open("./out/output-NBuffer-1e7.txt", std::ios::out | std::ios::app);
+      output.open("./out/output-WBuffer-1e6.txt", std::ios::out | std::ios::app);
       double BBP_results;
         // different BBP formula depending if buffer is activated
       if (buffer_state) BBP_results = bandwidthBlockingProbabilityWBuffer(bitrate_count_total, buffer.elements, mean_weight_bitrate);
