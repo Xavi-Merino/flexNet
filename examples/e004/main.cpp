@@ -1,4 +1,16 @@
 #include "./src/offline_approach.cpp"
+/*********************************************************************************
+ * This is an allocation algorithm that follows the First Fit allocation
+ * policy and include the implementation of a infinite buffer that stores blocked
+ * connections and try to allocate them every time a departure occurs, also using
+ * First Fit. This policy always chooses the available slots with the lowest posible
+ * index to serve the connection request. If the required slot or group of slots
+ * is available, taking into account the spectrum contiguity and continuity
+ * constraints, it creates the connections and returns 'ALLOCATED' to indicate
+ * success; otherwise, it returns 'NOT_ALLOCATED' to indicate that the process
+ * failed and add it to the buffer (or keep in it if allocating from buffer)
+ **********************************************************************************/
+
 
 // ############################## Global Variables #################################
 // Queue for buffer

@@ -104,9 +104,7 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
   // Clear band_slot_indexes
   if (band_slot_indexes != NULL) delete(band_slot_indexes);
 
-  if (buffer_state){
-    // If not allocated add to back of buffer
-    
+  if (buffer_state){  
 
     // If the present connection IS coming from buffer, we poped it because was added to back and add to attempts counter
     if (allocating_from_buffer){
@@ -116,7 +114,7 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
     }
     // If the present connection isn't coming from buffer, add another try
     else {
-      buffer.addElement(buffer_element(SRC, DST, con.getId(), con.getBitrate(), con.getTimeConnection(), 1));
+      buffer.addElement(buffer_element(SRC, DST, con.getId(), con.getBitrate(), con.getTimeConnection()));
       buffer.pushed++;
     }
   }
