@@ -34,5 +34,7 @@ testing_random_variable:
       - build/test_random_variable*
     reports:
       junit: build/report_random_variable.xml
-      coverage_report: build/cov_random_variable.xml
+      coverage_report: 
+        coverage_format: cobertura
+        path:  build/cov_random_variable.xml
     expire_in: 1 day
