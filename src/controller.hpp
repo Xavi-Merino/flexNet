@@ -168,6 +168,16 @@ class Controller {
    */
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
 
+  /**
+   * @brief Set the Unassign Callback object
+   * This function sets an unassign callback to the simulation. It is called
+   * every time that a established connection is disconnected. It is useful to
+   * get the time between connection and disconnection of every connection
+   * request.
+   *
+   * @param callbackFunction a pointer to unnasign function
+   */
+
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                     Network *));
 
