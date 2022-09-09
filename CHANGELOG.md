@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2021-12-22
+### ADDED
+- A callback function after each disconnection.
+
+### FIXED
+
+- Example 001 fixed. Reset slots in each route.
+  
 ## [0.5.3] - 2022-05-19
 
 ### FIXED
@@ -136,5 +144,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.4.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.3.0...v0.4.0
 [0.4.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.0...v0.4.1
 [0.5.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.1...v0.5.0
+[0.5.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.0...v0.6.0
 [0.5.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.0...v0.5.1
 [0.5.2]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.1...v0.5.2
