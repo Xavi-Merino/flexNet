@@ -34,5 +34,7 @@ testing_bitrate:
       - build/test_bitrate*
     reports:
       junit: build/report_bitrate.xml
-      coverage_report: build/cov_bitrate.xml
+      coverage_report: 
+        coverage_format: cobertura
+        path: build/cov_bitrate.xml
     expire_in: 1 day
