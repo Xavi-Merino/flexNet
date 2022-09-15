@@ -39,6 +39,17 @@ Simulator sim;
 // debug
 // std::fstream outputTEST;
 
+// Variables for output of the time every connection was allocated from buffer
+std::fstream realloc_time;
+const char* fileName[50] = {"none",
+                    "./Rout/realloc1.txt","./Rout/realloc2.txt","./Rout/realloc3.txt","./Rout/realloc4.txt","./Rout/realloc5.txt","./Rout/realloc6.txt","./Rout/realloc7.txt","./Rout/realloc8.txt",
+                    "./Rout/realloc9.txt","./Rout/realloc10.txt","./Rout/realloc11.txt","./Rout/realloc12.txt","./Rout/realloc13.txt","./Rout/realloc14.txt","./Rout/realloc15.txt","./Rout/realloc16.txt",
+                    "./Rout/realloc17.txt","./Rout/realloc18.txt","./Rout/realloc19.txt","./Rout/realloc20.txt","./Rout/realloc21.txt","./Rout/realloc22.txt","./Rout/realloc23.txt","./Rout/realloc24.txt",
+                    "./Rout/realloc25.txt","./Rout/realloc26.txt","./Rout/realloc27.txt","./Rout/realloc28.txt","./Rout/realloc29.txt","./Rout/realloc30.txt","./Rout/realloc31.txt","./Rout/realloc32.txt",
+                    "./Rout/realloc33.txt","./Rout/realloc34.txt","./Rout/realloc35.txt","./Rout/realloc36.txt","./Rout/realloc37.txt","./Rout/realloc38.txt","./Rout/realloc39.txt","./Rout/realloc40.txt",
+                    "./Rout/realloc41.txt","./Rout/realloc42.txt","./Rout/realloc43.txt","./Rout/realloc44.txt","./Rout/realloc45.txt","./Rout/realloc46.txt","./Rout/realloc47.txt","./Rout/realloc48.txt",
+                    "./Rout/realloc49.txt"};
+
 // #################################################################################
 
 // Allocation function
@@ -125,7 +136,7 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
     if (!allocating_from_buffer){
       buffer.addElement(buffer_element(SRC, DST, con.getId(), con.getBitrate(), con.getTimeConnection()));
     }
-    // If the present connection IS coming from buffer, add another try
+    // If the present connection IS coming from buffer, add another attempt
     else {
       buffer.front()->current_attempts++;
     }
@@ -138,6 +149,8 @@ END_ALLOC_FUNCTION
 // Unalloc callback function
 BEGIN_UNALLOC_CALLBACK_FUNCTION {
   if (buffer.size() > 0){
+
+    // For simplicity
     buffer_element *front_queue = buffer.front();
 
     // Let the alloc function know we are allocating from buffer
@@ -149,12 +162,16 @@ BEGIN_UNALLOC_CALLBACK_FUNCTION {
       // Add departure to event routine
       sim.addDepartureEvent(front_queue->id);
 
-      // Time the connection was in queue
+      // Total time the connection was in queue
       buffer.mean_service_time += t - front_queue->time_arrival;
 
-      // We keep track of how many times was tried to be allocated
+      // We keep track of how many times attempted to be allocated from buffer
       buffer.mean_attempts += buffer.front()->current_attempts;
 
+      // We output the currrent time being allocated
+      realloc_time << t << "\n";
+      //std::cout << t << "\n";
+      
       // Element allocated so we poped it and delete() members
       delete(buffer.front()->bitRate);
       buffer.pop_front();
@@ -178,15 +195,14 @@ int main(int argc, char* argv[]) {
   //outputTEST.open("./out/outputTEST.txt", std::ios::out | std::ios::app);
 
   // Traffic load to use:
+    // Earlang parameters:
+      // First runs (1e6)
+    double  run[10] = {44.72, 89.44, 134.16, 178.88, 223.6, 268.32, 313.04, 357.76, 402.48, 447.2};
+      // Second runs (1e7)
+    //double  run[10] = {36};
 
-  // Earlang parameters:
-  // First runs (1e6)
-  double  run[10] = {44.72, 89.44, 134.16, 178.88, 223.6, 268.32, 313.04, 357.76, 402.48, 447.2};
-  // Second runs (1e7)
-  //double  run[10] = {36};
-
-  int times_goal = 50;
-  int times_current = 1;
+    int times_goal = 50;
+    int times_current = 1;
 
   // Run by order type (R: route, M: modulation, B: band)
   for (int o = 3; o < 4; o++){
@@ -223,39 +239,47 @@ int main(int argc, char* argv[]) {
     // Run by traffic load
     while (times_current < times_goal){
 
-      // Buffer state to console 
+      // Output of realloc time:
+      realloc_time.open(fileName[times_current], std::ios::out | std::ios::app);
+
+      // Buffer state to console (ON/OFF)
       if (buffer_state) std::cout << "Buffer:\t\t    ON\n";
       else std::cout << "Buffer:\t\t    OFF\n";
 
+      // Simulator object
       sim = Simulator(std::string("./networks/NSFNet.json"),                    // Network nodes and links
                       std::string("./networks/routes.json"),                    // Network Routes
                       std::string("./networks/bitrate_iroBand_CLSE.json"));     // BitRates and bands (eg. BPSK/C)
-            
+
+      // Assing alloc function   
       USE_ALLOC_FUNCTION(FirstFits, sim);
 
-      // Assing unalloc function if buffer is activated
+      // Assing unalloc function ONLY if buffer is activated
       if (buffer_state)
         USE_UNALLOC_FUNCTION(sim);
 
+      // Parameters
       sim.setGoalConnections(1e6);
       sim.setLambda(run[0]*times_current);
       sim.setMu(1);
       sim.init();
 
       // offline order by:
+        // o parameter defines the order to use
       pathsOffline = offlineApproachOrder(sim.getBitRates(), sim.getPaths(), o);
 
-      // Export as CSV
+      // Export routes as CSV
       // offlineApproachCSV(pathsOffline, o);
 
-      // set controller
+      // set controller (required for buffer)
       buffer_controller = sim.getController();
 
+      // Begin sim
       sim.run();
 
       // BBP calculation and output to txt
       std::fstream output;
-      output.open("./out/output-WBuffer-1e6.txt", std::ios::out | std::ios::app);
+      output.open("./out/output-WBuffer-1e6_segundaTIRADA.txt", std::ios::out | std::ios::app);
       double BBP_results;
         // different BBP formula depending if buffer is activated
       if (buffer_state) BBP_results = bandwidthBlockingProbabilityWBuffer(bitrate_count_total, buffer.elements, mean_weight_bitrate);
@@ -263,6 +287,8 @@ int main(int argc, char* argv[]) {
 
       resultsToFile(buffer_state, output, BBP_results, sim.getBlockingProbability(),
                     o, times_current, bitrate_count_blocked, buffer);
+
+      realloc_time.close();
 
       // ############################## DEBUG #################################
 /*
@@ -298,6 +324,8 @@ int main(int argc, char* argv[]) {
       }
 
       // ####################################################################################
+
+      // Traffic load increment
       times_current++;
     }
   }
