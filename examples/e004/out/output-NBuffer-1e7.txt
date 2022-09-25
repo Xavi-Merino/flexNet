@@ -1,6 +1,0 @@
-N/Buffer orden: 3, earlang: 1, BBP: 0, general blocking: 1e-07
-N/Buffer orden: 3, earlang: 2, BBP: 0, general blocking: 1e-07
-N/Buffer orden: 3, earlang: 3, BBP: 0, general blocking: 1e-07
-N/Buffer orden: 3, earlang: 4, BBP: 3.34967e-06, general blocking: 1.2e-06
-N/Buffer orden: 3, earlang: 5, BBP: 0.000178519, general blocking: 5.89e-05
-N/Buffer orden: 3, earlang: 6, BBP: 0.00281345, general blocking: 0.0009253

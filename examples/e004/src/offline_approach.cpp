@@ -185,8 +185,8 @@ void bandSliceParameters(int linkSize, int band, int **arr) {
     switch(band) {
         case 0:
             (*arr)[0] = 0;
-            (*arr)[1] = 343;
-            (*arr)[2] = 344;
+            (*arr)[1] = 319;
+            (*arr)[2] = 320;
             break;
         case 1:
             (*arr)[0] = 344;

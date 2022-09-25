@@ -42,13 +42,13 @@ Simulator sim;
 // Variables for output of the time every connection was allocated from buffer
 std::fstream realloc_time;
 const char* fileName[50] = {"none",
-                    "./Rout/realloc1.txt","./Rout/realloc2.txt","./Rout/realloc3.txt","./Rout/realloc4.txt","./Rout/realloc5.txt","./Rout/realloc6.txt","./Rout/realloc7.txt","./Rout/realloc8.txt",
-                    "./Rout/realloc9.txt","./Rout/realloc10.txt","./Rout/realloc11.txt","./Rout/realloc12.txt","./Rout/realloc13.txt","./Rout/realloc14.txt","./Rout/realloc15.txt","./Rout/realloc16.txt",
-                    "./Rout/realloc17.txt","./Rout/realloc18.txt","./Rout/realloc19.txt","./Rout/realloc20.txt","./Rout/realloc21.txt","./Rout/realloc22.txt","./Rout/realloc23.txt","./Rout/realloc24.txt",
-                    "./Rout/realloc25.txt","./Rout/realloc26.txt","./Rout/realloc27.txt","./Rout/realloc28.txt","./Rout/realloc29.txt","./Rout/realloc30.txt","./Rout/realloc31.txt","./Rout/realloc32.txt",
-                    "./Rout/realloc33.txt","./Rout/realloc34.txt","./Rout/realloc35.txt","./Rout/realloc36.txt","./Rout/realloc37.txt","./Rout/realloc38.txt","./Rout/realloc39.txt","./Rout/realloc40.txt",
-                    "./Rout/realloc41.txt","./Rout/realloc42.txt","./Rout/realloc43.txt","./Rout/realloc44.txt","./Rout/realloc45.txt","./Rout/realloc46.txt","./Rout/realloc47.txt","./Rout/realloc48.txt",
-                    "./Rout/realloc49.txt"};
+                    "./Rout/Wrealloc1.txt","./Rout/Wrealloc2.txt","./Rout/Wrealloc3.txt","./Rout/Wrealloc4.txt","./Rout/Wrealloc5.txt","./Rout/Wrealloc6.txt","./Rout/Wrealloc7.txt","./Rout/Wrealloc8.txt",
+                    "./Rout/Wrealloc9.txt","./Rout/Wrealloc10.txt","./Rout/Wrealloc11.txt","./Rout/Wrealloc12.txt","./Rout/Wrealloc13.txt","./Rout/Wrealloc14.txt","./Rout/Wrealloc15.txt","./Rout/Wrealloc16.txt",
+                    "./Rout/Wrealloc17.txt","./Rout/Wrealloc18.txt","./Rout/Wrealloc19.txt","./Rout/Wrealloc20.txt","./Rout/Wrealloc21.txt","./Rout/Wrealloc22.txt","./Rout/Wrealloc23.txt","./Rout/Wrealloc24.txt",
+                    "./Rout/Wrealloc25.txt","./Rout/Wrealloc26.txt","./Rout/Wrealloc27.txt","./Rout/Wrealloc28.txt","./Rout/Wrealloc29.txt","./Rout/Wrealloc30.txt","./Rout/Wrealloc31.txt","./Rout/Wrealloc32.txt",
+                    "./Rout/Wrealloc33.txt","./Rout/Wrealloc34.txt","./Rout/Wrealloc35.txt","./Rout/Wrealloc36.txt","./Rout/Wrealloc37.txt","./Rout/Wrealloc38.txt","./Rout/Wrealloc39.txt","./Rout/Wrealloc40.txt",
+                    "./Rout/Wrealloc41.txt","./Rout/Wrealloc42.txt","./Rout/Wrealloc43.txt","./Rout/Wrealloc44.txt","./Rout/Wrealloc45.txt","./Rout/Wrealloc46.txt","./Rout/Wrealloc47.txt","./Rout/Wrealloc48.txt",
+                    "./Rout/Wrealloc49.txt"};
 
 // #################################################################################
 
@@ -197,11 +197,11 @@ int main(int argc, char* argv[]) {
   // Traffic load to use:
     // Earlang parameters:
       // First runs (1e6)
-    double  run[10] = {44.72, 89.44, 134.16, 178.88, 223.6, 268.32, 313.04, 357.76, 402.48, 447.2};
+    //double  run[10] = {44.72, 89.44, 134.16, 178.88, 223.6, 268.32, 313.04, 357.76, 402.48, 447.2};
       // Second runs (1e7)
-    //double  run[10] = {36};
+    double  run[10] = {36};
 
-    int times_goal = 50;
+    int times_goal = 21;
     int times_current = 1;
 
   // Run by order type (R: route, M: modulation, B: band)
@@ -239,9 +239,6 @@ int main(int argc, char* argv[]) {
     // Run by traffic load
     while (times_current < times_goal){
 
-      // Output of realloc time:
-      realloc_time.open(fileName[times_current], std::ios::out | std::ios::app);
-
       // Buffer state to console (ON/OFF)
       if (buffer_state) std::cout << "Buffer:\t\t    ON\n";
       else std::cout << "Buffer:\t\t    OFF\n";
@@ -255,12 +252,16 @@ int main(int argc, char* argv[]) {
       USE_ALLOC_FUNCTION(FirstFits, sim);
 
       // Assing unalloc function ONLY if buffer is activated
-      if (buffer_state)
+      if (buffer_state){
         USE_UNALLOC_FUNCTION(sim);
 
+        // Output of realloc time:
+        realloc_time.open(fileName[times_current], std::ios::out | std::ios::app);
+      }
+
       // Parameters
-      sim.setGoalConnections(1e6);
-      sim.setLambda(run[0]*times_current);
+      sim.setGoalConnections(1e7);
+      sim.setLambda(144 + run[0]*times_current);
       sim.setMu(1);
       sim.init();
 
@@ -279,7 +280,7 @@ int main(int argc, char* argv[]) {
 
       // BBP calculation and output to txt
       std::fstream output;
-      output.open("./out/output-WBuffer-1e6_segundaTIRADA.txt", std::ios::out | std::ios::app);
+      output.open("./out/output-WBuffer-1e7.txt", std::ios::out | std::ios::app);
       double BBP_results;
         // different BBP formula depending if buffer is activated
       if (buffer_state) BBP_results = bandwidthBlockingProbabilityWBuffer(bitrate_count_total, buffer.elements, mean_weight_bitrate);
@@ -288,7 +289,7 @@ int main(int argc, char* argv[]) {
       resultsToFile(buffer_state, output, BBP_results, sim.getBlockingProbability(),
                     o, times_current, bitrate_count_blocked, buffer);
 
-      realloc_time.close();
+      if (buffer_state) realloc_time.close();
 
       // ############################## DEBUG #################################
 /*
