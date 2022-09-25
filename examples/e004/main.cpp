@@ -24,7 +24,7 @@ double bitrate_count_total[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 double bitrate_count_blocked[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 
 // Buffer state
-bool buffer_state = true;
+bool buffer_state = false;
 bool allocating_from_buffer = false;
 
 // Weight C+L+S+E:
@@ -280,7 +280,7 @@ int main(int argc, char* argv[]) {
 
       // BBP calculation and output to txt
       std::fstream output;
-      output.open("./out/output-WBuffer-1e7.txt", std::ios::out | std::ios::app);
+      output.open("./out/output-NBuffer-1e7.txt", std::ios::out | std::ios::app);
       double BBP_results;
         // different BBP formula depending if buffer is activated
       if (buffer_state) BBP_results = bandwidthBlockingProbabilityWBuffer(bitrate_count_total, buffer.elements, mean_weight_bitrate);
