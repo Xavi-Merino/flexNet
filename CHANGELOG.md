@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2021-12-22
+### FIXED
+- There was a bug that puts one blocked connection always. That was not significative in 1e6 events, but it was a bug.
+
+## [0.6.0] - 2021-12-22
+### ADDED
+- A callback function after each disconnection.
+
+### FIXED
+
+- Example 001 fixed. Reset slots in each route.
+  
+## [0.5.3] - 2022-05-19
+
+### FIXED
+ 
+- Changed the Agresti-Coull confidence interval's previously hardcoded solution only working for 95% confidence.
+
 ## [0.5.2] - 2022-03-21
 
 ### FIXED
@@ -132,3 +150,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.5.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.1...v0.5.0
 [0.5.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.0...v0.5.1
 [0.5.2]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.1...v0.5.2
+[0.5.3]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.2...v0.5.3
+[0.6.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.3...v0.6.0
+[0.6.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.6.0...v0.6.1

@@ -175,7 +175,7 @@ void Simulator::defaultValues() {
   this->seedSrc = 12345;
   this->seedDst = 12345;
   this->seedBitRate = 12345;
-  this->numberOfConnections = 0;
+  this->numberOfConnections = -1;
   this->numberOfEvents = 0;
   this->goalConnections = 10000;
   this->columnWidth = 10;
@@ -283,7 +283,7 @@ int Simulator::eventRoutine(void) {
     this->bitRate = bitRateVariable.getNextIntValue();
     this->rtnAllocation = this->controller->assignConnection(
         this->src, this->dst, this->bitRates[this->bitRate],
-        this->currentEvent.getIdConnection());
+        this->currentEvent.getIdConnection(), this->clock);
     if (this->rtnAllocation == ALLOCATED) {
       nextEventTime = this->clock + this->departVariable.getNextValue();
       for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
@@ -298,7 +298,8 @@ int Simulator::eventRoutine(void) {
       this->allocatedConnections++;
     }
   } else if (this->currentEvent.getType() == DEPARTURE) {
-    this->controller->unassignConnection(this->currentEvent.getIdConnection());
+    (this->controller->*(this->controller->unassignConnection))(
+        this->currentEvent.getIdConnection(), this->clock);
   }
   this->events.pop_front();
   return this->rtnAllocation;
@@ -319,6 +320,7 @@ void Simulator::init(void) {
                                this->numberOfConnections++));
   this->bitRates = this->bitRatesDefault;
   this->initZScore();
+  this->initZScoreEven();
 }
 
 void Simulator::run(void) {
@@ -358,11 +360,11 @@ double Simulator::agrestiCI() {
   double np = this->getAllocatedProbability();
   int n = this->numberOfConnections;
 
-  np = np * ((n * (this->allocatedConnections + 2)) /
-             (this->allocatedConnections * (n + 4)));
+  np = np * ((n * (this->allocatedConnections + (this->zScoreEven / 2))) /
+             (this->allocatedConnections * (n + this->zScoreEven)));
 
   double p = 1 - np;
-  double sd = sqrt((np * p) / (n + 4));
+  double sd = sqrt((np * p) / (n + this->zScoreEven));
 
   return this->zScore * sd;
 }
@@ -405,4 +407,18 @@ void Simulator::initZScore(void) {
     }
   }
   this->zScore = actual;
+}
+
+void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
+                                                             Network *)) {
+  this->controller->setUnassignCallback(callbackFunction);
+}
+
+void Simulator::initZScoreEven(void) {
+  double zEven = pow(this->zScore, 2);
+  zEven =
+      floorf(zEven * 1000) / 1000;  // Redondeo a la centesima, similar a error
+  zEven = ceil(zEven / 2) * 2;
+
+  this->zScoreEven = zEven;
 }

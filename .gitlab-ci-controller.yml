@@ -34,5 +34,7 @@ testing_controller:
       - build/test_controller*
     reports:
       junit: build/report_controller.xml
-      cobertura: build/cov_controller.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: build/cov_controller.xml
     expire_in: 1 day
