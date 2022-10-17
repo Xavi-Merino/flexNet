@@ -67,6 +67,7 @@ pages:
   - mkdir ../public/coverage-details
   - genhtml --prefix .  --ignore-errors source final.info --legend --title "commit SHA1" --output-directory=../public/coverage-details
   - cd ..
+  coverage: /s^\s*lines.*:\s*\d+.\d+\%/
   artifacts:
     paths:
     - public
