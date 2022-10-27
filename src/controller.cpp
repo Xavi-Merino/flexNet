@@ -6,14 +6,12 @@ Controller::Controller() {
   this->connections = std::vector<Connection>();
   this->network = nullptr;
   this->allocator = new Allocator;
-  this->unassignConnection = &Controller::unassignConnectionNormal;
 };
 
 Controller::Controller(Network *network) {
   this->network = network;
   this->connections = std::vector<Connection>();
   this->allocator = new Allocator;
-  this->unassignConnection = &Controller::unassignConnectionNormal;
 };
 
 Controller::~Controller() {
@@ -29,9 +27,8 @@ Controller::~Controller() {
 };
 
 allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
-                                              long long idConnection,
-                                              double time) {
-  Connection con = Connection(idConnection, time, &bitRate);
+                                              long long idConnection) {
+  Connection con = Connection(idConnection);
   this->rtnAllocation = this->allocator->exec(src, dst, bitRate, con);
   if (this->rtnAllocation == ALLOCATED) {
     this->connections.push_back(con);
@@ -44,28 +41,9 @@ allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
   return this->rtnAllocation;
 }
 
-int Controller::unassignConnectionNormal(long long idConnection, double time) {
+int Controller::unassignConnection(long long idConnection) {
   for (unsigned int i = 0; i < this->connections.size(); i++) {
     if (this->connections[i].id == idConnection) {
-      for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
-        for (unsigned int k = 0; k < this->connections[i].slots[j].size();
-             k++) {
-          this->network->unuseSlot(this->connections[i].links[j],
-                                   this->connections[i].slots[j][k]);
-        }
-      }
-      this->connections.erase(this->connections.begin() + i);
-      break;
-    }
-  }
-  return 0;
-}
-
-int Controller::unassignConnectionWCallback(long long idConnection,
-                                            double time) {
-  for (unsigned int i = 0; i < this->connections.size(); i++) {
-    if (this->connections[i].id == idConnection) {
-      this->unassignCallback(this->connections[i], time, this->network);
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
         for (unsigned int k = 0; k < this->connections[i].slots[j].size();
              k++) {
@@ -146,11 +124,4 @@ Allocator *Controller::getAllocator(void) { return this->allocator; }
 std::vector<std::vector<std::vector<std::vector<Link *>>>>
     *Controller::getPaths() {
   return &(this->path);
-}
-
-void Controller::setUnassignCallback(void (*callbackFunction)(Connection,
-                                                              double,
-                                                              Network *)) {
-  this->unassignConnection = &Controller::unassignConnectionWCallback;
-  this->unassignCallback = callbackFunction;
 }

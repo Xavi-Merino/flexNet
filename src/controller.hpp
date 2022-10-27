@@ -55,7 +55,7 @@ class Controller {
    * three states: ALLOCATED, NOT_ALLOCATED, N_A (not assigned).
    */
   allocationStatus assignConnection(int src, int dst, BitRate bitRate,
-                                    long long idConnection, double time);
+                                    long long idConnection);
   /**
    * @brief Unnasigns the requested connection making the resources that were
    * being used become available again. It deactivates the slots that were
@@ -65,7 +65,7 @@ class Controller {
    * identify the connection within the attribute connections.
    * @return int number zero if unsuccessful.
    */
-  int (Controller::*unassignConnection)(long long idConnection, double time);
+  int unassignConnection(long long idConnection);
   /**
    * @brief Sets the paths vector from the routes on the JSON file. From this
    file, the method creates the paths vector based on an array of routes. This
@@ -168,19 +168,12 @@ class Controller {
    */
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
 
-  void setUnassignCallback(void (*callbackFunction)(Connection, double,
-                                                    Network *));
-
  private:
   Network *network;
   Allocator *allocator;
   std::vector<std::vector<std::vector<std::vector<Link *>>>> path;
   std::vector<Connection> connections;
   allocationStatus rtnAllocation;
-
-  int unassignConnectionNormal(long long idConnection, double time);
-  int unassignConnectionWCallback(long long idConnection, double time);
-  void (*unassignCallback)(Connection c, double time, Network *n);
 };
 
 #endif
