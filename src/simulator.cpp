@@ -185,7 +185,7 @@ void Simulator::defaultValues() {
   this->seedSrc = 12345;
   this->seedDst = 12345;
   this->seedBitRate = 12345;
-  this->numberOfConnections = 0;
+  this->numberOfConnections = -1;
   this->numberOfEvents = 0;
   this->goalConnections = 10000;
   this->columnWidth = 10;
@@ -344,6 +344,19 @@ void Simulator::run(void) {
   }
 }
 
+void Simulator::addDepartureEvent(long long idConnection){
+  double nextEventTime = this->clock + this->departVariable.getNextValue();
+  for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
+        pos != this->events.rend(); pos++) {
+    if ((pos)->getTime() < nextEventTime) {
+      this->events.insert((pos).base(),
+                          Event(DEPARTURE, nextEventTime,
+                                idConnection));
+      break;
+    }
+  }
+}
+
 unsigned int Simulator::getTimeDuration(void) {
   return static_cast<unsigned int>(this->timeDuration.count());
 }
@@ -428,6 +441,13 @@ void Simulator::initZScoreEven(void) {
   this->zScoreEven = zEven;
 }
 
+void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
+                                                             Network *)) {
+  this->controller->setUnassignCallback(callbackFunction);
+}
+
 std::vector<BitRate> Simulator::getBitRates(void){ return this->bitRates; }
 
-std::vector<std::vector<std::vector<std::vector<Link *>>>> *Simulator::getPaths() { return this->controller->getPaths(); };
+std::vector<std::vector<std::vector<std::vector<Link *>>>> *Simulator::getPaths() { return this->controller->getPaths(); }
+
+Controller *Simulator::getController() {return this->controller; }

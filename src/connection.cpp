@@ -22,3 +22,12 @@ void Connection::addLink(int idLink, int fromSlot, int toSlot) {
     j++;
   }
 }
+
+std::vector<int> Connection::getLinks(void) { return this->links; }
+std::vector<std::vector<int> > Connection::getSlots(void) {
+  return this->slots;
+}
+
+double Connection::getTimeConnection(void) { return this->timeConnection; }
+BitRate *Connection::getBitrate(void) { return this->bitRate; }
+long long Connection::getId(void) { return this->id; }

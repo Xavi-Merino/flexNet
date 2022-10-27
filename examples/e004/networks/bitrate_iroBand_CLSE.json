@@ -1,0 +1,417 @@
+{
+    "10": [
+        {
+            "16QAM-C": {
+                "slots": 1,
+                "reach": 1700 
+            },
+
+            "8QAM-C": {
+                "slots": 1,
+                "reach": 3500           
+            },
+
+            "QPSK-C": {
+                "slots": 1,
+                "reach": 6500
+            },
+
+            "BPSK-C": {
+                "slots": 1,
+                "reach": 13000
+            },
+
+            "16QAM-L": {
+                "slots": 1,
+                "reach": 1900
+            },
+
+            "8QAM-L": {
+                "slots": 1,
+                "reach": 3900
+            },
+
+            "QPSK-L": {
+                "slots": 1,
+                "reach": 7200           
+            },
+
+            "BPSK-L": {
+                "slots": 1,
+                "reach": 14400
+            },
+
+            "16QAM-S": {
+                "slots": 1,
+                "reach": 1400
+            },
+
+            "8QAM-S": {
+                "slots": 1,
+                "reach": 2900
+            },
+
+            "QPSK-S": {
+                "slots": 1,
+                "reach": 5100
+            },
+
+            "BPSK-S": {
+                "slots": 1,
+                "reach": 10200
+            },
+
+            "16QAM-E": {
+                "slots": 1,
+                "reach": 400
+            },
+
+            "8QAM-E": {
+                "slots": 1,
+                "reach": 900
+            },
+ 
+            "QPSK-E": {
+                "slots": 1,
+                "reach": 1500  
+            },
+
+            "BPSK-E": {
+                "slots": 1,
+                "reach": 3100
+            }
+        }
+    ],
+    "40": [
+        {
+            "16QAM-C": {
+                "slots": 1,
+                "reach": 1700 
+            },
+
+            "8QAM-C": {
+                "slots": 1,
+                "reach": 3500
+            },
+
+            "QPSK-C": {
+                "slots": 1,
+                "reach": 6500
+            },
+
+            "BPSK-C": {
+                "slots": 2,
+                "reach": 13000
+            },
+
+            "16QAM-L": {
+                "slots": 1,
+                "reach": 1900 
+            },
+
+            "8QAM-L": {
+                "slots": 1,
+                "reach": 3900
+            },
+
+            "QPSK-L": {
+                "slots": 1,
+                "reach": 7200           
+            },
+
+            "BPSK-L": {
+                "slots": 2,
+                "reach": 14400
+            },
+
+            "16QAM-S": {
+                "slots": 1,
+                "reach": 1400
+            },
+
+            "8QAM-S": {
+                "slots": 1,
+                "reach": 2900
+            },
+
+            "QPSK-S": {
+                "slots": 1,
+                "reach": 5100
+            },
+
+            "BPSK-S": {
+                "slots": 2,
+                "reach": 10200
+            },
+
+            "16QAM-E": {
+                "slots": 1,
+                "reach": 400
+            },
+
+            "8QAM-E": {
+                "slots": 1,
+                "reach": 900
+            },
+
+            "QPSK-E": {
+                "slots": 1,
+                "reach": 1500       
+            },
+
+            "BPSK-E": {
+                "slots": 2,
+                "reach": 3100
+            }
+        }
+    ],
+    "100": [
+        {
+            "16QAM-C": {
+                "slots": 2,
+                "reach": 1700 
+            },
+
+            "8QAM-C": {
+                "slots": 2,
+                "reach": 3500
+            },
+
+            "QPSK-C": {
+                "slots": 3,
+                "reach": 6500
+            },
+
+            "BPSK-C": {
+                "slots": 5,
+                "reach": 13000
+            },
+
+            "16QAM-L": {
+                "slots": 2,
+                "reach": 1900 
+            },
+
+            "8QAM-L": {
+                "slots": 2,
+                "reach": 3900
+            },
+
+            "QPSK-L": {
+                "slots": 3,
+                "reach": 7200          
+            },
+
+            "BPSK-L": {
+                "slots": 5,
+                "reach": 14400
+            },
+
+            "16QAM-S": {
+                "slots": 2,
+                "reach": 1400 
+            },
+
+            "8QAM-S": {
+                "slots": 2,
+                "reach": 2900
+            },
+
+            "QPSK-S": {
+                "slots": 3,
+                "reach": 5100
+            },
+
+            "BPSK-S": {
+                "slots": 5,
+                "reach": 10200
+            },
+
+            "16QAM-E": {
+                "slots": 2,
+                "reach": 400
+            },
+            
+            "8QAM-E": {
+                "slots": 2,
+                "reach": 900 
+            },
+
+            "QPSK-E": {
+                "slots": 3,
+                "reach": 1500         
+            },
+            
+            "BPSK-E": {
+                "slots": 5,
+                "reach": 3100
+            }
+        }
+    ],
+    "400": [
+        {
+            "16QAM-C": {
+                "slots": 5,
+                "reach": 1700 
+            },
+
+            "8QAM-C": {
+                "slots": 6,
+                "reach": 3500
+            },
+
+            "QPSK-C": {
+                "slots": 9,
+                "reach": 6500
+            },
+
+            "BPSK-C": {
+                "slots": 18,
+                "reach": 13000
+            },
+
+            "16QAM-L": {
+                "slots": 5,
+                "reach": 1900 
+            },
+
+            "8QAM-L": {
+                "slots": 6,
+                "reach": 3900
+            },
+
+            "QPSK-L": {
+                "slots": 9,
+                "reach": 7200           
+            },
+
+            "BPSK-L": {
+                "slots": 18,
+                "reach": 14400
+            },
+
+            "16QAM-S": {
+                "slots": 5,
+                "reach": 1400 
+            },
+
+            "8QAM-S": {
+                "slots": 6,
+                "reach": 2900
+            },
+
+            "QPSK-S": {
+                "slots": 9,
+                "reach": 5100
+            },
+
+            "BPSK-S": {
+                "slots": 18,
+                "reach": 10200
+            },
+
+            "16QAM-E": {
+                "slots": 5,
+                "reach": 400 
+            },
+
+            "8QAM-E": {
+                "slots": 6,
+                "reach": 900 
+            },
+
+            "QPSK-E": {
+                "slots": 9,
+                "reach": 1500     
+            },
+            
+            "BPSK-E": {
+                "slots": 18,
+                "reach": 3100
+            }
+        }
+    ],
+    "1000": [
+        {
+            "16QAM-C": {
+                "slots": 11,
+                "reach": 1700 
+            },
+
+            "8QAM-C": {
+                "slots": 15,
+                "reach": 3500
+            },
+
+            "QPSK-C": {
+                "slots": 22,
+                "reach": 6500
+            },
+
+            "BPSK-C": {
+                "slots": 44,
+                "reach": 13000
+            },
+
+            "16QAM-L": {
+                "slots": 11,
+                "reach": 1900 
+            },
+
+            "8QAM-L": {
+                "slots": 15,
+                "reach": 3900
+            },
+
+            "QPSK-L": {
+                "slots": 22,
+                "reach": 7200           
+            },
+
+            "BPSK-L": {
+                "slots": 44,
+                "reach": 14400
+            },
+
+            "16QAM-S": {
+                "slots": 11,
+                "reach": 1400
+            },
+
+            "8QAM-S": {
+                "slots": 15,
+                "reach": 2900
+            },
+
+            "QPSK-S": {
+                "slots": 22,
+                "reach": 5100
+            },
+
+            "BPSK-S": {
+                "slots": 44,
+                "reach": 10200
+            },
+
+            "16QAM-E": {
+                "slots": 11,
+                "reach": 400 
+            },
+
+            "8QAM-E": {
+                "slots": 15,
+                "reach": 900
+            },
+            
+            "QPSK-E": {
+                "slots": 22,
+                "reach": 1500         
+            },
+
+            "BPSK-E": {
+                "slots": 44,
+                "reach": 3100
+            }
+        }
+    ]
+}

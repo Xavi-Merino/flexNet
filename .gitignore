@@ -1,2 +1,8 @@
 build/*
 documentation
+examples/BDM/multiband_base.cpp
+examples/BDM/multiband.cpp
+examples/BDM/*.txt
+examples/BDM/*.exe
+examples/BDM/*.o
+examples/BDM/*.csv

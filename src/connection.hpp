@@ -42,6 +42,12 @@ class Connection {
    */
   void addLink(int idLink, int fromSlot, int toSlot);
 
+  std::vector<int> getLinks(void);
+  std::vector<std::vector<int> > getSlots(void);
+  double getTimeConnection(void);
+  BitRate *getBitrate(void);
+  long long getId(void);
+
  private:
   long long id;
   std::vector<int> links;

@@ -8,6 +8,14 @@ BitRate::BitRate(double bitRate) {
   this->bitRateStr = std::to_string(bitRate);
 }
 
+BitRate::BitRate(const BitRate &bitRate){
+  this->bitRate = bitRate.bitRate;
+  this->bitRateStr = bitRate.bitRateStr;
+  this->modulation = bitRate.modulation;
+  this->reach = bitRate.reach;
+  this->slots = bitRate.slots;
+}
+
 BitRate::~BitRate() {}
 
 void BitRate::addModulation(std::string modulation, int slots, double reach) {
