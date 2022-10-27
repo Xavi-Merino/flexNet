@@ -1,9 +1,11 @@
 #include "connection.hpp"
 
-Connection::Connection(long long id) {
+Connection::Connection(long long id, double time, BitRate *bitRate) {
   this->id = id;
   this->links = std::vector<int>();
   this->slots = std::vector<std::vector<int> >();
+  this->timeConnection = time;
+  this->bitRate = bitRate;
 }
 
 Connection::~Connection() {}

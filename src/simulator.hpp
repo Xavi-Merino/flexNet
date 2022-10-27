@@ -30,14 +30,23 @@
 #define NUMBER_OF_LINKS(route) (*this->path)[src][dst][route].size()
 #define ALLOC_SLOTS(link, from, to) con.addLink(link, from, from + to);
 
+#define BEGIN_UNALLOC_CALLBACK_FUNCTION \
+  void _f_unallocate_function(Connection c, double t, Network *n)
+#define END_UNALLOC_CALLBACK_FUNCTION  // end function
+#define USE_UNALLOC_FUNCTION(simObject) \
+  simObject.setUnassignCallback(_f_unallocate_function);
+#define CONNECTION c
+#define TIME_DISCONNECTION t
+#define NETWORK n
+
 #include <chrono>
 #include <iomanip>
 #include <list>
 
-#include "controller.hpp"
-#include "event.hpp"
-#include "exp_variable.hpp"
-#include "uniform_variable.hpp"
+// #include "controller.hpp"
+// #include "event.hpp"
+// #include "exp_variable.hpp"
+// #include "uniform_variable.hpp"
 /**
  * @brief Class Simulator, represents network execution.
  */
@@ -53,7 +62,7 @@ class Simulator {
    *
    * @param networkFilename Source of network file. This file is the
    * configuration of the network, nodes information (id, destiny, source,
-   * length, slots).
+   * lenght, slots).
    * @param pathFilename Source of path file. This file contains the routes
    * between nodes.
    * @param networkType (int) that defines the type of network, eg. EON (equal 1), SDM (equal 2).
@@ -65,7 +74,7 @@ class Simulator {
    *
    * @param networkFilename Source of network file. This file is the
    * configuration of the network, nodes information (id, destiny, source,
-   * length, slots).
+   * lenght, slots).
    * @param pathFilename Source of path file. This file contains the routes
    * between nodes.
    * @param bitrateFilename Source of bit rates file. This file contains the
@@ -202,9 +211,9 @@ class Simulator {
    * @brief Wald Confidence Interval
    * The most basic confidence interval.
    *
-   * \f{eqnarray*}{
-          \pm z \cdot \sqrt{\frac{p^\^ \cdot (1-p^\^)}{n}}
-     \f}
+   * \f[
+          \pm z \cdot \sqrt{\frac{\hat{p} \cdot
+   (1-\hat{p})}{n}} \f]
    *
    * @return double The Wald confidence interval.
    */
@@ -213,14 +222,14 @@ class Simulator {
   /**
    * @brief Agresti-Coull Confidence Interval
    *
-   * \f{eqnarray*}{
-          \pm z \cdot \sqrt{\frac{p^~ \cdot (1-p^~)}{n}}
-     \f}
+   * \f[
+          \pm z \cdot \sqrt{\frac{\tilde{p} \cdot (1-\tilde{p})}{n}}
+     \f]
    *
    * where
    *
    * \f{eqnarray*}{
-          p^~ = \frac{X+2}{n+4}
+          \tilde{p} = \frac{X+2}{n+4}
      \f}
    *
    *
@@ -232,7 +241,8 @@ class Simulator {
    * @brief Wilson Confidence Interval
    *
    * \f{eqnarray*}{
-          \pm  \frac{\sqrt{\frac{p^\^ \cdot (1-p^\^)}{n} + \frac{z^2}{4n^2}}}{1
+          \pm  \frac{\sqrt{\frac{\hat{p} \cdot (1-\hat{p})}{n} +
+   \frac{z^2}{4n^2}}}{1
    + \frac{z^2}{n}} \f}
    *
    *
