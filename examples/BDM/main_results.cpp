@@ -1,5 +1,33 @@
 #include "./src/variants.cpp"
 
+/*********************************************************************************
+ * This is an allocation algorithm that replicates the results from the article:
+ * "Heuristic Approaches for Dynamic Provisioning in Multi-Band Elastic Optical Networks"
+ * Three are the algorithm proposed: V1, V2, and V3. Compared to RBMSA and RMBSA
+ * Reference:
+ * https://ieeexplore.ieee.org/document/9632602
+ **********************************************************************************/
+
+// ############################## Set up simulation #################################
+
+  // Set true one at a time!
+  // Variant 1
+  bool v1 = false;
+  double median_v1;
+
+  // Variant 2
+  bool v2 = false;
+  double longest_shortest;
+
+  // Variant 3
+  bool v3 = false;
+  double median_v3;
+
+  // RBMSA/RMBSA/ResRBMSA = True if all other are false
+  // If RBMSA set "order" = 0
+  // If RMBSA set "order" = 1
+  // If ResRBMSA set "order" = 2
+
 // ############################## Global Variables #################################
 
 // Number of connections
@@ -23,22 +51,9 @@ double mean_weight_bitrate[5] = {1.0, 1.83, 3.5, 13.33, 32.83};
   std::vector<std::vector<std::vector<std::vector<AuxRoute *>>>> pathsOffline_set3;
   std::vector<std::vector<std::vector<std::vector<AuxRoute *>>>> pathsOffline_set4;
 
-  // Set true one at a time!
-  // Variant 1
-  bool v1 = false;
-  double median_v1;
-
-  // Variant 2
-  bool v2 = true;
-  double longest_shortest;
-
-  // Variant 3
-  bool v3 = false;
-  double median_v3;
-
 // #################################################################################
 
-// Allocation function (To compare: RBMSA, RMBSA)
+// Allocation function (To compare: RBMSA/RMBSA/ResRBMSA)
 BEGIN_ALLOC_FUNCTION(FirstFit) {
 
   int currentNumberSlots;
@@ -368,7 +383,8 @@ int main(int argc, char* argv[]) {
   std::string filename;
 
   // Run by order type (R: route, M: modulation, B: band)
-  for (int order = 1; order < 2; order++){
+  // Order 0 = RBMSA, Order 1 = RMBSA, Order 2 = ResRBMSA
+  for (int order = 0; order < 1; order++){
     // Inform to console order type running
     switch (order)
     {
