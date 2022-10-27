@@ -62,7 +62,7 @@ class Simulator {
    *
    * @param networkFilename Source of network file. This file is the
    * configuration of the network, nodes information (id, destiny, source,
-   * lenght, slots).
+   * length, slots).
    * @param pathFilename Source of path file. This file contains the routes
    * between nodes.
    * @param networkType (int) that defines the type of network, eg. EON (equal 1), SDM (equal 2).
@@ -74,7 +74,7 @@ class Simulator {
    *
    * @param networkFilename Source of network file. This file is the
    * configuration of the network, nodes information (id, destiny, source,
-   * lenght, slots).
+   * length, slots).
    * @param pathFilename Source of path file. This file contains the routes
    * between nodes.
    * @param bitrateFilename Source of bit rates file. This file contains the

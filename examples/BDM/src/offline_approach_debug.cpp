@@ -1,4 +1,4 @@
-#include "./buffer.cpp"
+#include "aux_route.cpp"
 
 std::map<std::string, int> bands { { "C", 0 }, { "L", 1 }, { "S", 2 }, { "E", 3 }};
 
@@ -51,7 +51,7 @@ std::vector<std::vector<std::vector<std::vector<AuxRoute *>>>> offlineApproachOr
                             std::string band = modulation_and_band.substr(0, modulation_and_band.find('-'));
                             
                             // Select the bands we want to work..in this case only C:
-                            if (bands[band] != 0) continue;
+                            // if (bands[band] != 0) continue;
 
                             pathsOffline[b][s][d].push_back(new AuxRoute((*pathsNetwork)[s][d][r],
                                                     bitRates[b].getNumberOfSlots(m),
@@ -73,25 +73,10 @@ std::vector<std::vector<std::vector<std::vector<AuxRoute *>>>> offlineApproachOr
                     std::sort(pathsOffline[b][s][d].begin(), pathsOffline[b][s][d].end(), RMB);
                     break;
                 case 1:
-                    std::sort(pathsOffline[b][s][d].begin(), pathsOffline[b][s][d].end(), BMR);
-                    break;
-                case 2:
-                    std::sort(pathsOffline[b][s][d].begin(), pathsOffline[b][s][d].end(), BRM);
-                    break;
-                case 3:
                     std::sort(pathsOffline[b][s][d].begin(), pathsOffline[b][s][d].end(), RBM);
                     break;
-                case 4:
-                    std::sort(pathsOffline[b][s][d].begin(), pathsOffline[b][s][d].end(), MRB);
-                    break;
-                case 5:
+                case 2:
                     std::sort(pathsOffline[b][s][d].begin(), pathsOffline[b][s][d].end(), comByResource);
-                    break;
-                case 6:
-                    std::sort(pathsOffline[b][s][d].begin(), pathsOffline[b][s][d].end(), MBR);
-                    break;
-                case 7:
-                    std::sort(pathsOffline[b][s][d].begin(), pathsOffline[b][s][d].end(), comByResourceModulationBand);
                     break;
                 }
             }
@@ -112,32 +97,12 @@ void offlineApproachCSV(std::vector<std::vector<std::vector<std::vector<AuxRoute
         fout.open("RMB_table.csv", std::ios::out | std::ios::app);
         break;
     case 1:
-        remove( "BMR_table.csv");
-        fout.open("BMR_table.csv", std::ios::out | std::ios::app);
-        break;
-    case 2:
-        remove( "BRM_table.csv");
-        fout.open("BRM_table.csv", std::ios::out | std::ios::app);
-        break;
-    case 3:
-        remove( "RBM_table.csv");
-        fout.open("RBM_table.csv", std::ios::out | std::ios::app);
-        break;
-    case 4:
-        remove( "MRB_table.csv");
-        fout.open("MRB_table.csv", std::ios::out | std::ios::app);
-        break;
-    case 5:
         remove( "RBMSA_table.csv");
         fout.open("RBMSA_table.csv", std::ios::out | std::ios::app);
         break;
-    case 6:
-        remove( "MBR_table.csv");
-        fout.open("MBR_table.csv", std::ios::out | std::ios::app);
-        break;
-    case 7:
-        remove( "RBMSA20_table.csv");
-        fout.open("RBMSA20_table.csv", std::ios::out | std::ios::app);
+    case 2:
+        remove( "ResRBMSA_table.csv");
+        fout.open("ResRBMSA_table.csv", std::ios::out | std::ios::app);
         break;
     }
     // File header
@@ -185,23 +150,23 @@ void bandSliceParameters(int linkSize, int band, int **arr) {
     switch(band) {
         case 0:
             (*arr)[0] = 0;
-            (*arr)[1] = 319;
-            (*arr)[2] = 320;
+            (*arr)[1] = 9;
+            (*arr)[2] = 10;
             break;
         case 1:
-            (*arr)[0] = 344;
-            (*arr)[1] = 823;
-            (*arr)[2] = 480;
+            (*arr)[0] = 10;
+            (*arr)[1] = 18;
+            (*arr)[2] = 9;
             break;
         case 2:
-            (*arr)[0] = 824;
-            (*arr)[1] = 1583;
-            (*arr)[2] = 760;
+            (*arr)[0] = 19;
+            (*arr)[1] = 25;
+            (*arr)[2] = 7;
             break;
         case 3:
-            (*arr)[0] = 1584;
-            (*arr)[1] = 2719;
-            (*arr)[2] = 1136;
+            (*arr)[0] = 26;
+            (*arr)[1] = 30;
+            (*arr)[2] = 5;
             break;
     }
     return;
@@ -235,114 +200,15 @@ double bandwidthBlockingProbability(double bitrate_count_total[5],
     return (BBP/total_weight);
 }
 
-// Calculate BBP w/buffer
-double bandwidthBlockingProbabilityWBuffer(double bitrate_count_total[5], 
-                                           std::deque<buffer_element> buffer,
-                                           double mean_weight_bitrate[5])
-    {
-    double BBP = 0;
-    double BP = 0;
-    double total_weight = 0;
-
-    double count_blocked[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
-
-    for (int i = 0; i < buffer.size(); i++){
-        count_blocked[bitRates_map[buffer[i].bitRate->getBitRate()]] += 1;
-    }
-
-    for (int b = 0; b < 5; b++){
-        BP = count_blocked[b] / bitrate_count_total[b];
-        BBP += mean_weight_bitrate[b] * BP;
-        total_weight += mean_weight_bitrate[b];
-    }
-
-    return (BBP/total_weight);
-}
-
-double bandwidthBlockingProbabilityWBufferV3(double bitrate_count_total[5], 
-                                           std::priority_queue<buffer_element> buffer,
-                                           double mean_weight_bitrate[5])
-    {
-    double BBP = 0;
-    double BP = 0;
-    double total_weight = 0;
-
-    double count_blocked[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
-
-    for (int i = 0; i < buffer.size(); i++){
-        count_blocked[bitRates_map[buffer.top().bitRate->getBitRate()]] += 1;
-        buffer.pop();
-    }
-
-    for (int b = 0; b < 5; b++){
-        BP = count_blocked[b] / bitrate_count_total[b];
-        BBP += mean_weight_bitrate[b] * BP;
-        total_weight += mean_weight_bitrate[b];
-    }
-
-    return (BBP/total_weight);
-}
-
 // Result to TXT
-void resultsToFile(bool buffer_state, std::fstream &output, double BBP, double BP, int number_connections,
-                   int order, int earlang_index, int earlang, double bitrate_count_blocked[5], Buffer buffer)
+void resultsToFile(std::fstream &output, double BBP, double BP, int number_connections,
+                   int order, int earlang_index, int earlang, double bitrate_count_blocked[5])
 {
-    double avgAttempts = buffer.mean_attempts/buffer.poped;
-    double avgService = buffer.mean_service_time/buffer.poped;
-    double avgSize = buffer.mean_size_time/buffer.last_time;
-
-    switch (buffer_state){
-        case false:
-            // output info to txt:
-            output << "N/Buffer orden: " << order 
-                    << ", earlang index: " << earlang_index
-                    << ", earlang: " << earlang
-                    << ", general blocking: " << BP 
-                    << '\n';
-            break;
-        case true:
-            if (buffer.size() == 0) std::cout << "\nNo elements in buffer! :P\n";
-            // output info to txt:
-            output << "W/Buffer orden: " << order 
-                    << ", earlang index: " << earlang_index
-                    << ", earlang: " << earlang
-                    << ", BBP: " << BBP 
-                    << ", general blocking: " << (buffer.size()/(number_connections)) 
-                    << ", general blocking (original): " << BP
-                    << ", buffer size: " << buffer.size() 
-                    << ", reallocated: " << buffer.poped 
-                    << ", Average try per allocated element: " << avgAttempts
-                    << ", Average service time: " << avgService
-                    << ", Average buffer size: " << avgSize
-                    << '\n';
-            break;
-        }
-}
-
-void resultsToFileV3(bool buffer_state, std::fstream &output, double BBP, double BP,
-                   int order, int earlang, int poped, std::priority_queue<buffer_element> buffer, 
-                   float tried_times, double bitrate_count_blocked[5])
-{
-    switch (buffer_state){
-        case false:
-            // output info to txt:
-            output << "N/Buffer orden: " << order 
-                    << ", earlang: " << earlang 
-                    << ", BBP: " << BBP 
-                    << ", general blocking: " << BP 
-                    << '\n';
-            break;
-        case true:
-            if (buffer.size() == 0) std::cout << "\nNo elements in buffer! :P\n";
-            // output info to txt:
-            output << "W/Buffer orden: " << order 
-                    << ", earlang: " << earlang << ", BBP: " << BBP 
-                    << ", general blocking: " << (buffer.size()/(1e6)) 
-                    << ", general blocking (original): " << BP
-                    << ", buffer size: " << buffer.size() 
-                    << ", reallocated: " << poped 
-                    << ", Average try per allocated element: " << tried_times 
-                    << '\n';
-            break;
-        }
+    // output info to txt:
+    output << "N/Buffer orden: " << order 
+            << ", earlang index: " << earlang_index
+            << ", earlang: " << earlang
+            << ", BBP: " << BBP 
+            << ", general blocking: " << BP 
+            << '\n';
 }

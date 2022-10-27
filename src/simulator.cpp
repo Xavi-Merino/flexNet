@@ -185,7 +185,7 @@ void Simulator::defaultValues() {
   this->seedSrc = 12345;
   this->seedDst = 12345;
   this->seedBitRate = 12345;
-  this->numberOfConnections = 0;
+  this->numberOfConnections = -1;
   this->numberOfEvents = 0;
   this->goalConnections = 10000;
   this->columnWidth = 10;

@@ -13,6 +13,10 @@
 
 
 // ############################## Global Variables #################################
+
+// Number of connections
+int number_connections = 1e7;
+
 // Queue for buffer
 Buffer buffer;
 
@@ -24,7 +28,7 @@ double bitrate_count_total[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 double bitrate_count_blocked[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 
 // Buffer state
-bool buffer_state = false;
+bool buffer_state = true;
 bool allocating_from_buffer = false;
 
 // Weight C+L+S+E:
@@ -42,13 +46,13 @@ Simulator sim;
 // Variables for output of the time every connection was allocated from buffer
 std::fstream realloc_time;
 const char* fileName[50] = {"none",
-                    "./Rout/Wrealloc1.txt","./Rout/Wrealloc2.txt","./Rout/Wrealloc3.txt","./Rout/Wrealloc4.txt","./Rout/Wrealloc5.txt","./Rout/Wrealloc6.txt","./Rout/Wrealloc7.txt","./Rout/Wrealloc8.txt",
-                    "./Rout/Wrealloc9.txt","./Rout/Wrealloc10.txt","./Rout/Wrealloc11.txt","./Rout/Wrealloc12.txt","./Rout/Wrealloc13.txt","./Rout/Wrealloc14.txt","./Rout/Wrealloc15.txt","./Rout/Wrealloc16.txt",
-                    "./Rout/Wrealloc17.txt","./Rout/Wrealloc18.txt","./Rout/Wrealloc19.txt","./Rout/Wrealloc20.txt","./Rout/Wrealloc21.txt","./Rout/Wrealloc22.txt","./Rout/Wrealloc23.txt","./Rout/Wrealloc24.txt",
-                    "./Rout/Wrealloc25.txt","./Rout/Wrealloc26.txt","./Rout/Wrealloc27.txt","./Rout/Wrealloc28.txt","./Rout/Wrealloc29.txt","./Rout/Wrealloc30.txt","./Rout/Wrealloc31.txt","./Rout/Wrealloc32.txt",
-                    "./Rout/Wrealloc33.txt","./Rout/Wrealloc34.txt","./Rout/Wrealloc35.txt","./Rout/Wrealloc36.txt","./Rout/Wrealloc37.txt","./Rout/Wrealloc38.txt","./Rout/Wrealloc39.txt","./Rout/Wrealloc40.txt",
-                    "./Rout/Wrealloc41.txt","./Rout/Wrealloc42.txt","./Rout/Wrealloc43.txt","./Rout/Wrealloc44.txt","./Rout/Wrealloc45.txt","./Rout/Wrealloc46.txt","./Rout/Wrealloc47.txt","./Rout/Wrealloc48.txt",
-                    "./Rout/Wrealloc49.txt"};
+                    "./Rout/EUROCORE_RSArealloc1.txt","./Rout/EUROCORE_RSArealloc2.txt","./Rout/EUROCORE_RSArealloc3.txt","./Rout/EUROCORE_RSArealloc4.txt","./Rout/EUROCORE_RSArealloc5.txt","./Rout/EUROCORE_RSArealloc6.txt","./Rout/EUROCORE_RSArealloc7.txt","./Rout/EUROCORE_RSArealloc8.txt",
+                    "./Rout/EUROCORE_RSArealloc9.txt","./Rout/EUROCORE_RSArealloc10.txt","./Rout/EUROCORE_RSArealloc11.txt","./Rout/EUROCORE_RSArealloc12.txt","./Rout/EUROCORE_RSArealloc13.txt","./Rout/EUROCORE_RSArealloc14.txt","./Rout/EUROCORE_RSArealloc15.txt","./Rout/EUROCORE_RSArealloc16.txt",
+                    "./Rout/EUROCORE_RSArealloc17.txt","./Rout/EUROCORE_RSArealloc18.txt","./Rout/EUROCORE_RSArealloc19.txt","./Rout/EUROCORE_RSArealloc20.txt","./Rout/EUROCORE_RSArealloc21.txt","./Rout/EUROCORE_RSArealloc22.txt","./Rout/EUROCORE_RSArealloc23.txt","./Rout/EUROCORE_RSArealloc24.txt",
+                    "./Rout/EUROCORE_RSArealloc25.txt","./Rout/EUROCORE_RSArealloc26.txt","./Rout/EUROCORE_RSArealloc27.txt","./Rout/EUROCORE_RSArealloc28.txt","./Rout/EUROCORE_RSArealloc29.txt","./Rout/EUROCORE_RSArealloc30.txt","./Rout/EUROCORE_RSArealloc31.txt","./Rout/EUROCORE_RSArealloc32.txt",
+                    "./Rout/EUROCORE_RSArealloc33.txt","./Rout/EUROCORE_RSArealloc34.txt","./Rout/EUROCORE_RSArealloc35.txt","./Rout/EUROCORE_RSArealloc36.txt","./Rout/EUROCORE_RSArealloc37.txt","./Rout/EUROCORE_RSArealloc38.txt","./Rout/EUROCORE_RSArealloc39.txt","./Rout/EUROCORE_RSArealloc40.txt",
+                    "./Rout/EUROCORE_RSArealloc41.txt","./Rout/EUROCORE_RSArealloc42.txt","./Rout/EUROCORE_RSArealloc43.txt","./Rout/EUROCORE_RSArealloc44.txt","./Rout/EUROCORE_RSArealloc45.txt","./Rout/EUROCORE_RSArealloc46.txt","./Rout/EUROCORE_RSArealloc47.txt","./Rout/EUROCORE_RSArealloc48.txt",
+                    "./Rout/EUROCORE_RSArealloc49.txt"};
 
 // #################################################################################
 
@@ -66,6 +70,7 @@ BEGIN_ALLOC_FUNCTION(FirstFits) {
   int *band_slot_indexes = NULL;
   int bitRateInt = bitRates_map[REQ_BITRATE];
   int numberOfSlots;
+
 
   if (!allocating_from_buffer) bitrate_count_total[bitRateInt] += 1;
 
@@ -244,9 +249,9 @@ int main(int argc, char* argv[]) {
       else std::cout << "Buffer:\t\t    OFF\n";
 
       // Simulator object
-      sim = Simulator(std::string("./networks/NSFNet.json"),                    // Network nodes and links
-                      std::string("./networks/routes.json"),                    // Network Routes
-                      std::string("./networks/bitrate_iroBand_CLSE.json"));     // BitRates and bands (eg. BPSK/C)
+      sim = Simulator(std::string("./networks/Eurocore.json"),                      // Network nodes and links
+                      std::string("./networks/Eurocore_routes.json"),                      // Network Routes
+                      std::string("./networks/bitrate_iroBand_C_BPSK.json"));     // BitRates and bands (eg. BPSK/C)
 
       // Assing alloc function   
       USE_ALLOC_FUNCTION(FirstFits, sim);
@@ -260,7 +265,7 @@ int main(int argc, char* argv[]) {
       }
 
       // Parameters
-      sim.setGoalConnections(1e7);
+      sim.setGoalConnections(number_connections);
       sim.setLambda(144 + run[0]*times_current);
       sim.setMu(1);
       sim.init();
@@ -280,14 +285,14 @@ int main(int argc, char* argv[]) {
 
       // BBP calculation and output to txt
       std::fstream output;
-      output.open("./out/output-NBuffer-1e7.txt", std::ios::out | std::ios::app);
+      output.open("./out/Eurocore-WBuffer-1e7-RSA.txt", std::ios::out | std::ios::app);
       double BBP_results;
         // different BBP formula depending if buffer is activated
       if (buffer_state) BBP_results = bandwidthBlockingProbabilityWBuffer(bitrate_count_total, buffer.elements, mean_weight_bitrate);
       else BBP_results = bandwidthBlockingProbability(bitrate_count_total, bitrate_count_blocked, mean_weight_bitrate);
 
-      resultsToFile(buffer_state, output, BBP_results, sim.getBlockingProbability(),
-                    o, times_current, bitrate_count_blocked, buffer);
+      resultsToFile(buffer_state, output, BBP_results, sim.getBlockingProbability(), number_connections,
+                    o, times_current, run[0]*times_current, bitrate_count_blocked, buffer);
 
       if (buffer_state) realloc_time.close();
 
