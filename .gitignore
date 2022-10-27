@@ -1,4 +1,5 @@
 build/*
+.vscode
 documentation
 examples/BDM/multiband_base.cpp
 examples/BDM/multiband.cpp
