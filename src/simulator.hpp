@@ -43,10 +43,11 @@
 #include <iomanip>
 #include <list>
 
-// #include "controller.hpp"
-// #include "event.hpp"
-// #include "exp_variable.hpp"
-// #include "uniform_variable.hpp"
+#include "controller.hpp"
+#include "event.hpp"
+#include "exp_variable.hpp"
+#include "uniform_variable.hpp"
+
 /**
  * @brief Class Simulator, represents network execution.
  */

@@ -56,4 +56,3 @@ then
     printf "\n"
     exit 1
 fi
-rsync -a /home/mirkozeta/flex-net-sim/ /mnt/g/'Mi unidad'/'Investigacion Redes Opticas'/flex-net-sim/

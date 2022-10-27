@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "../src/controller.hpp"
+#include "../src/bitrate.hpp"
 #include "../src/json.hpp"
 #include "catch.hpp"
 
@@ -45,13 +46,14 @@ TEST_CASE("AllocationStatus (Allocator) through Controller") {
   int src = 0;
   int dst = 1;
   long long idConnection = 0;
+  double time_connection = 1.0;
   // Connection con = Connection(idConnection);
   BitRate bitRate(100.0);
   /* CHECK_THROWS(
       controllerExample.assignConnection(src, dst, bitRate, idConnection) ==
       (ALLOCATED || NOT_ALLOCATED));*/
   CHECK_THROWS(
-      controllerExample.assignConnection(src, dst, bitRate, idConnection));
+      controllerExample.assignConnection(src, dst, bitRate, idConnection, time_connection));
 }
 
 TEST_CASE("Correct format JSON file paths (Controller)") {
@@ -68,8 +70,10 @@ TEST_CASE("Correct format JSON file paths (Controller)") {
 TEST_CASE("Test Connection AddLink") {
   int testConnectionId = 1;
   int testLinkId = 0;
+  double time_connection = 1.0;
   std::vector<int> testSlots(3, 0);
+  BitRate *bitrate = new BitRate(100);
 
-  Connection connectionExample(testConnectionId);
+  Connection connectionExample(testConnectionId, time_connection, bitrate);
   CHECK_NOTHROW(connectionExample.addLink(testLinkId, testSlots));
 }
