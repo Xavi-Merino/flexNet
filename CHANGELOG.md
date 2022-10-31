@@ -24,8 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added getters for BitRate class:
   - getNumberOfModulations() gets the number of modulations available in the BitRate object.
   - Added tests.
-- Added to examples the use of BDM and replicated article "Heuristic Approaches for Dynamic Provisioning in Multi-Band Elastic Optical Networks"
-- Example e004 makes use of a buffer in multi-band and single-band
 - Added 5 new networks: ARPANET, EON, EUROcore, UKNet, USNet.
 
 ### FIXED
