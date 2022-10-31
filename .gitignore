@@ -3,4 +3,5 @@ build/*
 documentation
 examples/BDM
 examples/SDM
+examples/e004
 coverage.sh
