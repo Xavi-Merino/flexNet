@@ -215,3 +215,111 @@ TEST_CASE("Is Slot/s Used Checking Errors") {
   // Check Throw Slots Positions Can't Be Equal
   CHECK_THROWS(net.isSlotUsed(0, 190, 190));
 }
+
+// New tests
+
+TEST_CASE("Use slot (multi-core/mode Network)") {
+  Network net1 = Network();
+  Link *l1 = new Link(0, 70.0, 200, 3, 2);
+  net1.addLink(l1);
+  CHECK(l1->getSlot(0, 1, 100) == false);
+  CHECK_THROWS(net1.useSlot(-10, 0, 1, 100));
+  net1.useSlot(0, 0, 1, 100);
+  CHECK(l1->getSlot(0, 1, 100) == true);
+  CHECK(net1.getLink(0)->getSlot(0, 1, 100) == true);
+}
+
+TEST_CASE("Use slot #2 (multi-core/mode Network)") {
+  Network net2 = Network();
+  Link *l2 = new Link(0, 70.0, 200, 3, 2);
+  net2.addLink(l2);
+  CHECK(l2->getSlot(0, 1, 100) == false);
+  net2.useSlot(0, 0, 1, 100, 104);
+  CHECK_THROWS(net2.useSlot(-10, 0, 1, 100, 104));
+  CHECK_THROWS(net2.useSlot(0, 0, 1, 104, 100));
+  CHECK(l2->getSlot(0, 1, 100) == true);
+  CHECK(net2.getLink(0)->getSlot(0, 1, 100) == true);
+  CHECK(net2.getLink(0)->getSlot(0, 1, 101) == true);
+  CHECK(net2.getLink(0)->getSlot(0, 1, 102) == true);
+  CHECK(net2.getLink(0)->getSlot(0, 1, 103) == true);
+}
+
+TEST_CASE("Unuse Slot/s (multi-core/mode Network)") {
+  Network net = Network();
+  Link *link = new Link(0, 70.0, 200, 3, 2);
+  net.addLink(link);
+  net.useSlot(0, 0, 1, 0);
+  net.useSlot(0, 0, 1, 190, 199);
+
+  CHECK_NOTHROW(net.unuseSlot(0, 0, 1, 190, 199));
+  CHECK_NOTHROW(net.unuseSlot(0, 0, 1, 0));
+}
+
+TEST_CASE("Unuse Slot/s Checking Errors (multi-core/mode Network)") {
+  Network net = Network();
+  Link *link = new Link(0, 70.0, 200, 3, 2);
+  net.addLink(link);
+  net.useSlot(0, 0, 1, 0);
+  net.useSlot(0, 0, 1, 190, 199);
+
+  // Check Throw Link Position Out-Of-Bounds Error
+  CHECK_THROWS(net.unuseSlot(-1, 0, 1, 0));
+  CHECK_THROWS(net.unuseSlot(3, 0, 1, 0));
+  CHECK_THROWS(net.unuseSlot(-1, 0, 1, 190, 199));
+  CHECK_THROWS(net.unuseSlot(3, 0, 1, 190, 199));
+
+  // Check Throw Slots Positions Out-Of-Bounds Error
+  CHECK_THROWS(net.unuseSlot(0, 0, 1, 201, 205));
+  CHECK_THROWS(net.unuseSlot(0, 0, 1, -1));
+
+  // Check Throw Slots Positions Wrong Order Error
+  CHECK_THROWS(net.unuseSlot(0, 0, 1, 199, 190));
+
+  // Check Throw Slots Positions Can't Be Equal
+  CHECK_THROWS(net.unuseSlot(0, 0, 1, 190, 190));
+}
+
+TEST_CASE("Is Slot/s Used (multi-core/mode Network)") {
+  Network net = Network();
+  Link *link = new Link(0, 70.0, 200, 3, 2);
+  net.addLink(link);
+  net.useSlot(0, 0, 1, 0);
+  net.useSlot(0, 0, 1, 190, 199);
+
+  CHECK(net.isSlotUsed(0, 0, 1, 190, 199) == true);
+  CHECK(net.isSlotUsed(0, 0, 1, 0) == true);
+  CHECK(net.isSlotUsed(0, 0, 1, 180, 185) == false);
+  CHECK(net.isSlotUsed(0, 0, 1, 10) == false);
+}
+
+TEST_CASE("Is Slot/s Used Checking Errors (multi-core/mode Network)") {
+  Network net = Network();
+  Link *link = new Link(0, 70.0, 200, 3, 2);
+  net.addLink(link);
+  net.useSlot(0, 0, 1, 0);
+  net.useSlot(0, 0, 1, 190, 199);
+
+  CHECK_THROWS(net.isSlotUsed(-1, 0, 1, 0));
+  CHECK_THROWS(net.isSlotUsed(3, 0, 1, 0));
+  CHECK_THROWS(net.isSlotUsed(-1, 0, 1, 190, 199));
+  CHECK_THROWS(net.isSlotUsed(3, 0, 1, 190, 199));
+  CHECK_THROWS(net.isSlotUsed(3, 0, 1, 190, 201));
+
+  // Check Throw Slots Positions Out-Of-Bounds Error
+  CHECK_THROWS(net.isSlotUsed(0, 0, 1, 201, 205));
+  CHECK_THROWS(net.isSlotUsed(0, 0, 1, -1));
+
+  // Check Throw Slots Positions Wrong Order Error
+  CHECK_THROWS(net.isSlotUsed(0, 0, 1, 199, 190));
+
+  // Check Throw Slots Positions Can't Be Equal
+  CHECK_THROWS(net.isSlotUsed(0, 0, 1, 190, 190));
+}
+
+TEST_CASE("Network type") {
+  Network n1 = Network();
+  CHECK(n1.getNetworkType() == 1);
+  CHECK_NOTHROW(n1.setNetworkType(2));
+  CHECK(n1.getNetworkType() == 2);
+
+};

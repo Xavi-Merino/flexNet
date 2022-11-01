@@ -16,6 +16,7 @@
 #define REQ_SLOTS(pos) bitRate.getNumberOfSlots(pos)
 #define REQ_REACH(pos) bitRate.getReach(pos)
 #define REQ_MODULATION(pos) bitRate.getModulation(pos)
+#define NUMBER_OF_MODULATIONS bitRate.getNumberOfModulations()
 #define REQ_BITRATE_STR bitRate.getBitRateStr()
 #define REQ_BITRATE bitRate.getBitRate()
 #define LINK_IN_ROUTE(route, link) (*this->path)[src][dst][route][link]
@@ -46,6 +47,7 @@
 #include "event.hpp"
 #include "exp_variable.hpp"
 #include "uniform_variable.hpp"
+
 /**
  * @brief Class Simulator, represents network execution.
  */
@@ -64,8 +66,9 @@ class Simulator {
    * lenght, slots).
    * @param pathFilename Source of path file. This file contains the routes
    * between nodes.
+   * @param networkType (int) that defines the type of network, eg. EON (equal 1), SDM (equal 2).
    */
-  Simulator(std::string networkFilename, std::string pathFilename);
+  Simulator(std::string networkFilename, std::string pathFilename, int networkType = EON);
   /**
    * @brief Construct the object Simulator from three JSON files, this files
    * contains the network configuration the routes and the bit rates.
@@ -77,9 +80,10 @@ class Simulator {
    * between nodes.
    * @param bitrateFilename Source of bit rates file. This file contains the
    * differents bit rates configurations.
+   * @param networkType (int) that defines the type of network, eg. EON (equal 1), SDM (equal 2).
    */
   Simulator(std::string networkFilename, std::string pathFilename,
-            std::string bitrateFilename);
+            std::string bitrateFilename, int networkType = EON);
   /**
    * @brief Deletes the object Simulator.
    */
@@ -161,6 +165,12 @@ class Simulator {
    */
   void setAllocator(Allocator *newAllocator);
   /**
+   * @brief Sets the Network type of the object.
+   *
+   * @param networkType the int that represent the new network type of the object, by default 0 equals EON.
+   */
+  void setNetworkType(int networkType);
+  /**
    * @brief Get the Time Duration object, that corresponds to the simulation
    * time.
    *
@@ -183,6 +193,13 @@ class Simulator {
    * @return double The allocation probability.
    */
   double getAllocatedProbability(void);
+
+  /**
+   * @brief Gets the Network type of the object.
+   *
+   * @return (int) the int that represent each network type, by default 0 equals EON.
+   */
+  int getNetworkType();
 
   /**
    * @brief Set the Confidence of confidence interval.
@@ -234,8 +251,27 @@ class Simulator {
    */
   double wilsonCI(void);
 
+  /**
+   * @brief Get the BitRates vector attribute of the Simulator object.
+   *
+   * @return std::vector<BitRate> 
+   */
+  std::vector<BitRate> getBitRates(void);
+
+  /**
+   * @brief Gets the Paths vector of the network.
+   *
+   * @return Matrix vector of the paths between two nodes and the respective
+   * Links inside that route.
+   */
+  std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
+
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                     Network *));
+
+  Controller *getController();
+
+  void addDepartureEvent(long long idConnection);
 
  private:
   double clock;

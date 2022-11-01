@@ -32,3 +32,4 @@ std::vector<std::vector<int> > Connection::getSlots(void) {
 
 double Connection::getTimeConnection(void) { return this->timeConnection; }
 BitRate *Connection::getBitrate(void) { return this->bitRate; }
+long long Connection::getId(void) { return this->id; }
