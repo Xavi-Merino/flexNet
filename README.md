@@ -21,6 +21,7 @@ If you use our library, and you enjoy it, please cite us :heart_eyes:!
 ## Features
 
 - Elastic optical networks support
+- Support for SDM
 - Support for different bitrates through a JSON file
 - Support for different networks through a JSON file
 - Support for multiple routes through a JSON file
@@ -40,7 +41,7 @@ git clone git@gitlab.com:DaniloBorquez/flex-net-sim.git
 ```
 
 ## Installation
-You can directly download the one file header <a href="https://daniloborquez.gitlab.io/flex-net-sim/simulator.hpp" download>HERE</a> (RECOMMENDED!)
+You can directly download the one file header <a href="https://daniloborquez.gitlab.io/flex-net-sim/simulator.hpp" download>HERE</a> (RECOMMENDED!). Put this file in the same folder with your code, and that is all! :blush:
 
 ### Install in your path (more difficult!)
 
@@ -111,3 +112,4 @@ I really appreciate the help of the following people:
 - [Felipe Falcón](https://gitlab.com/ffalcon)
 - [Gonzalo España](https://gitlab.com/GonzaloEspana)
 - [Diana Mariño](https://gitlab.com/DianaMarino)
+- [Mirko Zitkovich](https://gitlab.com/mirkozeta)
