@@ -26,6 +26,7 @@ testing_simulator:
   - cd ..
   dependencies:
     - building_simulator_test
+  coverage: /TOTAL.*\s([.\d]+)%/
   artifacts:
     when: always
     paths:

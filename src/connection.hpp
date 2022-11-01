@@ -2,7 +2,6 @@
 #define __CONNECTION_H__
 
 #include <vector>
-
 #include "bitrate.hpp"
 /**
  * @brief Class with the connection information.
@@ -19,7 +18,7 @@ class Connection {
    *
    * @param id the id of the new connection object.
    */
-  Connection(long long id, double time, BitRate *bitRate);
+  Connection(long long id, double time, BitRate *bitRate); // TO DO: actualizar documentacion
   /**
    * @brief Destroys the Connection object.
    *
@@ -48,6 +47,7 @@ class Connection {
   std::vector<std::vector<int> > getSlots(void);
   double getTimeConnection(void);
   BitRate *getBitrate(void);
+  long long getId(void);
 
  private:
   long long id;
@@ -55,7 +55,6 @@ class Connection {
   BitRate *bitRate;
   std::vector<int> links;
   std::vector<std::vector<int> > slots;
-
   friend class Controller;
 };
 #endif

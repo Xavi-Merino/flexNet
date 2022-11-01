@@ -82,4 +82,5 @@ TEST_CASE("Throwing Getter Errors") {
   CHECK_THROWS(b1.getModulation(5) == "QPSK");
   CHECK_THROWS(b1.getNumberOfSlots(5) == 2);
   CHECK_THROWS(b1.getReach(5) == 2720);
+  CHECK(b1.getNumberOfModulations() == 1);
 }

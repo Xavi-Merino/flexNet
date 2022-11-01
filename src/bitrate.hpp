@@ -31,7 +31,17 @@
  * vector filled with information from a given JSON file.
  */
 class BitRate {
+
  public:
+
+  /**
+   * @brief Copy construct that initializes a new bitRate object using another
+   * object of the same class.
+   *
+   * @param bitRate (BitRate): Object to copy.
+   */
+  BitRate(const BitRate &bitRate);
+
   /**
    * @brief Construct a new bitRate object using the given double for setting
    * the object's bit rate magnitude and it's respective string.
@@ -94,6 +104,13 @@ class BitRate {
    * format.
    */
   std::string getBitRateStr();
+
+  /**
+   * @brief Gets the number of modulations available in the current object
+   *
+   * @return (int): The number of modulations in the current BitRate object.
+   */
+  int getNumberOfModulations();
 
   /**
    * @brief Gets the bit rate magnitude (quantity) in numerical (double) format,

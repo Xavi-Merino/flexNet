@@ -26,6 +26,7 @@ testing_controller:
   - cd ..
   dependencies:
     - building_controller_test
+  coverage: /TOTAL.*\s([.\d]+)%/
   artifacts:
     when: always
     paths:

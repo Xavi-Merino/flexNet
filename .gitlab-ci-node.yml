@@ -26,6 +26,7 @@ testing_node:
   - cd ..
   dependencies:
     - building_node_test
+  coverage: /TOTAL.*\s([.\d]+)%/
   artifacts:
     when: always
     paths:

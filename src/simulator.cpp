@@ -26,10 +26,11 @@ Simulator::Simulator(void) {
   this->allocatedConnections = 0;
 }
 
-Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
+Simulator::Simulator(std::string networkFilename, std::string pathFilename,
+                     int networkType) {
   this->defaultValues();
   this->controller = new Controller();
-  this->controller->setNetwork(new Network(networkFilename));
+  this->controller->setNetwork(new Network(networkFilename, networkType));
   this->controller->setPaths(pathFilename);
   this->events = std::list<Event>();
   this->bitRatesDefault = std::vector<BitRate>();
@@ -52,10 +53,10 @@ Simulator::Simulator(std::string networkFilename, std::string pathFilename) {
 }
 
 Simulator::Simulator(std::string networkFilename, std::string pathFilename,
-                     std::string bitrateFilename) {
+                     std::string bitrateFilename, int networkType) {
   this->defaultValues();
   this->controller = new Controller();
-  this->controller->setNetwork(new Network(networkFilename));
+  this->controller->setNetwork(new Network(networkFilename, networkType));
   this->controller->setPaths(pathFilename);
   this->events = std::list<Event>();
   this->bitRatesDefault = BitRate::readBitRateFile(bitrateFilename);
@@ -165,6 +166,16 @@ void Simulator::setConfidence(double c) {
   }
   this->confidence = c;
 }
+
+void Simulator::setNetworkType(int networkType) {
+  if (this->initReady) {
+    throw std::runtime_error(
+        "You can not set 'networkType' parameter AFTER calling init simulator "
+        "method.");
+  }
+  this->controller->getNetwork()->setNetworkType(networkType);
+}
+// Returns the int that represents the network type of the object
 
 void Simulator::defaultValues() {
   this->initReady = false;
@@ -335,6 +346,18 @@ void Simulator::run(void) {
   }
 }
 
+void Simulator::addDepartureEvent(long long idConnection) {
+  double nextEventTime = this->clock + this->departVariable.getNextValue();
+  for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
+       pos != this->events.rend(); pos++) {
+    if ((pos)->getTime() < nextEventTime) {
+      this->events.insert((pos).base(),
+                          Event(DEPARTURE, nextEventTime, idConnection));
+      break;
+    }
+  }
+}
+
 unsigned int Simulator::getTimeDuration(void) {
   return static_cast<unsigned int>(this->timeDuration.count());
 }
@@ -345,6 +368,10 @@ double Simulator::getBlockingProbability(void) {
 
 double Simulator::getAllocatedProbability(void) {
   return this->allocatedConnections / this->numberOfConnections;
+}
+
+int Simulator::getNetworkType() {
+  return this->controller->getNetwork()->getNetworkType();
 }
 
 double Simulator::waldCI() {
@@ -409,11 +436,6 @@ void Simulator::initZScore(void) {
   this->zScore = actual;
 }
 
-void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
-                                                             Network *)) {
-  this->controller->setUnassignCallback(callbackFunction);
-}
-
 void Simulator::initZScoreEven(void) {
   double zEven = pow(this->zScore, 2);
   zEven =
@@ -422,3 +444,17 @@ void Simulator::initZScoreEven(void) {
 
   this->zScoreEven = zEven;
 }
+
+void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
+                                                             Network *)) {
+  this->controller->setUnassignCallback(callbackFunction);
+}
+
+std::vector<BitRate> Simulator::getBitRates(void) { return this->bitRates; }
+
+std::vector<std::vector<std::vector<std::vector<Link *>>>>
+    *Simulator::getPaths() {
+  return this->controller->getPaths();
+}
+
+Controller *Simulator::getController() { return this->controller; }
