@@ -26,6 +26,7 @@ testing_random_variable:
   - cd ..
   dependencies:
     - building_random_variable_test
+  coverage: /TOTAL.*\s([.\d]+)%/
   artifacts:
     when: always
     paths:

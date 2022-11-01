@@ -26,6 +26,7 @@ testing_link:
   - cd ..
   dependencies:
     - building_link_test
+  coverage: /TOTAL.*\s([.\d]+)%/
   artifacts:
     when: always
     paths:
