@@ -6,7 +6,7 @@
 #include <set>
 #include <unordered_map>
 
-Network::Network(void) : networkType(1)  {
+Network::Network(void) : networkType(1) {
   this->linkCounter = 0;
   this->nodeCounter = 0;
 
@@ -21,7 +21,8 @@ Network::Network(void) : networkType(1)  {
   this->nodesOut.push_back(0);
 }
 
-Network::Network(std::string filename, int networkType) : networkType(networkType) {
+Network::Network(std::string filename, int networkType)
+    : networkType(networkType) {
   switch (networkType) {
     case EON:
       readEON(filename);
@@ -137,7 +138,7 @@ void Network::readSDM(std::string filename) {
       for (int k = 0; k < number_of_modes; k++) {
         slots = NSFnet["links"][i]["slots"][j][k];
         link->setSlots(slots, j, k);
-      }      
+      }
     }
     this->addLink(link);
 
@@ -150,7 +151,8 @@ void Network::readSDM(std::string filename) {
   }
 }
 
-Network::Network(const Network &net, int networkType) : networkType(networkType) {
+Network::Network(const Network &net, int networkType)
+    : networkType(networkType) {
   this->linkCounter = net.linkCounter;
   this->nodeCounter = net.nodeCounter;
   this->nodes = std::vector<Node *>(net.nodes.size());
@@ -196,7 +198,9 @@ Link *Network::getLink(int linkPos) {
 int Network::getNetworkType() { return this->networkType; }
 // Returns the int that represents the network type of the object
 
-void Network::setNetworkType(int networkType) { this->networkType = networkType; }
+void Network::setNetworkType(int networkType) {
+  this->networkType = networkType;
+}
 // Returns the int that represents the network type of the object
 
 void Network::addNode(Node *node) {
@@ -290,7 +294,8 @@ void Network::useSlot(int linkPos, int slotFrom, int slotTo) {
     this->links[linkPos]->setSlot(i, true);
 }
 
-void Network::useSlot(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+void Network::useSlot(int linkPos, int core, int mode, int slotFrom,
+                      int slotTo) {
   this->validateSlotFromTo(linkPos, core, mode, slotFrom, slotTo);
 
   for (int i = slotFrom; i < slotTo; i++)
@@ -318,7 +323,8 @@ void Network::unuseSlot(int linkPos, int slotFrom, int slotTo) {
     this->links[linkPos]->setSlot(i, false);
 }
 
-void Network::unuseSlot(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+void Network::unuseSlot(int linkPos, int core, int mode, int slotFrom,
+                        int slotTo) {
   this->validateSlotFromTo(linkPos, core, mode, slotFrom, slotTo);
 
   for (int i = slotFrom; i < slotTo; i++)
@@ -364,7 +370,8 @@ bool Network::isSlotUsed(int linkPos, int slotFrom, int slotTo) {
   return false;
 }
 
-bool Network::isSlotUsed(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+bool Network::isSlotUsed(int linkPos, int core, int mode, int slotFrom,
+                         int slotTo) {
   this->validateSlotFromTo(linkPos, core, mode, slotFrom, slotTo);
 
   // Loop through all the Slots in range
@@ -425,7 +432,8 @@ void Network::validateSlotFromTo(int linkPos, int slotFrom, int slotTo) {
     throw std::runtime_error("Slot from and slot To cannot be equals.");
 }
 
-void Network::validateSlotFromTo(int linkPos, int core, int mode, int slotFrom, int slotTo) {
+void Network::validateSlotFromTo(int linkPos, int core, int mode, int slotFrom,
+                                 int slotTo) {
   if (linkPos < 0 || linkPos >= static_cast<int>(this->links.size()))
     throw std::runtime_error("Link position out of bounds.");
   if (slotFrom < 0 ||
@@ -440,4 +448,26 @@ void Network::validateSlotFromTo(int linkPos, int core, int mode, int slotFrom, 
 
   if (slotFrom == slotTo)
     throw std::runtime_error("Slot from and slot To cannot be equals.");
+}
+
+void Network::createAdjacencyVector() {
+  float length;
+  int src, dst, vertices = this->getNumberOfNodes();
+
+  this->adjacencyVector =
+      std::vector<std::vector<std::pair<int, float>>>(vertices);
+
+  std::tuple<int, int, float> currentTuple;
+
+  while (!this->connectionPairs.empty()) {
+    currentTuple = this->connectionPairs.back();
+
+    src = std::get<0>(currentTuple);
+    dst = std::get<1>(currentTuple);
+    length = std::get<2>(currentTuple);
+
+    this->connectionPairs.pop_back();
+
+    this->adjacencyVector[src].push_back(std::make_pair(dst, length));
+  }
 }

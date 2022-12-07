@@ -36,21 +36,29 @@ class Network {
    */
   ~Network();
   /**
-    * @brief Constructs Network object of type 'networkType' from JSON file. From a JSON file, the
+    * @brief Constructs Network object of type 'networkType' from JSON file.
+    From a JSON file, the
     * constructor builds a network based on
     * one array of nodes and one array of links. The node array must contain a
     * list of nodes ID's. The links array
-    * will contain different information depending of the network type, with EON it must contain the link id, the source node (src), the destination node
-    * (dst), the length of the link and the number of slots. With SDM it must contain the link id, the source node (src), the destination node (dst), the
-    * number of cores, number of modes, the length of the link and a list of lists containing the number of slots, where the first dimension correspond to the
-    * cores and the second dimension correspond to the modes (eg. "slots": [[320, 100], [100, 320], [100, 100]]).
+    * will contain different information depending of the network type, with EON
+    it must contain the link id, the source node (src), the destination node
+    * (dst), the length of the link and the number of slots. With SDM it must
+    contain the link id, the source node (src), the destination node (dst), the
+    * number of cores, number of modes, the length of the link and a list of
+    lists containing the number of slots, where the first dimension correspond
+    to the
+    * cores and the second dimension correspond to the modes (eg. "slots":
+    [[320, 100], [100, 320], [100, 100]]).
     *
-    * In the example above, the node 0 goes to the nodes 1 and 2. The node 1 goes
+    * In the example above, the node 0 goes to the nodes 1 and 2. The node 1
+    goes
     * to the node 2. They are connected by
     * unidirectional links with 100 slots and their own lengths.
     *
     * @param filename name of the JSON file
-    * @param networkType (int) that defines the type of network, eg. EON (equal 1), SDM (equal 2).
+    * @param networkType (int) that defines the type of network, eg. EON (equal
+    1), SDM (equal 2).
     * \code{.json}
         {
         "name": "4-node bus",
@@ -157,13 +165,15 @@ class Network {
   /**
    * @brief Gets the Network type of the object.
    *
-   * @return (int) the int that represent each network type, by default 0 equals EON.
+   * @return (int) the int that represent each network type, by default 0 equals
+   * EON.
    */
   int getNetworkType();
   /**
    * @brief Sets the Network type of the object.
    *
-   * @param networkType the int that represent the new network type of the object, by default 0 equals EON.
+   * @param networkType the int that represent the new network type of the
+   * object, by default 0 equals EON.
    */
   void setNetworkType(int networkType);
   /**
@@ -188,8 +198,9 @@ class Network {
    */
   void useSlot(int linkPos, int slotPos);
   /**
-   * @brief The useSlot method activates a single Slot position of the slots vector
-   * of a given core and mode inside a Link of a given position inside the Network.
+   * @brief The useSlot method activates a single Slot position of the slots
+   * vector of a given core and mode inside a Link of a given position inside
+   * the Network.
    *
    * @param linkPos the position of the Link inside the links vector.
    * @param core the core index on the object Link. Type int, greater than or
@@ -215,25 +226,26 @@ class Network {
    * slot). It's value must be greater than slotFrom.
    */
   void useSlot(int linkPos, int slotFrom, int slotTo);
-    /**
-   * @brief The useSlot method activates a range of slots in the slots vector
-   * of a given core and mode inside a Link of a given position inside the Network.
-   *
-   * The range of slots starts from the given position slotFrom and activates
-   * all the slots up to the (slotTo - 1) position
-   *
-   * @param linkPos the position of the Link inside the links vector.
-   * @param core the core index on the object Link. Type int, greater than or
-   * equal to zero.
-   * @param mode The mode index on the object Link. Type int, greater than or
-   * equal to zero.
-   * @param slotFrom the starting position of the Slots to be used/activated
-   * inside the slot vector.
-   * @param slotTo the limit before the ending position of the Slots to be
-   * used/activated inside the slot vector (activates up to the (slotTo - 1)th
-   * slot). It's value must be greater than slotFrom.
+  /**
+ * @brief The useSlot method activates a range of slots in the slots vector
+ * of a given core and mode inside a Link of a given position inside the
+ Network.
+ *
+ * The range of slots starts from the given position slotFrom and activates
+ * all the slots up to the (slotTo - 1) position
+ *
+ * @param linkPos the position of the Link inside the links vector.
+ * @param core the core index on the object Link. Type int, greater than or
+ * equal to zero.
+ * @param mode The mode index on the object Link. Type int, greater than or
+ * equal to zero.
+ * @param slotFrom the starting position of the Slots to be used/activated
+ * inside the slot vector.
+ * @param slotTo the limit before the ending position of the Slots to be
+ * used/activated inside the slot vector (activates up to the (slotTo - 1)th
+ * slot). It's value must be greater than slotFrom.
 
-   */
+ */
   void useSlot(int linkPos, int core, int mode, int slotFrom, int slotTo);
   /**
    * @brief The unuseSlot method deactivates a single Slot of a given position
@@ -274,8 +286,9 @@ class Network {
    */
   void unuseSlot(int linkPos, int slotFrom, int slotTo);
   /**
-   * @brief The unuseSlot method deactivates a range of slots in the slots vector
-   * of a given core and mode inside a Link of a given position inside the Network.
+   * @brief The unuseSlot method deactivates a range of slots in the slots
+   * vector of a given core and mode inside a Link of a given position inside
+   * the Network.
    *
    * The range of slots starts from the given position slotFrom and deactivates
    * all the slots up to the (slotTo - 1) position
@@ -405,6 +418,9 @@ class Network {
    */
   float nodalVariance();
 
+  void createAdjacencyVector();
+  std::vector<std::vector<std::pair<int, float>>> adjacencyVector;
+
  private:
   std::vector<Node *> nodes;
   std::vector<Link *> links;
@@ -416,9 +432,12 @@ class Network {
   int nodeCounter;
   int networkType;
 
+  std::vector<std::tuple<int, int, float>> connectionPairs;
+
   void validateSlotFromTo(int linkPos, int slotFrom, int slotTo);
 
-  void validateSlotFromTo(int linkPos, int core, int mode, int slotFrom, int slotTo);
+  void validateSlotFromTo(int linkPos, int core, int mode, int slotFrom,
+                          int slotTo);
 
   void readEON(std::string filename);
 

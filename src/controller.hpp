@@ -181,6 +181,10 @@ class Controller {
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                     Network *));
 
+  std::vector<int> vectorizePath(std::map<int, int> parent, int src, int dst);
+  std::vector<std::vector<int>> KSPDijkstra(int src, int dst, int k);
+  void findRoutes(int k, std::string filename);
+
  private:
   Network *network;
   Allocator *allocator;
