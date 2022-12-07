@@ -19,6 +19,8 @@ Network::Network(void) : networkType(1) {
 
   this->nodesIn.push_back(0);
   this->nodesOut.push_back(0);
+
+  this->adjacencyVector = std::vector<std::vector<std::pair<int, float>>>();
 }
 
 Network::Network(std::string filename, int networkType)
@@ -87,6 +89,8 @@ void Network::readEON(std::string filename) {
     dst = NSFnet["links"][i]["dst"];
     this->connect(src, id, dst);
   }
+
+  this->adjacencyVector = std::vector<std::vector<std::pair<int, float>>>();
 }
 
 void Network::readSDM(std::string filename) {
@@ -173,6 +177,8 @@ Network::Network(const Network &net, int networkType)
   }
   this->nodesIn = net.nodesIn;
   this->nodesOut = net.nodesOut;
+
+  this->adjacencyVector = std::vector<std::vector<std::pair<int, float>>>();
 }
 
 Network::~Network() {}
@@ -257,6 +263,9 @@ void Network::connect(int src, int linkPos,
                 [](int &n) { n += 1; });
   this->links.at(linkPos)->src = src;
   this->links.at(linkPos)->dst = dst;
+
+  this->connectionPairs.push_back(
+      std::make_tuple(src, dst, this->links.at(linkPos)->getLength()));
 }
 // Connects two Nodes through one Link (order is important: src != dst):
 //

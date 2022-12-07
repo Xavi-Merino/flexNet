@@ -181,8 +181,30 @@ class Controller {
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                     Network *));
 
-  std::vector<int> vectorizePath(std::map<int, int> parent, int src, int dst);
+  /**
+   * @brief Finds the K Shortest Paths between two nodes inside a Network.
+   * This function uses a Dijkstra version extended to find the K shortest paths
+   * between two nodes inside a Network to use as routes between them.
+   *
+   * @param src the Id of the Source node.
+   *
+   * @param dst the Id of the Destination node.
+   *
+   * @param k the number of desired paths to find.
+   *
+   * @return a vector of integer vectors, each containing a different path
+   * represented by the Ids of the nodes.
+   */
   std::vector<std::vector<int>> KSPDijkstra(int src, int dst, int k);
+
+  /**
+   * @brief Finds the K Shortest Paths between all nodes inside a Network and
+   * stores it inside a file in order to use as routes.
+   *
+   * @param k the number of desired paths to find.
+   *
+   * @param filename the desired name for the routes files (should be .JSON).
+   */
   void findRoutes(int k, std::string filename);
 
  private:
