@@ -2,6 +2,7 @@
 #define __CONNECTION_H__
 
 #include <vector>
+#include "bitrate.hpp"
 /**
  * @brief Class with the connection information.
  *
@@ -17,7 +18,7 @@ class Connection {
    *
    * @param id the id of the new connection object.
    */
-  Connection(long long id);
+  Connection(long long id, double time, BitRate *bitRate); // TO DO: actualizar documentacion
   /**
    * @brief Destroys the Connection object.
    *
@@ -41,8 +42,23 @@ class Connection {
    * @param toSlot the position of the last slot to be taken on the link.
    */
   void addLink(int idLink, int fromSlot, int toSlot);
+    /**
+   * @brief Adds a new link to the Connection object. The link id is added to
+   * the links vector, and the slots in the range fromSlot-toSlot are
+   * added to the slots vector.
+   *
+   * @param idLink the id of the new link added to the connection object.
+   * @param core the index of the core to be used in all links.
+   * @param mode the index of the mode to be used in all cores.
+   * @param fromSlot the position of the first slot to be taken on the mode.
+   * @param toSlot the position of the last slot to be taken on the mode.
+   */
+  void addLink(int idLink, int core, int mode, int fromSlot, int toSlot);
+
 
   std::vector<int> getLinks(void);
+  std::vector<int> getModes(void);
+  std::vector<int> getCores(void);
   std::vector<std::vector<int> > getSlots(void);
   double getTimeConnection(void);
   BitRate *getBitrate(void);
@@ -50,9 +66,14 @@ class Connection {
 
  private:
   long long id;
+  double timeConnection;
+  BitRate *bitRate;
   std::vector<int> links;
-  std::vector<std::vector<int> > slots;
-
+  // New
+  std::vector<int> cores;
+  std::vector<int> modes;
+  //
+  std::vector<std::vector<int>> slots;
   friend class Controller;
 };
 #endif

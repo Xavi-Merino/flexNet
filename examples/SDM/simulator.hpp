@@ -741,10 +741,10 @@ bool Link::getSlot(int pos) const {
 
 bool Link::getSlot(int core, int mode, int pos) const {
   if (core < 0 || core >= this->getCores())
-    throw std::runtime_error("Cannot set number of slots in core out of bounds.");
+    throw std::runtime_error("Cannot get number of slots in core out of bounds.");
 
   if (mode < 0 || mode >= this->getModes())
-    throw std::runtime_error("Cannot set number of slots in mode out of bounds.");
+    throw std::runtime_error("Cannot get number of slots in mode out of bounds.");
 
   if (pos < 0 || pos >= this->getSlots())
     throw std::runtime_error("Cannot get slot in position out of bounds.");
@@ -27604,7 +27604,6 @@ void Network::validateSlotFromTo(int linkPos, int core, int mode, int slotFrom, 
 #define __CONNECTION_H__
 
 #include <vector>
-
 // #include "bitrate.hpp"
 /**
  * @brief Class with the connection information.
@@ -27621,7 +27620,7 @@ class Connection {
    *
    * @param id the id of the new connection object.
    */
-  Connection(long long id, double time, BitRate *bitRate);
+  Connection(long long id, double time, BitRate *bitRate); // TO DO: actualizar documentacion
   /**
    * @brief Destroys the Connection object.
    *
@@ -27645,8 +27644,23 @@ class Connection {
    * @param toSlot the position of the last slot to be taken on the link.
    */
   void addLink(int idLink, int fromSlot, int toSlot);
+    /**
+   * @brief Adds a new link to the Connection object. The link id is added to
+   * the links vector, and the slots in the range fromSlot-toSlot are
+   * added to the slots vector.
+   *
+   * @param idLink the id of the new link added to the connection object.
+   * @param core the index of the core to be used in all links.
+   * @param mode the index of the mode to be used in all cores.
+   * @param fromSlot the position of the first slot to be taken on the mode.
+   * @param toSlot the position of the last slot to be taken on the mode.
+   */
+  void addLink(int idLink, int core, int mode, int fromSlot, int toSlot);
+
 
   std::vector<int> getLinks(void);
+  std::vector<int> getModes(void);
+  std::vector<int> getCores(void);
   std::vector<std::vector<int> > getSlots(void);
   double getTimeConnection(void);
   BitRate *getBitrate(void);
@@ -27657,8 +27671,11 @@ class Connection {
   double timeConnection;
   BitRate *bitRate;
   std::vector<int> links;
-  std::vector<std::vector<int> > slots;
-
+  // New
+  std::vector<int> cores;
+  std::vector<int> modes;
+  //
+  std::vector<std::vector<int>> slots;
   friend class Controller;
 };
 #endif
@@ -27668,6 +27685,8 @@ Connection::Connection(long long id, double time, BitRate *bitRate) {
   this->id = id;
   this->links = std::vector<int>();
   this->slots = std::vector<std::vector<int> >();
+  this->cores = std::vector<int>();
+  this->modes = std::vector<int>();
   this->timeConnection = time;
   this->bitRate = bitRate;
 }
@@ -27676,11 +27695,27 @@ Connection::~Connection() {}
 
 void Connection::addLink(int idLink, std::vector<int> slots) {
   this->links.push_back(idLink);
+  //this->modes.push_back(0);
+  //this->cores.push_back(0);
   this->slots.push_back(slots);
 }
 
 void Connection::addLink(int idLink, int fromSlot, int toSlot) {
   this->links.push_back(idLink);
+  //this->modes.push_back(0);
+  //this->cores.push_back(0);
+  this->slots.push_back(std::vector<int>(toSlot - fromSlot));
+  int j = 0;
+  for (int i = fromSlot; i < toSlot; i++) {
+    this->slots.back()[j] = i;
+    j++;
+  }
+}
+
+void Connection::addLink(int idLink, int core, int mode, int fromSlot, int toSlot) {
+  this->links.push_back(idLink);
+  this->modes.push_back(mode);
+  this->cores.push_back(core);
   this->slots.push_back(std::vector<int>(toSlot - fromSlot));
   int j = 0;
   for (int i = fromSlot; i < toSlot; i++) {
@@ -27690,6 +27725,8 @@ void Connection::addLink(int idLink, int fromSlot, int toSlot) {
 }
 
 std::vector<int> Connection::getLinks(void) { return this->links; }
+std::vector<int> Connection::getCores(void) { return this->cores; }
+std::vector<int> Connection::getModes(void) { return this->modes; }
 std::vector<std::vector<int> > Connection::getSlots(void) {
   return this->slots;
 }
@@ -27950,8 +27987,7 @@ class Controller {
    * allocation was succesful or not. This is type allocationStatus, there are
    * three states: ALLOCATED, NOT_ALLOCATED, N_A (not assigned).
    */
-  allocationStatus assignConnection(int src, int dst, BitRate bitRate,
-                                    long long idConnection, double time);
+  allocationStatus (Controller::*assignConnection)(int src, int dst, BitRate bitRate, long long idConnection, double time);
   /**
    * @brief Unnasigns the requested connection making the resources that were
    * being used become available again. It deactivates the slots that were
@@ -28066,6 +28102,9 @@ class Controller {
 
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                     Network *));
+  void setUnassignSDM(void (*callbackFunction)(Connection, double,
+                                                    Network *));
+  void setAssignSDM();
 
  private:
   Network *network;
@@ -28074,7 +28113,15 @@ class Controller {
   std::vector<Connection> connections;
   allocationStatus rtnAllocation;
 
-  int unassignConnectionNormal(long long idConnection, double time);
+  // SDM (WCallback)
+  int unassignConnectionSDM(long long idConnection, double time);
+  allocationStatus assignConnectionSDM(int src, int dst, BitRate bitRate, long long idConnection, double time);
+
+  // EON
+  int unassignConnectionEON(long long idConnection, double time);
+  allocationStatus assignConnectionEON(int src, int dst, BitRate bitRate, long long idConnection, double time);
+
+  // Callback EON
   int unassignConnectionWCallback(long long idConnection, double time);
   void (*unassignCallback)(Connection c, double time, Network *n);
 };
@@ -28088,14 +28135,16 @@ Controller::Controller() {
   this->connections = std::vector<Connection>();
   this->network = nullptr;
   this->allocator = new Allocator;
-  this->unassignConnection = &Controller::unassignConnectionNormal;
+  this->unassignConnection = &Controller::unassignConnectionEON;
+  this->assignConnection = &Controller::assignConnectionEON;
 };
 
 Controller::Controller(Network *network) {
   this->network = network;
   this->connections = std::vector<Connection>();
   this->allocator = new Allocator;
-  this->unassignConnection = &Controller::unassignConnectionNormal;
+  this->unassignConnection = &Controller::unassignConnectionEON;
+  this->assignConnection = &Controller::assignConnectionEON;
 };
 
 Controller::~Controller() {
@@ -28110,7 +28159,7 @@ Controller::~Controller() {
   delete this->allocator;
 };
 
-allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
+allocationStatus Controller::assignConnectionEON(int src, int dst, BitRate bitRate,
                                               long long idConnection,
                                               double time) {
   Connection con = Connection(idConnection, time, &bitRate);
@@ -28126,7 +28175,7 @@ allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
   return this->rtnAllocation;
 }
 
-int Controller::unassignConnectionNormal(long long idConnection, double time) {
+int Controller::unassignConnectionEON(long long idConnection, double time) {
   for (unsigned int i = 0; i < this->connections.size(); i++) {
     if (this->connections[i].id == idConnection) {
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
@@ -28143,11 +28192,44 @@ int Controller::unassignConnectionNormal(long long idConnection, double time) {
   return 0;
 }
 
+allocationStatus Controller::assignConnectionSDM(int src, int dst, BitRate bitRate,
+                                              long long idConnection,
+                                              double time) {
+  Connection con = Connection(idConnection, time, &bitRate);
+  this->rtnAllocation = this->allocator->exec(src, dst, bitRate, con);
+  if (this->rtnAllocation == ALLOCATED) {
+    this->connections.push_back(con);
+    for (unsigned int j = 0; j < con.links.size(); j++) {
+      for (unsigned int k = 0; k < con.slots[j].size(); k++) {
+        this->network->useSlot(con.links[j], con.cores[j], con.modes[j], con.slots[j][k]);
+      }
+    }
+  }
+  return this->rtnAllocation;
+}
+
+int Controller::unassignConnectionSDM(long long idConnection, double time) {
+  for (unsigned int i = 0; i < this->connections.size(); i++) {
+    if (this->connections[i].id == idConnection) {
+      for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
+        for (unsigned int k = 0; k < this->connections[i].slots[j].size();
+             k++) {
+          this->network->unuseSlot(this->connections[i].links[j], this->connections[i].cores[j],
+                                   this->connections[i].modes[j], this->connections[i].slots[j][k]);
+        }
+      }
+      this->unassignCallback(this->connections[i], time, this->network);
+      this->connections.erase(this->connections.begin() + i);
+      break;
+    }
+  }
+  return 0;
+}
+
 int Controller::unassignConnectionWCallback(long long idConnection,
                                             double time) {
   for (unsigned int i = 0; i < this->connections.size(); i++) {
     if (this->connections[i].id == idConnection) {
-      this->unassignCallback(this->connections[i], time, this->network);
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
         for (unsigned int k = 0; k < this->connections[i].slots[j].size();
              k++) {
@@ -28155,6 +28237,7 @@ int Controller::unassignConnectionWCallback(long long idConnection,
                                    this->connections[i].slots[j][k]);
         }
       }
+      this->unassignCallback(this->connections[i], time, this->network);
       this->connections.erase(this->connections.begin() + i);
       break;
     }
@@ -28215,7 +28298,12 @@ void Controller::setPaths(std::string filename) {
   }
 }
 
-void Controller::setNetwork(Network *network) { this->network = network; }
+void Controller::setNetwork(Network *network) { 
+  this->network = network;
+  if (network->getNetworkType() == SDM) {
+    this->setAssignSDM();
+  }
+}
 
 Network *Controller::getNetwork(void) { return this->network; }
 
@@ -28236,6 +28324,20 @@ void Controller::setUnassignCallback(void (*callbackFunction)(Connection,
   this->unassignConnection = &Controller::unassignConnectionWCallback;
   this->unassignCallback = callbackFunction;
 }
+
+// SDM
+void Controller::setAssignSDM() {
+  this->assignConnection = &Controller::assignConnectionSDM;
+}
+
+void Controller::setUnassignSDM(void (*callbackFunction)(Connection,
+                                                              double,
+                                                              Network *)) {
+  this->unassignConnection = &Controller::unassignConnectionSDM;
+  this->unassignCallback = callbackFunction;
+}
+
+
 #ifndef __EVENT_H__
 #define __EVENT_H__
 
@@ -28378,13 +28480,17 @@ long long Event::getIdConnection() { return this->idConnection; }
   (*this->path)[src][dst][route][link]->getId()
 #define NUMBER_OF_ROUTES (*this->path)[src][dst].size()
 #define NUMBER_OF_LINKS(route) (*this->path)[src][dst][route].size()
+#define NUMBER_OF_CORES(route, linkIndex) (*this->path)[src][dst][route][linkIndex]->getCores()
 #define ALLOC_SLOTS(link, from, to) con.addLink(link, from, from + to);
+#define ALLOC_SLOTS_SDM(link, core, mode, from, to) con.addLink(link, core, mode, from, from + to);
 
 #define BEGIN_UNALLOC_CALLBACK_FUNCTION \
   void _f_unallocate_function(Connection c, double t, Network *n)
 #define END_UNALLOC_CALLBACK_FUNCTION  // end function
 #define USE_UNALLOC_FUNCTION(simObject) \
   simObject.setUnassignCallback(_f_unallocate_function);
+#define USE_UNALLOC_FUNCTION_SDM(simObject) \
+  simObject.setUnassignSDM(_f_unallocate_function);
 #define CONNECTION c
 #define TIME_DISCONNECTION t
 #define NETWORK n
@@ -28397,6 +28503,7 @@ long long Event::getIdConnection() { return this->idConnection; }
 // #include "event.hpp"
 // #include "exp_variable.hpp"
 // #include "uniform_variable.hpp"
+
 /**
  * @brief Class Simulator, represents network execution.
  */
@@ -28616,6 +28723,9 @@ class Simulator {
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
 
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
+                                                    Network *));
+  
+  void setUnassignSDM(void (*callbackFunction)(Connection, double,
                                                     Network *));
 
   Controller *getController();
@@ -28989,7 +29099,7 @@ int Simulator::eventRoutine(void) {
       this->dst = this->dstVariable.getNextIntValue();
     }
     this->bitRate = bitRateVariable.getNextIntValue();
-    this->rtnAllocation = this->controller->assignConnection(
+    this->rtnAllocation = (this->controller->*(this->controller->assignConnection))(
         this->src, this->dst, this->bitRates[this->bitRate],
         this->currentEvent.getIdConnection(), this->clock);
     if (this->rtnAllocation == ALLOCATED) {
@@ -29145,9 +29255,13 @@ void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
   this->controller->setUnassignCallback(callbackFunction);
 }
 
+void Simulator::setUnassignSDM(void (*callbackFunction)(Connection, double,
+                                                             Network *)) {
+  this->controller->setUnassignSDM(callbackFunction);
+}
+
 std::vector<BitRate> Simulator::getBitRates(void){ return this->bitRates; }
 
 std::vector<std::vector<std::vector<std::vector<Link *>>>> *Simulator::getPaths() { return this->controller->getPaths(); }
 
 Controller *Simulator::getController() {return this->controller; }
-

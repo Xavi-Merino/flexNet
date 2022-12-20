@@ -291,9 +291,9 @@ int Simulator::eventRoutine(void) {
       this->dst = this->dstVariable.getNextIntValue();
     }
     this->bitRate = bitRateVariable.getNextIntValue();
-    this->rtnAllocation = this->controller->assignConnection(
+    this->rtnAllocation = (this->controller->*(this->controller->assignConnection))( // TODO: No se que hice pero funciono
         this->src, this->dst, this->bitRates[this->bitRate],
-        this->currentEvent.getIdConnection());
+        this->currentEvent.getIdConnection(), this->clock);
     if (this->rtnAllocation == ALLOCATED) {
       nextEventTime = this->clock + this->departVariable.getNextValue();
       for (std::list<Event>::reverse_iterator pos = this->events.rbegin();
@@ -308,7 +308,8 @@ int Simulator::eventRoutine(void) {
       this->allocatedConnections++;
     }
   } else if (this->currentEvent.getType() == DEPARTURE) {
-    this->controller->unassignConnection(this->currentEvent.getIdConnection());
+    (this->controller->*(this->controller->unassignConnection))(
+        this->currentEvent.getIdConnection(), this->clock);
   }
   this->events.pop_front();
   return this->rtnAllocation;
@@ -444,6 +445,11 @@ void Simulator::initZScoreEven(void) {
 void Simulator::setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                              Network *)) {
   this->controller->setUnassignCallback(callbackFunction);
+}
+
+void Simulator::setUnassignSDM(void (*callbackFunction)(Connection, double,
+                                                             Network *)) {
+  this->controller->setUnassignSDM(callbackFunction);
 }
 
 std::vector<BitRate> Simulator::getBitRates(void){ return this->bitRates; }

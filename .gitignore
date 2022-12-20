@@ -1,9 +1,8 @@
 build/*
 .vscode
 documentation
-examples/BDM/multiband_base.cpp
-examples/BDM/multiband.cpp
-examples/BDM/*.txt
-examples/BDM/*.exe
-examples/BDM/*.o
-examples/BDM/*.csv
+examples/BDM
+examples/offlineONDM
+examples/e004
+coverage.sh
+examples/SDM/out/*

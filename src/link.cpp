@@ -244,10 +244,10 @@ bool Link::getSlot(int pos) const {
 
 bool Link::getSlot(int core, int mode, int pos) const {
   if (core < 0 || core >= this->getCores())
-    throw std::runtime_error("Cannot set number of slots in core out of bounds.");
+    throw std::runtime_error("Cannot get number of slots in core out of bounds.");
 
   if (mode < 0 || mode >= this->getModes())
-    throw std::runtime_error("Cannot set number of slots in mode out of bounds.");
+    throw std::runtime_error("Cannot get number of slots in mode out of bounds.");
 
   if (pos < 0 || pos >= this->getSlots())
     throw std::runtime_error("Cannot get slot in position out of bounds.");
