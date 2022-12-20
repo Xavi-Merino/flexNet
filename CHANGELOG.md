@@ -5,11 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.0] - 2022-XX-XX
-
+## [0.7.0] - 2022-11-01
 ### ADDED
 
-- A callback function after each disconnection.
 - Added support for SDM: 
   - Added support for multi-core and multi-mode for Link object
   - Added Test cases in test_link.cpp for the corresponding methods of multi-core/mode Link object.
@@ -24,14 +22,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added getters for BitRate class:
   - getNumberOfModulations() gets the number of modulations available in the BitRate object.
   - Added tests.
+
+## [0.6.1] - 2022-10-17
+### FIXED
+- There was a bug that puts one blocked connection always. That was not significative in 1e6 events, but it was a bug.
+
+## [0.6.0] - 2022-09-09
+### ADDED
+
+- A callback function after each disconnection.
 - Added 5 new networks: ARPANET, EON, EUROcore, UKNet, USNet.
 
 ### FIXED
 
 - Example 001 fixed. Reset slots in each route.
-- There was a bug that puts one blocked connection always. That was not significative in 1e6 events, but it was a bug.
-
-
+  
 ## [0.5.3] - 2022-05-19
 
 ### FIXED
@@ -165,3 +170,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.5.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.4.1...v0.5.0
 [0.5.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.0...v0.5.1
 [0.5.2]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.1...v0.5.2
+[0.5.3]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.2...v0.5.3
+[0.6.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.3...v0.6.0
+[0.6.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.6.0...v0.6.1
+[0.7.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.6.1...v0.7.0

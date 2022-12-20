@@ -6,14 +6,16 @@ Controller::Controller() {
   this->connections = std::vector<Connection>();
   this->network = nullptr;
   this->allocator = new Allocator;
-  this->unassignConnection = &Controller::unassignConnectionNormal;
+  this->unassignConnection = &Controller::unassignConnectionEON;
+  this->assignConnection = &Controller::assignConnectionEON;
 };
 
 Controller::Controller(Network *network) {
   this->network = network;
   this->connections = std::vector<Connection>();
   this->allocator = new Allocator;
-  this->unassignConnection = &Controller::unassignConnectionNormal;
+  this->unassignConnection = &Controller::unassignConnectionEON;
+  this->assignConnection = &Controller::assignConnectionEON;
 };
 
 Controller::~Controller() {
@@ -28,7 +30,7 @@ Controller::~Controller() {
   delete this->allocator;
 };
 
-allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
+allocationStatus Controller::assignConnectionEON(int src, int dst, BitRate bitRate,
                                               long long idConnection,
                                               double time) {
   Connection con = Connection(idConnection, time, &bitRate);
@@ -44,7 +46,7 @@ allocationStatus Controller::assignConnection(int src, int dst, BitRate bitRate,
   return this->rtnAllocation;
 }
 
-int Controller::unassignConnectionNormal(long long idConnection, double time) {
+int Controller::unassignConnectionEON(long long idConnection, double time) {
   for (unsigned int i = 0; i < this->connections.size(); i++) {
     if (this->connections[i].id == idConnection) {
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
@@ -61,11 +63,44 @@ int Controller::unassignConnectionNormal(long long idConnection, double time) {
   return 0;
 }
 
+allocationStatus Controller::assignConnectionSDM(int src, int dst, BitRate bitRate,
+                                              long long idConnection,
+                                              double time) {
+  Connection con = Connection(idConnection, time, &bitRate);
+  this->rtnAllocation = this->allocator->exec(src, dst, bitRate, con);
+  if (this->rtnAllocation == ALLOCATED) {
+    this->connections.push_back(con);
+    for (unsigned int j = 0; j < con.links.size(); j++) {
+      for (unsigned int k = 0; k < con.slots[j].size(); k++) {
+        this->network->useSlot(con.links[j], con.cores[j], con.modes[j], con.slots[j][k]);
+      }
+    }
+  }
+  return this->rtnAllocation;
+}
+
+int Controller::unassignConnectionSDM(long long idConnection, double time) {
+  for (unsigned int i = 0; i < this->connections.size(); i++) {
+    if (this->connections[i].id == idConnection) {
+      for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
+        for (unsigned int k = 0; k < this->connections[i].slots[j].size();
+             k++) {
+          this->network->unuseSlot(this->connections[i].links[j], this->connections[i].cores[j],
+                                   this->connections[i].modes[j], this->connections[i].slots[j][k]);
+        }
+      }
+      this->unassignCallback(this->connections[i], time, this->network);
+      this->connections.erase(this->connections.begin() + i);
+      break;
+    }
+  }
+  return 0;
+}
+
 int Controller::unassignConnectionWCallback(long long idConnection,
                                             double time) {
   for (unsigned int i = 0; i < this->connections.size(); i++) {
     if (this->connections[i].id == idConnection) {
-      this->unassignCallback(this->connections[i], time, this->network);
       for (unsigned int j = 0; j < this->connections[i].links.size(); j++) {
         for (unsigned int k = 0; k < this->connections[i].slots[j].size();
              k++) {
@@ -73,6 +108,7 @@ int Controller::unassignConnectionWCallback(long long idConnection,
                                    this->connections[i].slots[j][k]);
         }
       }
+      this->unassignCallback(this->connections[i], time, this->network);
       this->connections.erase(this->connections.begin() + i);
       break;
     }
@@ -133,7 +169,14 @@ void Controller::setPaths(std::string filename) {
   }
 }
 
-void Controller::setNetwork(Network *network) { this->network = network; }
+void Controller::setNetwork(Network *network) { 
+  this->network = network;
+  if (network->getNetworkType() == SDM) {
+    this->setAssignSDM();
+    // this->setUnassignSDM(); // TODO: Que pongo en el argumento? o aca no se setea?
+    // Luego de un increible viaje descubri que no, se setea en el macro (?).
+  }
+}
 
 Network *Controller::getNetwork(void) { return this->network; }
 
@@ -154,3 +197,16 @@ void Controller::setUnassignCallback(void (*callbackFunction)(Connection,
   this->unassignConnection = &Controller::unassignConnectionWCallback;
   this->unassignCallback = callbackFunction;
 }
+
+// SDM
+void Controller::setAssignSDM() {
+  this->assignConnection = &Controller::assignConnectionSDM;
+}
+
+void Controller::setUnassignSDM(void (*callbackFunction)(Connection,
+                                                              double,
+                                                              Network *)) {
+  this->unassignConnection = &Controller::unassignConnectionSDM;
+  this->unassignCallback = callbackFunction;
+}
+
