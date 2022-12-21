@@ -28,6 +28,7 @@
   (*this->path)[src][dst][route][link]->getId()
 #define NUMBER_OF_ROUTES (*this->path)[src][dst].size()
 #define NUMBER_OF_CORES(route, linkIndex) (*this->path)[src][dst][route][linkIndex]->getCores()
+#define NUMBER_OF_MODES(route, linkIndex) (*this->path)[src][dst][route][linkIndex]->getModes()
 #define NUMBER_OF_LINKS(route) (*this->path)[src][dst][route].size()
 #define ALLOC_SLOTS(link, from, to) con.addLink(link, from, from + to);
 #define ALLOC_SLOTS_SDM(link, core, mode, from, to) con.addLink(link, core, mode, from, from + to);
