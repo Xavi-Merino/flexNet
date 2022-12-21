@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### ADDED
 
 - Added macro NUMBER_OF_MODES for SDM to Simulator class.
+- Added SDM example.
 
 ### FIXED
 
