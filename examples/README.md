@@ -2,7 +2,8 @@
 ## 
 1. First fit algorithm
 2. Exact fit Algorithm 
-2. Exact fit Algorithm with bitrate file.
+3. Exact fit Algorithm with bitrate file.
+4. DA-RCSA and FF-RCSA algorithms in SDM extracted from "Distance adaptive routing, core and spectrum allocation in space division multiplexing optical networks with multi-core fiber", Y. Tan et. al, 2016.
 
 ## Definitions
 
@@ -20,7 +21,13 @@ All of the following definitions can be used to simplify the creation of a perso
 - **LINK_IN_ROUTE_ID(route, link)** can be used to access the id of a specific link on a route between a source and destination node.
 - **NUMBER_OF_ROUTES** represents the amount of routes that exist between the current source and destination node.
 - **NUMBER_OF_LINKS(route)** represents the amount of links between a source and destination node on the specified route.
+- **NUMBER_OF_CORES(route, linkIndex)** represents the amount of cores between a source and destination node on the specified route and link index.
+- **NUMBER_OF_MODES(route, linkIndex, core)** represents the amount of modes between a source and destination node on the specified route and link index.
 - **ALLOC_SLOTS(link, from, to)** can be used to create a connection on the required interval of slots *[from, from+to[* of the specified link.
+- **ALLOC_SLOTS_SDM(link, core, mode, from, to)** can be used to create a connection on the required interval of slots *[from, from+to[* of the specified link, core and mode.
+- **USE_UNALLOC_FUNCTION_SDM(fun, simObject)** can be used on the main file to set the callback unallocation algorithm to be used by the simulation. The name of said algorithm is passed as the 'fun' parameter, and simObject corresponds to the simulator object.
+- **BEGIN_UNALLOC_CALLBACK_FUNCTION** can be used to create a callback unallocation algorithm. This function is triggered immediately a departure occurs. END_UNALLOC_CALLBACK_FUNCTION must be written after the algorithm to indicate the end of the function.
+
 
 ## Requirements
 

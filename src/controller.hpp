@@ -54,8 +54,7 @@ class Controller {
    * allocation was succesful or not. This is type allocationStatus, there are
    * three states: ALLOCATED, NOT_ALLOCATED, N_A (not assigned).
    */
-  allocationStatus assignConnection(int src, int dst, BitRate bitRate,
-                                    long long idConnection, double time);
+  allocationStatus (Controller::*assignConnection)(int src, int dst, BitRate bitRate, long long idConnection, double time);
   /**
    * @brief Unnasigns the requested connection making the resources that were
    * being used become available again. It deactivates the slots that were
@@ -180,6 +179,9 @@ class Controller {
 
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                     Network *));
+  void setUnassignSDM(void (*callbackFunction)(Connection, double,
+                                                    Network *));
+  void setAssignSDM();
 
  private:
   Network *network;
@@ -188,7 +190,15 @@ class Controller {
   std::vector<Connection> connections;
   allocationStatus rtnAllocation;
 
-  int unassignConnectionNormal(long long idConnection, double time);
+  // SDM (WCallback)
+  int unassignConnectionSDM(long long idConnection, double time);
+  allocationStatus assignConnectionSDM(int src, int dst, BitRate bitRate, long long idConnection, double time);
+
+  // EON
+  int unassignConnectionEON(long long idConnection, double time);
+  allocationStatus assignConnectionEON(int src, int dst, BitRate bitRate, long long idConnection, double time);
+
+  // Callback EON
   int unassignConnectionWCallback(long long idConnection, double time);
   void (*unassignCallback)(Connection c, double time, Network *n);
 };

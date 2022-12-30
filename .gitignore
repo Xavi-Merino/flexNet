@@ -2,6 +2,7 @@ build/*
 .vscode
 documentation
 examples/BDM
-examples/SDM
+examples/offlineONDM
 examples/e004
 coverage.sh
+examples/SDM/out/*

@@ -27,14 +27,22 @@
 #define LINK_IN_ROUTE_ID(route, link) \
   (*this->path)[src][dst][route][link]->getId()
 #define NUMBER_OF_ROUTES (*this->path)[src][dst].size()
+#define NUMBER_OF_CORES(route, linkIndex) \
+  (*this->path)[src][dst][route][linkIndex]->getCores()
+#define NUMBER_OF_MODES(route, linkIndex) \
+  (*this->path)[src][dst][route][linkIndex]->getModes()
 #define NUMBER_OF_LINKS(route) (*this->path)[src][dst][route].size()
 #define ALLOC_SLOTS(link, from, to) con.addLink(link, from, from + to);
+#define ALLOC_SLOTS_SDM(link, core, mode, from, to) \
+  con.addLink(link, core, mode, from, from + to);
 
 #define BEGIN_UNALLOC_CALLBACK_FUNCTION \
   void _f_unallocate_function(Connection c, double t, Network *n)
 #define END_UNALLOC_CALLBACK_FUNCTION  // end function
 #define USE_UNALLOC_FUNCTION(simObject) \
   simObject.setUnassignCallback(_f_unallocate_function);
+#define USE_UNALLOC_FUNCTION_SDM(simObject) \
+  simObject.setUnassignSDM(_f_unallocate_function);
 #define CONNECTION c
 #define TIME_DISCONNECTION t
 #define NETWORK n
@@ -47,6 +55,7 @@
 #include "event.hpp"
 #include "exp_variable.hpp"
 #include "uniform_variable.hpp"
+#include "version.hpp"
 
 /**
  * @brief Class Simulator, represents network execution.
@@ -66,9 +75,11 @@ class Simulator {
    * lenght, slots).
    * @param pathFilename Source of path file. This file contains the routes
    * between nodes.
-   * @param networkType (int) that defines the type of network, eg. EON (equal 1), SDM (equal 2).
+   * @param networkType (int) that defines the type of network, eg. EON (equal
+   * 1), SDM (equal 2).
    */
-  Simulator(std::string networkFilename, std::string pathFilename, int networkType = EON);
+  Simulator(std::string networkFilename, std::string pathFilename,
+            int networkType = EON);
   /**
    * @brief Construct the object Simulator from three JSON files, this files
    * contains the network configuration the routes and the bit rates.
@@ -80,7 +91,8 @@ class Simulator {
    * between nodes.
    * @param bitrateFilename Source of bit rates file. This file contains the
    * differents bit rates configurations.
-   * @param networkType (int) that defines the type of network, eg. EON (equal 1), SDM (equal 2).
+   * @param networkType (int) that defines the type of network, eg. EON (equal
+   * 1), SDM (equal 2).
    */
   Simulator(std::string networkFilename, std::string pathFilename,
             std::string bitrateFilename, int networkType = EON);
@@ -167,7 +179,8 @@ class Simulator {
   /**
    * @brief Sets the Network type of the object.
    *
-   * @param networkType the int that represent the new network type of the object, by default 0 equals EON.
+   * @param networkType the int that represent the new network type of the
+   * object, by default 0 equals EON.
    */
   void setNetworkType(int networkType);
   /**
@@ -197,7 +210,8 @@ class Simulator {
   /**
    * @brief Gets the Network type of the object.
    *
-   * @return (int) the int that represent each network type, by default 0 equals EON.
+   * @return (int) the int that represent each network type, by default 0 equals
+   * EON.
    */
   int getNetworkType();
 
@@ -254,7 +268,7 @@ class Simulator {
   /**
    * @brief Get the BitRates vector attribute of the Simulator object.
    *
-   * @return std::vector<BitRate> 
+   * @return std::vector<BitRate>
    */
   std::vector<BitRate> getBitRates(void);
 
@@ -268,6 +282,8 @@ class Simulator {
 
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
                                                     Network *));
+
+  void setUnassignSDM(void (*callbackFunction)(Connection, double, Network *));
 
   Controller *getController();
 
@@ -287,7 +303,6 @@ class Simulator {
   double confidence;
   double zScore;
   int zScoreEven;
-
 
   bool initReady;
   double lambda;
