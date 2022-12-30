@@ -194,6 +194,10 @@ void Simulator::defaultValues() {
 }
 
 void Simulator::printInitialInfo() {
+  std::cout << "\n--- Flex Net Sim (" << VERSION_MAJOR << "." << VERSION_MINOR
+            << "." << VERSION_REVISION << ") ---"
+            << "\n\n";
+
   std::cout << std::setfill(' ') << std::setw(20) << std::left << "Nodes:";
   std::cout << std::setw(30)
             << this->controller->getNetwork()->getNumberOfNodes() << "\n";
