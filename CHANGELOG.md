@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added macro NUMBER_OF_MODES for SDM to Simulator class.
 - Added SDM example.
+- Added version number to the library execution
 
 ### FIXED
 
@@ -186,3 +187,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.6.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.5.3...v0.6.0
 [0.6.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.6.0...v0.6.1
 [0.7.0]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.6.1...v0.7.0
+[0.7.1]: https://gitlab.com/DaniloBorquez/flex-net-sim/-/compare/v0.7.0...v0.7.1
