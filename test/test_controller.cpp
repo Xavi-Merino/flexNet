@@ -43,6 +43,8 @@ TEST_CASE("Destructor (Allocator)") {
 
 TEST_CASE("AllocationStatus (Allocator) through Controller") {
   Controller controllerExample;
+  Controller controllerAux;
+  //controllerExample = &controllerAux;
   int src = 0;
   int dst = 1;
   long long idConnection = 0;
@@ -53,7 +55,7 @@ TEST_CASE("AllocationStatus (Allocator) through Controller") {
       controllerExample.assignConnection(src, dst, bitRate, idConnection) ==
       (ALLOCATED || NOT_ALLOCATED));*/
   CHECK_THROWS(
-      controllerExample.assignConnection(src, dst, bitRate, idConnection, time_connection));
+      (controllerExample.*(controllerExample.assignConnection))(src, dst, bitRate, idConnection, time_connection));
 }
 
 TEST_CASE("Correct format JSON file paths (Controller)") {

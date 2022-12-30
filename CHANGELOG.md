@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.1] - 2022-12-21
+### ADDED
+
+- Added macro NUMBER_OF_MODES for SDM to Simulator class.
+- Added SDM example.
+
+### FIXED
+
+- Fixed test.
+
 ## [0.7.0] - 2022-11-01
 ### ADDED
 
@@ -13,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added Test cases in test_link.cpp for the corresponding methods of multi-core/mode Link object.
   - Added support for multi-core and multi-mode for Network object.
   - Added Test cases in test_network.cpp for the corresponding methods of multi-core/mode Network object.
-  - Added member class 'networkType' in order to know what type of network is being used and work acordingly.
+  - Added member class 'networkType' in order to know what type of network is being used and work accordingly.
   - Test cases in test_simulator.cpp for each network type creation and also for setters and getters of 'networkType' variable.
 - Added getters for Simulator class:
   - getBitRates() gets the BitRates vector attributes of the simulator object.
@@ -22,9 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added getters for BitRate class:
   - getNumberOfModulations() gets the number of modulations available in the BitRate object.
   - Added tests.
+- Added macros NUMBER_OF_CORES, ALLOC_SLOTS_SDM and USE_UNALLOC_FUNCTION_SDM for SDM to Simulator class.
 
 ## [0.6.1] - 2022-10-17
 ### FIXED
+
 - There was a bug that puts one blocked connection always. That was not significative in 1e6 events, but it was a bug.
 
 ## [0.6.0] - 2022-09-09

@@ -27,14 +27,19 @@
 #define LINK_IN_ROUTE_ID(route, link) \
   (*this->path)[src][dst][route][link]->getId()
 #define NUMBER_OF_ROUTES (*this->path)[src][dst].size()
+#define NUMBER_OF_CORES(route, linkIndex) (*this->path)[src][dst][route][linkIndex]->getCores()
+#define NUMBER_OF_MODES(route, linkIndex) (*this->path)[src][dst][route][linkIndex]->getModes()
 #define NUMBER_OF_LINKS(route) (*this->path)[src][dst][route].size()
 #define ALLOC_SLOTS(link, from, to) con.addLink(link, from, from + to);
+#define ALLOC_SLOTS_SDM(link, core, mode, from, to) con.addLink(link, core, mode, from, from + to);
 
 #define BEGIN_UNALLOC_CALLBACK_FUNCTION \
   void _f_unallocate_function(Connection c, double t, Network *n)
 #define END_UNALLOC_CALLBACK_FUNCTION  // end function
 #define USE_UNALLOC_FUNCTION(simObject) \
   simObject.setUnassignCallback(_f_unallocate_function);
+#define USE_UNALLOC_FUNCTION_SDM(simObject) \
+  simObject.setUnassignSDM(_f_unallocate_function);
 #define CONNECTION c
 #define TIME_DISCONNECTION t
 #define NETWORK n
@@ -267,6 +272,9 @@ class Simulator {
   std::vector<std::vector<std::vector<std::vector<Link *>>>> *getPaths();
 
   void setUnassignCallback(void (*callbackFunction)(Connection, double,
+                                                    Network *));
+  
+  void setUnassignSDM(void (*callbackFunction)(Connection, double,
                                                     Network *));
 
   Controller *getController();
